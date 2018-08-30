@@ -1,0 +1,1 @@
+﻿SELECT * FROM quests WHERE id IN (SELECT quest_id FROM done_quests WHERE codecooler_id = 1);

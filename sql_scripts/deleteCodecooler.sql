@@ -1,0 +1,1 @@
+﻿DELETE FROM codecoolers WHERE id = 1;

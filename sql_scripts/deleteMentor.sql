@@ -1,0 +1,1 @@
+﻿DELETE FROM mentors WHERE id = 1;

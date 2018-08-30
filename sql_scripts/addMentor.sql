@@ -1,0 +1,1 @@
+﻿INSERT INTO mentors (first_name, last_name, email, password) VALUES ('Bruce', 'Lee', 'brucelee@gmail.com', 'kungfu');

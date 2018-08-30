@@ -1,0 +1,1 @@
+﻿INSERT INTO codecoolers (first_name, last_name, email, password) VALUES ('Jan', 'Kowalski', 'kowal@gmail.com', 'hammer');

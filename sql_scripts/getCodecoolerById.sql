@@ -1,0 +1,1 @@
+﻿SELECT * FROM codecoolers WHERE id = 1;

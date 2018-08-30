@@ -1,0 +1,1 @@
+﻿INSERT INTO exp_level (name, start_value, end_value) VALUES ('noob', 0, 10);

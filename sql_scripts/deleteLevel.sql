@@ -1,0 +1,1 @@
+﻿DELETE FROM exp_level WHERE id = 1;
