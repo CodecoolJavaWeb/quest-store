@@ -7,9 +7,9 @@ import java.util.Set;
 public interface CodecoolerDAO {
 
     Set<Codecooler> getAllCodecoolers();
-    Codecooler getCodecoolerById();
+    Codecooler getCodecoolerById(int id);
     Set<Codecooler> getCodecoolersByClassId(int classId);
-    void addCodecooler(Codecooler codecooler);
-    void updateCodecooler(Codecooler codecooler);
-    void deleteCodecooler(Codecooler codecooler);
+    boolean addCodecooler(Codecooler codecooler);
+    boolean updateCodecooler(Codecooler codecooler);
+    boolean deleteCodecooler(Codecooler codecooler);
 }
