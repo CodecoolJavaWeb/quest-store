@@ -1,0 +1,1 @@
+﻿INSERT INTO artifacts (name, description, price) VALUES ('personal mentoring', 'chose topic and mentor...',  20);
