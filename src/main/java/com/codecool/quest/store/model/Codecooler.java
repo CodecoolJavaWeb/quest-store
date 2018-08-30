@@ -29,4 +29,17 @@ public class Codecooler extends User {
     public void setTeamId(int teamId) {
         this.teamId = teamId;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%d. %s %s - %s - class: %d - exp: %d - balance: %d - team: %d",
+                getId(),
+                getFirstName(),
+                getLastName(),
+                getEmail(),
+                getClassId(),
+                this.exp,
+                this.balance,
+                this.teamId);
+    }
 }
