@@ -1,0 +1,1 @@
+﻿SELECT * FROM classes WHERE id = 1;
