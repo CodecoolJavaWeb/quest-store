@@ -1,1 +1,1 @@
-﻿INSERT INTO teams (name) VALUES ('druga') ;
+﻿INSERT INTO teams (name, class_id) VALUES ('druga', NULL) ;
