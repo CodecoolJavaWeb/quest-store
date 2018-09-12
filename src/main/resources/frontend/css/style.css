@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 html {
     font-family: 'Roboto', sans-serif;
     background: url(../img/codecool_symbol_cropp.png) right bottom no-repeat fixed;
@@ -11,6 +17,10 @@ html {
     color: #4B9ACC;
 }
 
+header {
+    margin-top: 70px;
+}
+
 header > h1 {
     color: black;
     text-align: center;
@@ -18,12 +28,24 @@ header > h1 {
     line-height: 65px;
 }
 
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
 main {
     text-align: center;
     background-color: #E5E5E8;
     padding: 50px;
-    margin: auto;
-    max-width: 900px;
+    width: 70%;
+    float: left;
+}
+
+aside {
+    width: 15%;
+    float: left;
+    padding: 5px 10px;
 }
 
 .login {
@@ -67,4 +89,51 @@ input[type=button] {
 
 input[type=button]:hover {
     background-color: rgb(54, 111, 146);
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #F3F3F3;
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    text-align: center;
+    color: black;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: rgb(197, 195, 195);
+}
+
+.active {
+    background-color: #4B9ACC;
+    color: white;
+}
+
+.roundbutton {
+    background-color: #DB4041;
+    border: none;
+    color: white;
+    text-decoration: none;
+    font-size: 30px;
+    padding: 10px 19px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.floatright {
+    float: right;
 }
