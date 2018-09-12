@@ -1,0 +1,63 @@
+html {
+    font-family: 'Roboto', sans-serif;
+    background: url(../img/codecool_symbol_cropp.png) right bottom no-repeat fixed;
+}
+
+.red {
+    color: #DB4041;
+}
+
+.blue {
+    color: #4B9ACC;
+}
+
+header > h1 {
+    color: black;
+    text-align: center;
+    font-size: 45px;
+    line-height: 65px;
+}
+
+main {
+    text-align: center;
+    background-color: #E5E5E8;
+    padding: 50px;
+    margin: auto;
+    max-width: 900px;
+}
+
+.login {
+    max-width: 400px;
+}
+
+form {
+    font-size: 20px;
+    line-height: 35px;
+    text-align: left;
+}
+
+input[type=email], [type=password] {
+    font-size: 20px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    outline: none;
+}
+
+input[type=email]:focus, [type=password]:focus {
+    outline: 1px solid #4B9ACC;
+}
+
+input[type=button] {
+    background-color: #4B9ACC;
+    border: none;
+    color: white;
+    padding: 16px 0;
+    text-decoration: none;
+    font-size: 20px;
+    cursor: pointer;
+    width: 40%;
+    margin-left: 30%;
+    margin-right: 30%;
+    border-radius: 5px;
+}
