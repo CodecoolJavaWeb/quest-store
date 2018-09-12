@@ -169,7 +169,7 @@ button:focus {
 }
 
 .list {
-    margin: 20px 0;
+    margin: 20px 0 0 0;
     height: 600px;
     overflow-y: auto;
 }
@@ -184,4 +184,16 @@ div[class="list"] li {
     width: 100%;
     padding: 10px;
     border: 1px solid white;
+}
+
+.explvlcont {
+    background-color: transparent;
+    padding: 0;
+}
+
+.explvl {
+    background-color: #E5E5E8;
+    padding: 20px;
+    width: 100%;
+    margin: 0 0 20px 0;
 }
