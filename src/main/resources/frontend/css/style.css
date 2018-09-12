@@ -35,9 +35,8 @@ header > h1 {
 }
 
 main {
-    text-align: center;
     background-color: #E5E5E8;
-    padding: 50px;
+    padding: 20px;
     width: 70%;
     float: left;
 }
@@ -49,7 +48,12 @@ aside {
 }
 
 .login {
+    padding: 50px;
+    text-align: center;
     max-width: 400px;
+    float: none;
+    margin: auto;
+    margin-top: 20px;
 }
 
 form {
