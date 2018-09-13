@@ -17,6 +17,7 @@ html {
     color: #4B9ACC;
 }
 
+
 header {
     margin-top: 70px;
 }
@@ -127,12 +128,13 @@ li a:hover:not(.active) {
     color: white;
 }
 
+
 .roundbutton {
     background-color: #DB4041;
     border: none;
     color: white;
     text-decoration: none;
-    font-size: 30px;
+    font-size: 40px;
     padding: 10px 19px;
     cursor: pointer;
     border-radius: 50%;
@@ -141,3 +143,82 @@ li a:hover:not(.active) {
 .floatright {
     float: right;
 }
+
+.container {
+    border: 5px solid #CFD8DC;
+    background-color: #CFD8DC;
+    display: block;
+    position: relative;
+    margin-bottom: 2px;
+    padding: 0 0 0 10px;
+    cursor: pointer;
+    font-size: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+.checkmark {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 25px;
+    width: 25px;
+    background-color: white;
+
+}
+
+
+.container:hover input ~ .checkmark {
+    background-color: #4B9ACC;
+}
+
+
+.container input:checked ~ .checkmark {
+    background-color: #DB4041;
+}
+
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+
+.container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.material-icons.md-36 {
+    font-size: 36px;
+}
+
+.checkmarklist {
+    height: 600px;
+    line-height: 50px;
+    overflow-y: auto;
+}
+
