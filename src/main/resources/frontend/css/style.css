@@ -239,3 +239,8 @@ div[class="list"] li {
 .width80 {
     width: 80%;
 }
+
+a {
+    text-decoration: none;
+    color: black;
+}
