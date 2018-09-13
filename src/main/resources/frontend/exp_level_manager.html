@@ -26,12 +26,43 @@
         </aside>
         <main class="explvlcont">
             <div class="list" style="margin-top: 0;">
-                <div class="explvl"></div>
-                <div class="explvl"></div>
+                <div class="explvl">
+                    <div class="flexbox">
+                        <label>Name:</label>
+                        <input type="text" class="stdinput" style="flex-grow: 1" value="Junior" disabled>
+                    </div>
+                    <div class="flexbox">
+                        <label>Range: from</label>
+                        <input type="number" class="stdinput" value="0" disabled>
+                        <label>to</label>
+                        <input type="number" class="stdinput" value="10" disabled>
+                        <label>CoolCoins</label>
+                        <button class="redbutton" name="edit" onclick="enableEdit(this)">EDIT</button>
+                        <button class="bluebutton" name="save" onclick="save(this)" style="display: none;">SAVE</button>
+                        <button class="redbutton">DELETE</button>
+                    </div>
+                </div>
+                <div class="explvl">
+                    <div class="flexbox">
+                        <label>Name:</label>
+                        <input type="text" class="stdinput" style="flex-grow: 1" value="Regular" disabled>
+                    </div>
+                    <div class="flexbox">
+                        <label>Range: from</label>
+                        <input type="number" class="stdinput" value="10" disabled>
+                        <label>to</label>
+                        <input type="number" class="stdinput" value="30" disabled>
+                        <label>CoolCoins</label>
+                        <button class="redbutton" name="edit" onclick="enableEdit(this)">EDIT</button>
+                        <button class="bluebutton" name="save" onclick="save(this)" style="display: none;">SAVE</button>
+                        <button class="redbutton">DELETE</button>
+                    </div>
+                </div>
             </div>
         </main>
         <aside></aside>
     </div>
     
+    <script src="js/exp_level.js"></script>
 </body>
 </html>
