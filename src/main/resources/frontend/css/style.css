@@ -2,12 +2,12 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-size: 20px;
 }
 
 html {
     font-family: 'Roboto', sans-serif;
     background: url(../img/codecool_symbol_cropp.png) right bottom no-repeat fixed;
+    font-size: 20px;
 }
 
 .red {
@@ -272,9 +272,17 @@ button {
     color: black;
 }
 
+.height300 {
+    height: 300px;
+}
+
+.height600 {
+    height: 600px;
+}
+
 .list {
     margin: 20px 0 0 0;
-    height: 600px;
+    height: 100%;
     overflow-y: auto;
 }
 
@@ -305,7 +313,11 @@ div[class="list"] li {
 .flexbox {
     display: flex;
     flex-flow: row wrap;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.width80 {
+    width: 80%;
 }
