@@ -68,12 +68,17 @@ input {
     outline: none;
 }
 
-input[type=email], [type=password] {
+input[type=email], [type=password]{
     font-size: 20px;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
 }
+
+.add {
+    width: 90%;
+}
+
 
 input:focus, select:focus {
     outline: 1px solid #4B9ACC;
@@ -229,7 +234,7 @@ button:focus {
 
 .checkmarklist {
     height: 600px;
-    line-height: 50px;
+    line-height: 40px;
     overflow-y: auto;
 }
 
@@ -318,6 +323,7 @@ div[class="list"] li {
     margin-bottom: 10px;
 }
 
+
 .width80 {
     width: 80%;
 }
@@ -326,3 +332,4 @@ a {
     text-decoration: none;
     color: black;
 }
+

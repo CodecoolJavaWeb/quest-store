@@ -8,12 +8,15 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-<ul>
-    <li><a class="active" href="mentors_manager.html">MENTORS</a></li>
-    <li><a href="classes_manager.html">CLASSES</a></li>
-    <li><a href="">LEVELS</a></li>
-    <li class="floatright"><a href="index.html">LOGOUT</a></li>
-</ul>
+    <nav>
+        <ul>
+
+            <li><a class="active" href="mentors_manager.html">MENTORS</a></li>
+            <li><a href="classes_manager.html">CLASSES</a></li>
+            <li><a href="exp_level_manager.html">LEVELS</a></li>
+            <li class="floatright"><a href="index.html">LOGOUT</a></li>
+        </ul>
+    </nav>
 
 <header>
     <h1>Add new Mentor</h1>
@@ -22,7 +25,29 @@
     <aside>
     </aside>
     <main>
+        <label>First Name:</label>
+        <input type="text" class="stdinput add" placeholder="Enter name..."><br><br>
 
+        <label>Last Name:</label>
+        <input type="text" class="stdinput add" placeholder="Enter last name..."><br><br>
+
+        <label>Email:</label>
+        <input type="text" class="stdinput add" placeholder="Enter email..."><br><br>
+
+        <label>Password:</label>
+        <input type="text" class="stdinput add" placeholder="Enter password..."><br><br>
+
+        <label>Class:</label>
+            <select class="stdinput add">
+                <option value="0">Select class</option>
+                <option value="1">Progbasic</option>
+                <option value="2">Java</option>
+                <option value="3">Web and SQL</option>
+                <option value="4">Advance</option>
+
+            </select><br><br>
+
+        <button class="bluebutton floatright">SAVE</button>
     </main>
     <aside>
         <button class="roundbutton">✕</button>
