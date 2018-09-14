@@ -75,10 +75,6 @@ input[type=email], [type=password]{
     box-sizing: border-box;
 }
 
-.add {
-    width: 90%;
-}
-
 
 input:focus, select:focus {
     outline: 1px solid #4B9ACC;
@@ -327,6 +323,8 @@ div[class="list"] li {
 .width80 {
     width: 80%;
 }
+
+
 
 a {
     text-decoration: none;
