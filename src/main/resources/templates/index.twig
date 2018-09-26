@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>QuestStore - Login</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body>
@@ -12,12 +12,13 @@
     </header>
     <main class="login">
         <h1>Sign in</h1>
-        <form>
+        <form method="post">
             <label>Email:</label><br>
             <input type="email" name="email" placeholder="Enter your email address..."><br><br>
             <label>Password:</label><br>
-            <input type="password" name="password" placeholder="Enter your password..."><br><br>
-            <input type="button" value="LOGIN">
+            <input type="password" name="password" placeholder="Enter your password..."><br>
+            <span class="red">{{ errMessage }}</span><br><br>
+            <input type="submit" value="LOGIN">
         </form>
     </main>
 </body>
