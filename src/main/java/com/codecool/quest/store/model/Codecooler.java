@@ -1,10 +1,23 @@
 package com.codecool.quest.store.model;
 
-public class Codecooler extends User {
+public class Codecooler  {
 
+    private int id;
     private int exp;
     private int balance;
     private int teamId;
+    private int classId;
+    private BasicUserData basicUserData;
+
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getClassId() {
+        return classId;
+    }
+
 
     public int getExp() {
         return exp;
@@ -30,16 +43,37 @@ public class Codecooler extends User {
         this.teamId = teamId;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%d. %s %s - %s - class: %d - exp: %d - balance: %d - team: %d",
-                getId(),
-                getFirstName(),
-                getLastName(),
-                getEmail(),
-                getClassId(),
-                this.exp,
-                this.balance,
-                this.teamId);
+    public int getId() {
+        return id;
     }
+
+    public void setClassId(int classId) {
+        this.classId = classId;
+    }
+
+    public BasicUserData getBasicUserData() {
+        return basicUserData;
+    }
+
+    public void setBasicUserData(BasicUserData basicUserData) {
+        this.basicUserData = basicUserData;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (obj instanceof Codecooler) {
+            Codecooler other = (Codecooler) obj;
+            return this.id == other.getId();
+        }
+        return false;
+    }
+
+
 }
