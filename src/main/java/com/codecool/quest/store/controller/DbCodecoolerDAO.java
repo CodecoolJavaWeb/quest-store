@@ -18,10 +18,10 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     private Codecooler extractCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
-        codecooler.setFirstName(resultSet.getString("first_name"));
-        codecooler.setLastName(resultSet.getString("last_name"));
-        codecooler.setEmail(resultSet.getString("email"));
-        codecooler.setPassword(resultSet.getString("password"));
+        codecooler.getBasicUserData().setFirstName(resultSet.getString("first_name"));
+        codecooler.getBasicUserData().setLastName(resultSet.getString("last_name"));
+        codecooler.getBasicUserData().setEmail(resultSet.getString("email"));
+        codecooler.getBasicUserData().setPassword(resultSet.getString("password"));
         codecooler.setClassId(resultSet.getInt("class_id"));
         codecooler.setExp(resultSet.getInt("exp"));
         codecooler.setBalance(resultSet.getInt("balance"));
@@ -81,10 +81,10 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     public boolean addCodecooler(Codecooler codecooler) {
         String sql = "INSERT INTO codecoolers (first_name, last_name, email, password) VALUES (?, ?, ?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, codecooler.getFirstName());
-            statement.setString(2, codecooler.getLastName());
-            statement.setString(3, codecooler.getEmail());
-            statement.setString(4, codecooler.getPassword());
+            statement.setString(1, codecooler.getBasicUserData().getFirstName());
+            statement.setString(2, codecooler.getBasicUserData().getLastName());
+            statement.setString(3, codecooler.getBasicUserData().getEmail());
+            statement.setString(4, codecooler.getBasicUserData().getPassword());
             int i = statement.executeUpdate();
             if (i == 1)
                 return true;
@@ -99,10 +99,10 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
         String sql = "UPDATE codecoolers SET first_name = ?, last_name = ?, email = ?, password = ?, " +
                 "class_id = ?, exp = ?, balance = ?, team_id = ? WHERE id = ?;";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, codecooler.getFirstName());
-            statement.setString(2, codecooler.getLastName());
-            statement.setString(3, codecooler.getEmail());
-            statement.setString(4, codecooler.getPassword());
+            statement.setString(1, codecooler.getBasicUserData().getFirstName());
+            statement.setString(2, codecooler.getBasicUserData().getLastName());
+            statement.setString(3, codecooler.getBasicUserData().getEmail());
+            statement.setString(4, codecooler.getBasicUserData().getPassword());
             int classId = codecooler.getClassId();
             if (classId == 0) {
                 statement.setNull(5, Types.INTEGER);
@@ -205,10 +205,10 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
                     System.out.print("Enter password: ");
                     String password = scanner.nextLine();
                     Codecooler codecooler = new Codecooler();
-                    codecooler.setFirstName(firstName);
-                    codecooler.setLastName(lastName);
-                    codecooler.setEmail(email);
-                    codecooler.setPassword(password);
+                    codecooler.getBasicUserData().setFirstName(firstName);
+                    codecooler.getBasicUserData().setLastName(lastName);
+                    codecooler.getBasicUserData().setEmail(email);
+                    codecooler.getBasicUserData().setPassword(password);
                     if(dao.addCodecooler(codecooler)){
                         System.out.println("Codecooler added successfully");
                     } else
@@ -224,7 +224,7 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
                     Codecooler codecooler1 = dao.getCodecoolerById(id1);
                     System.out.print("Enter new first name: ");
                     String newFirstName = scanner.nextLine();
-                    codecooler1.setFirstName(newFirstName);
+                    codecooler1.getBasicUserData().setFirstName(newFirstName);
                     if (dao.updateCodecooler(codecooler1)) {
                         System.out.println("Codecooler updated successfully");
                     } else
