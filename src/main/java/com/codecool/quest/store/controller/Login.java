@@ -22,6 +22,7 @@ public class Login implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("GET")) {
@@ -29,43 +30,7 @@ public class Login implements HttpHandler {
         }
 
         if (method.equals("POST")) {
-            Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
-            String email = inputs.get("email");
-            String givenPassword = inputs.get("password");
-
-
-            String savedPassword = loginDAO.getPasswordByEmail(email);
-
-            if (givenPassword.equals(savedPassword)) {
-
-                String sessionId = UUID.randomUUID().toString();
-                int basicDataId = loginDAO.getIdByEmail(email);
-                String accountType = loginDAO.getAccountTypeById(basicDataId);
-
-                sessionDAO.addSession(new Session(sessionId, basicDataId, accountType));
-
-                HttpCookie cookie = new HttpCookie("sessionId", sessionId);
-                httpExchange.getResponseHeaders().add("Set-Cookie", cookie.toString());
-
-                Headers responseHeaders = httpExchange.getResponseHeaders();
-
-                switch (accountType) {
-                    case "admin":
-                        responseHeaders.set("Location", "/static/mentors_manager.html");
-                        break;
-                    case "mentor":
-                        responseHeaders.set("Location", "/mentor");
-                        break;
-                    case "codecooler":
-                        responseHeaders.set("Location", "/codecooler");
-                        break;
-                }
-
-                httpExchange.sendResponseHeaders(302, 0);
-            } else {
-                sendLoginPage(httpExchange, "Incorrect email or password");
-            }
-
+            handleLogin(httpExchange);
         }
     }
 
@@ -81,5 +46,56 @@ public class Login implements HttpHandler {
         OutputStream os = httpExchange.getResponseBody();
         os.write(response.getBytes());
         os.close();
+    }
+
+    private void handleLogin (HttpExchange httpExchange) throws IOException {
+
+        Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
+
+        if (isPasswordCorrect(inputs)) {
+
+            String sessionId = UUID.randomUUID().toString();
+            Session session = createNewSession(inputs, sessionId);
+
+            redirectToMainPage(httpExchange, session);
+        } else {
+            sendLoginPage(httpExchange, "Incorrect email or password");
+        }
+    }
+
+    private boolean isPasswordCorrect(Map<String, String> inputs) {
+        String email = inputs.get("email");
+        String givenPassword = inputs.get("password");
+        String savedPassword = loginDAO.getPasswordByEmail(email);
+        return givenPassword.equals(savedPassword);
+    }
+
+    private Session createNewSession (Map<String, String> inputs, String sessionId) {
+        String email = inputs.get("email");
+        int basicDataId = loginDAO.getIdByEmail(email);
+        String accountType = loginDAO.getAccountTypeById(basicDataId);
+        Session session = new Session(sessionId, basicDataId, accountType);
+        sessionDAO.addSession(session);
+        return session;
+    }
+
+    private void redirectToMainPage(HttpExchange httpExchange, Session session) throws IOException {
+        HttpCookie cookie = new HttpCookie("sessionId", session.getSessionId());
+        Headers responseHeaders = httpExchange.getResponseHeaders();
+        responseHeaders.add("Set-Cookie", cookie.toString());
+
+        switch (session.getAccountType()) {
+            case "admin":
+                responseHeaders.set("Location", "/static/mentors_manager.html");
+                break;
+            case "mentor":
+                responseHeaders.set("Location", "/mentor");
+                break;
+            case "codecooler":
+                responseHeaders.set("Location", "/codecooler");
+                break;
+        }
+
+        httpExchange.sendResponseHeaders(302, 0);
     }
 }

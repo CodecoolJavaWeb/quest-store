@@ -17,7 +17,6 @@ public class Logout implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         String sessionId = new SessionCookieHandler().getSessionIdFromCookie(cookieStr);
-        System.out.println("Session id = " + sessionId);
         sessionDAO.removeSessionById(sessionId);
         httpExchange.getResponseHeaders().set("Location", "/");
         httpExchange.sendResponseHeaders(302, 0);
