@@ -1,5 +1,7 @@
 package com.codecool.quest.store.controller.dao;
 
+import com.codecool.quest.store.controller.helpers.AccountType;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +48,25 @@ public class DbLoginDAO implements LoginDAO {
     }
 
     @Override
-    public String getAccountTypeById(int basicDataId) {
-        return "admin";
+    public AccountType getAccountTypeById(int basicDataId) {
+        if (isIdInTable(basicDataId, "admins")) {
+            return AccountType.ADMIN;
+        } else if (isIdInTable(basicDataId, "mentors")) {
+            return AccountType.MENTOR;
+        }
+        return AccountType.CODECOOLER;
+    }
+
+    private boolean isIdInTable(int basicDataId, String tableName) {
+        String sql = "SELECT * FROM "+ tableName +" WHERE basic_data_id = ?";
+        boolean result = false;
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, basicDataId);
+            ResultSet resultSet = statement.executeQuery();
+            result = resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

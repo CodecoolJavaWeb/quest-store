@@ -20,7 +20,7 @@ public class DbSessionDAO implements SessionDAO {
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, session.getSessionId());
             statement.setInt(2, session.getBasicDataId());
-            statement.setInt(3, 1);
+            statement.setInt(3, session.getAccountType().getValue());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

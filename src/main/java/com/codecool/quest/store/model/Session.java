@@ -1,15 +1,17 @@
 package com.codecool.quest.store.model;
 
+import com.codecool.quest.store.controller.helpers.AccountType;
+
 public class Session {
 
     private String sessionId;
     private int basicDataId;
-    private String accountType;
+    private AccountType accountType;
 
     public Session() {
     }
 
-    public Session(String sessionId, int basicDataId, String accountType) {
+    public Session(String sessionId, int basicDataId, AccountType accountType) {
         this.sessionId = sessionId;
         this.basicDataId = basicDataId;
         this.accountType = accountType;
@@ -31,11 +33,11 @@ public class Session {
         this.basicDataId = basicDataId;
     }
 
-    public String getAccountType() {
+    public AccountType getAccountType() {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
 }
