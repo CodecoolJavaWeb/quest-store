@@ -1,4 +1,4 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.dao;
 
 import com.codecool.quest.store.model.Codecooler;
 
