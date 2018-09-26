@@ -1,5 +1,7 @@
 package com.codecool.quest.store.controller.dao;
 
+import com.codecool.quest.store.controller.helpers.AccountType;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +48,7 @@ public class DbLoginDAO implements LoginDAO {
     }
 
     @Override
-    public String getAccountTypeById(int basicDataId) {
-        return "admin";
+    public AccountType getAccountTypeById(int basicDataId) {
+        return AccountType.ADMIN;
     }
 }

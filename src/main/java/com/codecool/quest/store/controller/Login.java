@@ -1,6 +1,7 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.model.Session;
 import com.codecool.quest.store.controller.helpers.FormDataParser;
 import com.sun.net.httpserver.Headers;
@@ -73,7 +74,7 @@ public class Login implements HttpHandler {
     private Session createNewSession (Map<String, String> inputs, String sessionId) {
         String email = inputs.get("email");
         int basicDataId = loginDAO.getIdByEmail(email);
-        String accountType = loginDAO.getAccountTypeById(basicDataId);
+        AccountType accountType = loginDAO.getAccountTypeById(basicDataId);
         Session session = new Session(sessionId, basicDataId, accountType);
         sessionDAO.addSession(session);
         return session;
@@ -85,13 +86,13 @@ public class Login implements HttpHandler {
         responseHeaders.add("Set-Cookie", cookie.toString());
 
         switch (session.getAccountType()) {
-            case "admin":
+            case ADMIN:
                 responseHeaders.set("Location", "/static/mentors_manager.html");
                 break;
-            case "mentor":
+            case MENTOR:
                 responseHeaders.set("Location", "/mentor");
                 break;
-            case "codecooler":
+            case CODECOOLER:
                 responseHeaders.set("Location", "/codecooler");
                 break;
         }

@@ -1,10 +1,12 @@
 package com.codecool.quest.store.controller.dao;
 
+import com.codecool.quest.store.controller.helpers.AccountType;
+
 public interface LoginDAO {
 
     String getPasswordByEmail(String email);
 
     int getIdByEmail(String email);
 
-    String getAccountTypeById(int basicDataId);
+    AccountType getAccountTypeById(int basicDataId);
 }
