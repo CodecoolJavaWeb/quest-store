@@ -44,4 +44,12 @@ public class Mentor {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s - %s",
+                getBasicUserData().getFirstName(),
+                getBasicUserData().getLastName(),
+                getBasicUserData().getEmail());
+    }
 }
