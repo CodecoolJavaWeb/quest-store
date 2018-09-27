@@ -24,17 +24,18 @@ public class MentorsManager implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentors_manager.twig");
         JtwigModel model = JtwigModel.newModel();
+        Set<Mentor> mentors = null;
 
         if (method.equals("POST")) {
             Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
-            Set<Mentor> mentors = null;
 
             if (inputs.containsKey("show_all")) {
                 mentors = mentorDAO.getAllMentors();
-                model.with("mentors", mentors);
             }
+
         }
 
+        model.with("mentors", mentors);
         String response = template.render(model);
 
         httpExchange.sendResponseHeaders(200, response.length());

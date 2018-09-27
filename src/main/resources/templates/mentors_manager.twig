@@ -42,15 +42,19 @@
             </form>
             <div class="height600">
             <div class="list">
+                {% if (mentors != null) %}
                 <ol>
                     {% for mentor in mentors %}
 
-                    <a href="mentor_editor.html">
+                    <a href="static/mentor_editor.html">
                     <li> {{ mentor.toString() }} <i class="material-icons floatright">keyboard_arrow_right</i></li>
                     </a>
 
                     {% endfor %}
                 </ol>
+                {% else %}
+                Nothing to show
+                {% endif %}
             </div>
             </div>
         </main>
