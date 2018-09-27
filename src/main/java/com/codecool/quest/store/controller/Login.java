@@ -87,7 +87,7 @@ public class Login implements HttpHandler {
 
         switch (session.getAccountType()) {
             case ADMIN:
-                responseHeaders.set("Location", "/static/mentors_manager.html");
+                responseHeaders.set("Location", "/mentors_manager");
                 break;
             case MENTOR:
                 responseHeaders.set("Location", "/mentor");

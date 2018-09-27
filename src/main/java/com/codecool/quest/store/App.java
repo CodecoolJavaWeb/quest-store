@@ -2,6 +2,7 @@ package com.codecool.quest.store;
 
 import com.codecool.quest.store.controller.Logout;
 import com.codecool.quest.store.controller.Login;
+import com.codecool.quest.store.controller.MentorsManager;
 import com.codecool.quest.store.controller.Static;
 import com.sun.net.httpserver.HttpServer;
 
@@ -14,6 +15,7 @@ public class App {
         httpServer.createContext("/", new Login());
         httpServer.createContext("/logout", new Logout());
         httpServer.createContext("/static", new Static());
+        httpServer.createContext("/mentors_manager", new MentorsManager());
         httpServer.setExecutor(null);
         httpServer.start();
     }
