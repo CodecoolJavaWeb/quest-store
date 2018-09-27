@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
-public class ManagerEditor implements HttpHandler {
+public class MentorEditor implements HttpHandler {
 
     private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
 
