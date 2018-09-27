@@ -18,8 +18,12 @@ public class FormDataParser {
         String[] pairs = formData.split("&");
         for(String pair : pairs){
             String[] keyValue = pair.split("=");
-            String value = URLDecoder.decode(keyValue[1], "UTF-8");
-            map.put(keyValue[0], value);
+            if (keyValue.length == 1) {
+                map.put(keyValue[0], "");
+            } else {
+                String value = URLDecoder.decode(keyValue[1], "UTF-8");
+                map.put(keyValue[0], value);
+            }
         }
         return map;
     }
