@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>QuestStore - Mentor editor</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a class="active" href="mentors_manager.html">MENTORS</a></li>
+            <li><a href="classes_manager.html">CLASSES</a></li>
+            <li><a href="exp_level_manager.html">LEVELS</a></li>
+            <li class="floatright"><a href="/logout">LOGOUT</a></li>
+        </ul>
+    </nav>
+    <header>
+        <h1>Mentor profile editor</h1>
+    </header>
+    <div class="row">
+        <aside>
+            <div class = "roundbutton floatright">
+                <a href="mentors_manager.html">
+                <button>✕</button>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <div class="flexbox">
+                <label style="flex-grow: 1">First name:</label>
+                <input type="text" class="stdinput width80" value="Mariusz" disabled>
+                <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
+                <button type = "submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
+            </div>
+            <div class="flexbox">
+                <label style="flex-grow: 1">Last name:</label>
+                <input type="text" class="stdinput width80" value="Chudy" disabled>
+                <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
+                <button type= "submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
+            </div>
+            <div class="flexbox">
+                <label style="flex-grow: 1">Email:</label>
+                <input type="email" class="stdinput width80" value="m.chudy@codecool.com" disabled>
+                <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
+                <button type="submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
+            </div>
+            <div class="flexbox">
+                <label style="flex-grow: 1">Class:</label>
+                <select class="stdinput width80" disabled>
+                    <option>Java</option>
+                    <option>Web and SQL</option>
+                </select>
+                <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
+                <button type="submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
+            </div>
+            <label>Students in class:</label>
+            <div class="list">
+                <ol class="height300">
+                    {% for codecooler in codecoolers %}
+                    <li> {{ codecooler.toString() }} </li>
+                    {% endfor %}
+                </ol>
+            </div>
+        </main>
+        <aside>
+
+        </aside>
+    </div>
+
+    <script src="js/mentor_editor.js"></script>
+</body>
+</html>
+
