@@ -14,8 +14,8 @@ public class App {
         HttpServer httpServer = HttpServer.create(new InetSocketAddress(8000), 0);
         httpServer.createContext("/", new Login());
         httpServer.createContext("/logout", new Logout());
-        httpServer.createContext("/static", new Static());
         httpServer.createContext("/mentors_manager", new MentorsManager());
+        httpServer.createContext("/static", new Static());
         httpServer.setExecutor(null);
         httpServer.start();
     }

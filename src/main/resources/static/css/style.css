@@ -269,8 +269,8 @@ button {
 }
 
 .stdinput {
-    font-size: 20px;
-    padding: 16px;
+    font-size: 20px !important;
+    padding: 16px !important;
     background-color: white;
 }
 
@@ -328,7 +328,7 @@ div[class="list"] li {
 
 
 .width80 {
-    width: 80%;
+    width: 80% !important;
 }
 
 

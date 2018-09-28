@@ -75,5 +75,8 @@ public class Codecooler  {
         return false;
     }
 
-
+    @Override
+    public String toString() {
+        return basicUserData.getFirstName() + " " + basicUserData.getLastName() + " - " + basicUserData.getEmail();
+    }
 }
