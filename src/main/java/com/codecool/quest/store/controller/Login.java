@@ -2,8 +2,9 @@ package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
 import com.codecool.quest.store.controller.helpers.AccountType;
-import com.codecool.quest.store.model.Session;
 import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.model.Session;
+import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -11,7 +12,6 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.HttpCookie;
 import java.util.Map;
 import java.util.UUID;
@@ -42,11 +42,8 @@ public class Login implements HttpHandler {
         model.with("errMessage", errMessage);
 
         String response = template.render(model);
-
-        httpExchange.sendResponseHeaders(200, response.length());
-        OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+        byte[] responseBytes = response.getBytes();
+        new View().sendResponse(httpExchange, responseBytes);
     }
 
     private void handleLogin (HttpExchange httpExchange) throws IOException {
