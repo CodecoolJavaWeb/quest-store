@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>QuestStore - Login</title>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-</head>
-<body>
-    <header>
+{% extends "base.twig" %}
+
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<header>
         <h1>Wlecome to <span class="blue">Quest</span><span class="red">Store</span></h1>
     </header>
     <main class="login">
@@ -21,5 +17,4 @@
             <input type="submit" value="LOGIN">
         </form>
     </main>
-</body>
-</html>
+{% endblock  %}

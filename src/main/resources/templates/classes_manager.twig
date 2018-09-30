@@ -1,0 +1,32 @@
+{% extends "admin_nav.twig" %}
+
+{% block title %}Classes manager{% endblock %}
+
+{% block classes_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <button>+</button><br>
+    <button>x</button>
+    {# <button>✕</button> #}
+{% endblock %}
+
+{% block main %}
+    <div class = "checkmarklist">
+        <label class="container">1. Progbasic
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">2. Java
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">3. Web and SQL
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+        <label class="container">4. Advanced
+            <input type="checkbox">
+            <span class="checkmark"></span>
+        </label>
+    </div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% extends "inner_base.twig" %}
+
+{% block nav %}
+    <li><a href="/mentors_manager" {% block mentors_button %}{% endblock %}>MENTORS</a></li>
+    <li><a href="static/classes_manager.html" {% block classes_button %}{% endblock %}>CLASSES</a></li>
+    <li><a href="static/exp_level_manager.html" {% block levels_button %}{% endblock %}>LEVELS</a></li>
+    <li class="floatright"><a href="/logout">LOGOUT</a></li>
+{% endblock %}

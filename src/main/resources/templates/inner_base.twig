@@ -1,0 +1,23 @@
+{% extends "base.twig" %}
+
+{% block body %}
+    <nav>
+        <ul>
+            {% block nav %}{% endblock %}
+        </ul>
+    </nav>
+    <header>
+        <h1>{{ block('title') }}</h1>
+    </header>
+    <div class="row">
+        <aside>
+            <div class = "roundbutton floatright">
+                {% block aside %}{% endblock %}
+            </div>
+        </aside>
+        <main>
+            {% block main %}{% endblock %}
+        </main>
+        <aside></aside>
+    </div>
+{% endblock %}

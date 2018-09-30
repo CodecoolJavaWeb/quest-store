@@ -1,0 +1,47 @@
+{% extends "admin_nav.twig" %}
+
+{% block title %}Mentor editor{% endblock %}
+
+{% block mentors_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="add_new_mentor.html">
+        <button>x</button>
+        {# <button>✕</button> #}
+    </a>
+{% endblock %}
+
+{% block main %}
+    <div class="flexbox">
+        <label>First Name:</label>
+        <input type="text" class="stdinput width80" placeholder="Enter name...">
+    </div>
+
+    <div class="flexbox">
+        <label>Last Name:</label>
+        <input type="text" class="stdinput width80" placeholder="Enter last name...">
+    </div>
+
+    <div class="flexbox">
+        <label>Email:</label>
+        <input type="text" class="stdinput width80" placeholder="Enter email...">
+    </div>
+
+    <div class="flexbox">
+        <label>Password:</label>
+        <input type="text" class="stdinput width80" placeholder="Enter password...">
+    </div>
+
+    <div class="flexbox">
+        <label>Class:</label>
+        <select class="stdinput width80">
+            <option value="0">Select class</option>
+            <option value="1">Progbasic</option>
+            <option value="2">Java</option>
+            <option value="3">Web and SQL</option>
+            <option value="4">Advance</option>
+        </select>
+    </div>
+
+    <button class="bluebutton floatright">SAVE</button>
+{% endblock %}
