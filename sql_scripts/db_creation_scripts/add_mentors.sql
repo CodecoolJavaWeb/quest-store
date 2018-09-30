@@ -1,4 +1,4 @@
-﻿INSERT INTO basic_user_data 
+INSERT INTO basic_user_data 
 (first_name, last_name, email, password) 
 VALUES 
 ('Mariusz', 'Chudy', 'mariusz.chudy@codecool.com', 'chudy'),

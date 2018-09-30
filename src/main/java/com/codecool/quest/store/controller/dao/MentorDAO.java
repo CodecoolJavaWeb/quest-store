@@ -6,4 +6,6 @@ import java.util.Set;
 
 public interface MentorDAO {
     Set<Mentor> getAllMentors();
+    Set<Mentor> getMentorsByClass(String className);
+    Set<Mentor> getMentorsBySearchTerm(String searchTerm);
 }

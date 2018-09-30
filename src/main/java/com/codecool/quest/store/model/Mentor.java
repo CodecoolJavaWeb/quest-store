@@ -2,7 +2,7 @@ package com.codecool.quest.store.model;
 
 public class Mentor {
     private int id;
-    private int classId;
+    private String className;
     private BasicUserData basicUserData;
 
     public int getId() {
@@ -13,12 +13,12 @@ public class Mentor {
         this.id = id;
     }
 
-    public int getClassId() {
-        return classId;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public BasicUserData getBasicUserData() {
@@ -48,8 +48,8 @@ public class Mentor {
     @Override
     public String toString() {
         return String.format("%s %s - %s",
-                getBasicUserData().getFirstName(),
-                getBasicUserData().getLastName(),
-                getBasicUserData().getEmail());
+                basicUserData.getFirstName(),
+                basicUserData.getLastName(),
+                basicUserData.getEmail());
     }
 }
