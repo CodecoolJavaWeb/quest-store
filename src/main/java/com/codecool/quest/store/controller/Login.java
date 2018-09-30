@@ -2,8 +2,8 @@ package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
 import com.codecool.quest.store.controller.helpers.AccountType;
-import com.codecool.quest.store.model.Session;
 import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.model.Session;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -42,10 +42,11 @@ public class Login implements HttpHandler {
         model.with("errMessage", errMessage);
 
         String response = template.render(model);
+        byte[] responseBytes = response.getBytes();
 
-        httpExchange.sendResponseHeaders(200, response.length());
+        httpExchange.sendResponseHeaders(200, responseBytes.length);
         OutputStream os = httpExchange.getResponseBody();
-        os.write(response.getBytes());
+        os.write(responseBytes);
         os.close();
     }
 
