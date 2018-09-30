@@ -59,4 +59,48 @@ public class DbMentorDAO implements MentorDAO {
 
         return mentors;
     }
+
+    @Override
+    public Set<Mentor> getMentorsByClass(String className) {
+        String sql = "SELECT m.id, b.first_name, b.last_name, b.email, b.password, c.class_name FROM " +
+                "((mentors AS m INNER JOIN basic_user_data AS b ON m.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON m.class_id = c.id) WHERE class_name = ?;";
+        Set<Mentor> mentors = new HashSet<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, className);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                mentors.add(extractMentorFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mentors;
+    }
+
+    @Override
+    public Set<Mentor> getMentorsBySearchTerm(String searchTerm) {
+        searchTerm = "%" + searchTerm + "%";
+        String sql = "SELECT m.id, b.first_name, b.last_name, b.email, b.password, c.class_name FROM " +
+                "((mentors AS m INNER JOIN basic_user_data AS b ON m.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON m.class_id = c.id) " +
+                "WHERE first_name LIKE ? " +
+                "OR last_name LIKE ? " +
+                "OR email LIKE ?;";
+        Set<Mentor> mentors = new HashSet<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, searchTerm);
+            statement.setString(2, searchTerm);
+            statement.setString(3, searchTerm);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                mentors.add(extractMentorFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mentors;
+    }
 }
