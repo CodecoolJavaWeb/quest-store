@@ -36,8 +36,13 @@
             <button name="show_all" type="input" class="bluebutton">SHOW ALL</button>
             <button name="show_class" type="input" class="bluebutton floatright">SHOW</button>
             <select name="class" class="stdinput floatright" style="width:25%">
-                <option>Java</option>
-                <option>Web and SQL</option>
+                {% for class in classes %}
+                    <option value="{{ class }}"
+                    {% if class == className %}
+                        selected
+                    {% endif %} >
+                    {{ class }}</option>
+                {% endfor %}
             </select>
             </form>
             <div class="height600">
