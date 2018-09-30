@@ -31,7 +31,10 @@
         </aside>
         <main>
             <form method="post">
-            <input name="search_field" class="stdinput" type="search" placeholder="Search..." style="width:39%">
+            <input name="search_field" class="stdinput" type="search" placeholder="Search..." style="width:39%"
+            {% if searchTerm != null %}
+                value="{{ searchTerm }}"
+            {% endif %} >
             <button name="search" type="input" class="bluebutton">SEARCH</button>
             <button name="show_all" type="input" class="bluebutton">SHOW ALL</button>
             <button name="show_class" type="input" class="bluebutton floatright">SHOW</button>
