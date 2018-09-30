@@ -9,33 +9,33 @@ COMMENT ON SCHEMA public
 
 CREATE TABLE exp_levels(
 	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(50) NOT NULL,
+	level_name VARCHAR(50) NOT NULL,
 	start_value INTEGER NOT NULL,
 	end_value INTEGER NOT NULL
 );
 
 CREATE TABLE classes(
 	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(50) NOT NULL
+	class_name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE teams(
 	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(50) NOT NULL,
+	team_name VARCHAR(50) NOT NULL,
 	class_id INTEGER REFERENCES classes(id)
 );
 
 CREATE TABLE quests(
 	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(100) NOT NULL,
+	quest_name VARCHAR(100) NOT NULL,
 	description TEXT NOT NULL,
-	value INTEGER DEFAULT 1,
+	reward INTEGER DEFAULT 1,
 	is_extra BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE artifacts(
 	id SERIAL PRIMARY KEY NOT NULL,
-	name VARCHAR(100) NOT NULL,
+	artifact_name VARCHAR(100) NOT NULL,
 	description TEXT NOT NULL,
 	price INTEGER DEFAULT 1,
 	is_magic BOOLEAN DEFAULT FALSE
@@ -51,7 +51,7 @@ CREATE TABLE basic_user_data(
 
 CREATE TABLE codecoolers(
 	id SERIAL PRIMARY KEY NOT NULL,
-	basic_data_id INTEGER REFERENCES basic_user_data(id),
+	basic_data_id INTEGER REFERENCES basic_user_data(id) NOT NULL UNIQUE,
 	class_id INTEGER REFERENCES classes(id),
 	exp INTEGER DEFAULT 0,
 	balance INTEGER DEFAULT 0,
@@ -60,13 +60,13 @@ CREATE TABLE codecoolers(
 
 CREATE TABLE mentors(
 	id SERIAL PRIMARY KEY NOT NULL,
-	basic_data_id INTEGER REFERENCES basic_user_data(id),
+	basic_data_id INTEGER REFERENCES basic_user_data(id) NOT NULL UNIQUE,
 	class_id INTEGER REFERENCES classes(id)
 );
 
 CREATE TABLE admins(
     id SERIAL PRIMARY KEY NOT NULL,
-    basic_data_id INTEGER REFERENCES basic_user_data(id)
+    basic_data_id INTEGER REFERENCES basic_user_data(id) NOT NULL UNIQUE
 );
 
 CREATE TABLE done_quests(
