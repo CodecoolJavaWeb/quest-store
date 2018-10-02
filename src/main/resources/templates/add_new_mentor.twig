@@ -5,43 +5,37 @@
 {% block mentors_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <a href="add_new_mentor.html">
+    <a href="/mentors_manager">
         <button>x</button>
-        {# <button>✕</button> #}
     </a>
 {% endblock %}
 
 {% block main %}
-    <div class="flexbox">
-        <label>First Name:</label>
-        <input type="text" class="stdinput width80" placeholder="Enter name...">
-    </div>
-
-    <div class="flexbox">
-        <label>Last Name:</label>
-        <input type="text" class="stdinput width80" placeholder="Enter last name...">
-    </div>
-
-    <div class="flexbox">
-        <label>Email:</label>
-        <input type="text" class="stdinput width80" placeholder="Enter email...">
-    </div>
-
-    <div class="flexbox">
-        <label>Password:</label>
-        <input type="text" class="stdinput width80" placeholder="Enter password...">
-    </div>
-
-    <div class="flexbox">
-        <label>Class:</label>
-        <select class="stdinput width80">
-            <option value="0">Select class</option>
-            <option value="1">Progbasic</option>
-            <option value="2">Java</option>
-            <option value="3">Web and SQL</option>
-            <option value="4">Advance</option>
-        </select>
-    </div>
-
-    <button class="bluebutton floatright">SAVE</button>
+    <form method="post">
+        <div class="flexbox">
+            <label>First Name:</label>
+            <input name="firstName" type="text" class="stdinput width80" placeholder="Enter name..." required>
+        </div>
+        <div class="flexbox">
+            <label>Last Name:</label>
+            <input name="lastName" type="text" class="stdinput width80" placeholder="Enter last name..." required>
+        </div>
+        <div class="flexbox">
+            <label>Email:</label>
+            <input name="email" type="text" class="stdinput width80" placeholder="Enter email..." required>
+        </div>
+        <div class="flexbox">
+            <label>Password:</label>
+            <input name="password" type="text" class="stdinput width80" placeholder="Enter password..." required>
+        </div>
+        <div class="flexbox">
+            <label>Class:</label>
+            <select name="className" class="stdinput width80">
+                {% for class in classes %}
+                    <option value="{{ class }}">{{ class }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="bluebutton floatright">SAVE</button>
+    </form>
 {% endblock %}
