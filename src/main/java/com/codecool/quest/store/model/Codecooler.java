@@ -5,8 +5,8 @@ public class Codecooler  {
     private int id;
     private int exp;
     private int balance;
-    private int teamId;
-    private int classId;
+    private String teamName;
+    private String className;
     private BasicUserData basicUserData;
 
 
@@ -14,8 +14,8 @@ public class Codecooler  {
         this.id = id;
     }
 
-    public int getClassId() {
-        return classId;
+    public String getClassName() {
+        return className;
     }
 
 
@@ -35,20 +35,20 @@ public class Codecooler  {
         this.balance = balance;
     }
 
-    public int getTeamId() {
-        return teamId;
+    public String getTeamName() {
+        return teamName;
     }
 
-    public void setTeamId(int teamId) {
-        this.teamId = teamId;
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public BasicUserData getBasicUserData() {
