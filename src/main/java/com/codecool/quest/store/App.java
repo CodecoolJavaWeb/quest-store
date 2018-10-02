@@ -14,6 +14,7 @@ public class App {
         httpServer.createContext("/mentors_manager", new MentorsManager());
         httpServer.createContext("/mentor_editor", new MentorEditor());
         httpServer.createContext("/add_new_mentor", new AddMentor());
+        httpServer.createContext("/exp_level_manager", new ExpLevelManager());
         httpServer.createContext("/static", new Static());
         httpServer.setExecutor(null);
         httpServer.start();

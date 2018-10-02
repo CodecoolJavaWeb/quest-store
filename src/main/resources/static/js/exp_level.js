@@ -8,12 +8,6 @@ function enableEdit(element) {
     }
 }
 
-function save(element) {
-    element.previousElementSibling.style.display = "initial";
-    element.style.display = "none";
-    element.parentElement.previousElementSibling.getElementsByTagName("input")[0].disabled = true;
-    var inputs = element.parentElement.getElementsByTagName("input");
-    for(var i = 0; i < inputs.length; i++){
-        inputs[i].disabled = true;
-    }
+function enableAdd() {
+    document.getElementById("addLevel").style.display = "block";
 }
