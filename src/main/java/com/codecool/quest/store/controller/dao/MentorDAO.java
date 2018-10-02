@@ -8,4 +8,6 @@ public interface MentorDAO {
     Set<Mentor> getAllMentors();
     Set<Mentor> getMentorsByClass(String className);
     Set<Mentor> getMentorsBySearchTerm(String searchTerm);
+    Mentor getMentorById(int id);
+    void updateMentor(Mentor mentor);
 }
