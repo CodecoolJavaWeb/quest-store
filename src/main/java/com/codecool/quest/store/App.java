@@ -13,6 +13,7 @@ public class App {
         httpServer.createContext("/logout", new Logout());
         httpServer.createContext("/mentors_manager", new MentorsManager());
         httpServer.createContext("/mentor_editor", new MentorEditor());
+        httpServer.createContext("/add_new_mentor", new AddMentor());
         httpServer.createContext("/static", new Static());
         httpServer.setExecutor(null);
         httpServer.start();
