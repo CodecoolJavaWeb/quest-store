@@ -10,6 +10,7 @@ import java.util.Set;
 public class DbMentorDAO implements MentorDAO {
 
     Connection connection;
+    DAOUtils daoUtils = new DAOUtils();
 
     public DbMentorDAO(Connection connection) {
         this.connection = connection;
@@ -19,19 +20,12 @@ public class DbMentorDAO implements MentorDAO {
         Mentor mentor = new Mentor();
         mentor.setId(resultSet.getInt("id"));
         mentor.setClassName(resultSet.getString("class_name"));
-        BasicUserData basicUserData = extractBasicUserDataFromResultSet(resultSet);
+        BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
         mentor.setBasicUserData(basicUserData);
         return mentor;
     }
 
-    private BasicUserData extractBasicUserDataFromResultSet(ResultSet resultSet) throws SQLException {
-        BasicUserData basicUserData = new BasicUserData();
-        basicUserData.setFirstName(resultSet.getString("first_name"));
-        basicUserData.setLastName(resultSet.getString("last_name"));
-        basicUserData.setEmail(resultSet.getString("email"));
-        basicUserData.setPassword(resultSet.getString("password"));
-        return basicUserData;
-    }
+
 
     @Override
     public Set<Mentor> getAllMentors() {
