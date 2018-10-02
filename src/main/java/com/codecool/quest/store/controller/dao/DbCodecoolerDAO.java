@@ -1,15 +1,16 @@
 package com.codecool.quest.store.controller.dao;
 
+import com.codecool.quest.store.model.BasicUserData;
 import com.codecool.quest.store.model.Codecooler;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.Scanner;
 import java.util.Set;
 
 public class DbCodecoolerDAO implements CodecoolerDAO {
 
     private Connection connection;
+    DAOUtils daoUtils = new DAOUtils();
 
     public DbCodecoolerDAO(Connection connection) {
         this.connection = connection;
@@ -18,14 +19,12 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     private Codecooler extractCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
-        codecooler.getBasicUserData().setFirstName(resultSet.getString("first_name"));
-        codecooler.getBasicUserData().setLastName(resultSet.getString("last_name"));
-        codecooler.getBasicUserData().setEmail(resultSet.getString("email"));
-        codecooler.getBasicUserData().setPassword(resultSet.getString("password"));
-        codecooler.setClassId(resultSet.getInt("class_id"));
+        codecooler.setClassName(resultSet.getString("class_name"));
         codecooler.setExp(resultSet.getInt("exp"));
         codecooler.setBalance(resultSet.getInt("balance"));
-        codecooler.setTeamId(resultSet.getInt("team_id"));
+        codecooler.setTeamName(resultSet.getString("team_name"));
+        BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
+        codecooler.setBasicUserData(basicUserData);
         return codecooler;
     }
 
