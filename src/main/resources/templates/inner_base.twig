@@ -15,7 +15,7 @@
                 {% block aside %}{% endblock %}
             </div>
         </aside>
-        <main>
+        <main {% block main_class %}{% endblock %}>
             {% block main %}{% endblock %}
         </main>
         <aside></aside>
