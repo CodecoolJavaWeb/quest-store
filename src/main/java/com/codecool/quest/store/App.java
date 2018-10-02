@@ -1,9 +1,6 @@
 package com.codecool.quest.store;
 
-import com.codecool.quest.store.controller.Logout;
-import com.codecool.quest.store.controller.Login;
-import com.codecool.quest.store.controller.MentorsManager;
-import com.codecool.quest.store.controller.Static;
+import com.codecool.quest.store.controller.*;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -15,6 +12,7 @@ public class App {
         httpServer.createContext("/", new Login());
         httpServer.createContext("/logout", new Logout());
         httpServer.createContext("/mentors_manager", new MentorsManager());
+        httpServer.createContext("/mentor_editor", new MentorEditor());
         httpServer.createContext("/static", new Static());
         httpServer.setExecutor(null);
         httpServer.start();
