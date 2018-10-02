@@ -9,5 +9,5 @@ function enableEdit(element) {
 }
 
 function enableAdd() {
-    document.getElementById("addLevel").style.display = "block";
+    document.getElementById("addNew").style.display = "block";
 }

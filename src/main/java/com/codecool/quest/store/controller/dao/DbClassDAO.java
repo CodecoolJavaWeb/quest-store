@@ -1,9 +1,6 @@
 package com.codecool.quest.store.controller.dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,5 +26,27 @@ public class DbClassDAO implements ClassDAO {
         }
 
         return classes;
+    }
+
+    @Override
+    public void addClass(String className) {
+        String sql = "INSERT INTO classes (class_name) VALUES (?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, className);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void deleteClass(String className) {
+        String sql = "DELETE FROM classes WHERE class_name = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, className);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
