@@ -5,40 +5,46 @@
 {% block mentors_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <a href="add_new_mentor.html">
+    <a href="/mentors_manager">
         <button>x</button>
-        {# <button>✕</button> #}
     </a>
 {% endblock %}
 
 {% block main %}
-    <div class="flexbox">
-        <label style="flex-grow: 1">First name:</label>
-        <input type="text" class="stdinput width80" value="Mariusz" disabled>
-        <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
-        <button type = "submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
-    </div>
-    <div class="flexbox">
-        <label style="flex-grow: 1">Last name:</label>
-        <input type="text" class="stdinput width80" value="Chudy" disabled>
-        <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
-        <button type= "submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
-    </div>
-    <div class="flexbox">
-        <label style="flex-grow: 1">Email:</label>
-        <input type="email" class="stdinput width80" value="m.chudy@codecool.com" disabled>
-        <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
-        <button type="submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
-    </div>
-    <div class="flexbox">
-        <label style="flex-grow: 1">Class:</label>
-        <select class="stdinput width80" disabled>
-            <option>Java</option>
-            <option>Web and SQL</option>
-        </select>
-        <button class="redbutton" onclick="enableEdit(this)">EDIT</button>
-        <button type="submit" class="bluebutton" onclick="save(this)" style="display: none;">SAVE</button>
-    </div>
+    <form method="post" onsubmit="save()">
+        <div class="flexbox">
+            <label style="flex-grow: 1">First name:</label>
+            <input name="firstName" type="text" class="stdinput width80" value="{{ firstName }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type ="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Last name:</label>
+            <input name="lastName" type="text" class="stdinput width80" value="{{ lastName }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Email:</label>
+            <input name="email" type="email" class="stdinput width80" value="{{ email }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Class:</label>
+            <select name="className" class="stdinput width80" disabled>
+                {% for class in classes %}
+                    <option value="{{ class }}"
+                    {% if class == className %}
+                        selected
+                    {% endif %} >
+                    {{ class }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+    </form>
     <label>Students in class:</label>
     <div class="list">
         <ol class="height300">
@@ -50,5 +56,5 @@
 {% endblock %}
 
 {% block script %}
-    <script src="js/mentor_editor.js"></script>
+    <script src="../static/js/mentor_editor.js"></script>
 {% endblock %}

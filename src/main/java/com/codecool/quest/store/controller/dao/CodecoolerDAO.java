@@ -8,7 +8,7 @@ public interface CodecoolerDAO {
 
     Set<Codecooler> getAllCodecoolers();
     Codecooler getCodecoolerById(int id);
-    Set<Codecooler> getCodecoolersByClassId(int classId);
+    Set<Codecooler> getCodecoolersByClassName(String className);
     boolean addCodecooler(Codecooler codecooler);
     boolean updateCodecooler(Codecooler codecooler);
     boolean deleteCodecooler(Codecooler codecooler);

@@ -10,6 +10,7 @@ import java.util.Set;
 public class DbMentorDAO implements MentorDAO {
 
     Connection connection;
+    DAOUtils daoUtils = new DAOUtils();
 
     public DbMentorDAO(Connection connection) {
         this.connection = connection;
@@ -19,19 +20,12 @@ public class DbMentorDAO implements MentorDAO {
         Mentor mentor = new Mentor();
         mentor.setId(resultSet.getInt("id"));
         mentor.setClassName(resultSet.getString("class_name"));
-        BasicUserData basicUserData = extractBasicUserDataFromResultSet(resultSet);
+        BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
         mentor.setBasicUserData(basicUserData);
         return mentor;
     }
 
-    private BasicUserData extractBasicUserDataFromResultSet(ResultSet resultSet) throws SQLException {
-        BasicUserData basicUserData = new BasicUserData();
-        basicUserData.setFirstName(resultSet.getString("first_name"));
-        basicUserData.setLastName(resultSet.getString("last_name"));
-        basicUserData.setEmail(resultSet.getString("email"));
-        basicUserData.setPassword(resultSet.getString("password"));
-        return basicUserData;
-    }
+
 
     @Override
     public Set<Mentor> getAllMentors() {
@@ -93,5 +87,47 @@ public class DbMentorDAO implements MentorDAO {
         }
 
         return mentors;
+    }
+
+    @Override
+    public Mentor getMentorById(int id) {
+        String sql = "SELECT m.id, b.first_name, b.last_name, b.email, b.password, c.class_name FROM " +
+                "((mentors AS m INNER JOIN basic_user_data AS b ON m.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON m.class_id = c.id) WHERE m.id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractMentorFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void updateMentor(Mentor mentor) {
+        String sql = "UPDATE mentors SET class_id = (SELECT id FROM classes WHERE class_name = ?) WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, mentor.getClassName());
+            statement.setInt(2, mentor.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sql = "UPDATE basic_user_data SET first_name = ?, last_name = ?, email = ?, password = ?" +
+                "WHERE id = (SELECT basic_data_id FROM mentors WHERE id = ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, mentor.getBasicUserData().getFirstName());
+            statement.setString(2, mentor.getBasicUserData().getLastName());
+            statement.setString(3, mentor.getBasicUserData().getEmail());
+            statement.setString(4, mentor.getBasicUserData().getPassword());
+            statement.setInt(5, mentor.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
