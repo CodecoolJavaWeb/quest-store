@@ -130,4 +130,31 @@ public class DbMentorDAO implements MentorDAO {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void addMentor(Mentor mentor) {
+        String sql = "INSERT INTO basic_user_data (first_name, last_name, email, password) " +
+                "VALUES (?, ?, ?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, mentor.getBasicUserData().getFirstName());
+            statement.setString(2, mentor.getBasicUserData().getLastName());
+            statement.setString(3, mentor.getBasicUserData().getEmail());
+            statement.setString(4, mentor.getBasicUserData().getPassword());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sql = "INSERT INTO mentors (basic_data_id, class_id) VALUES" +
+                "(" +
+                "(SELECT id FROM basic_user_data WHERE email = ?)," +
+                "(SELECT id FROM classes WHERE class_name = ?)" +
+                ")";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, mentor.getBasicUserData().getEmail());
+            statement.setString(2, mentor.getClassName());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

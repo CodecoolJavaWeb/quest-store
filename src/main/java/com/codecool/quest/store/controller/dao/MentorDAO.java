@@ -10,4 +10,5 @@ public interface MentorDAO {
     Set<Mentor> getMentorsBySearchTerm(String searchTerm);
     Mentor getMentorById(int id);
     void updateMentor(Mentor mentor);
+    void addMentor(Mentor mentor);
 }
