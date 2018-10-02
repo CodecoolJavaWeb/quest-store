@@ -42,7 +42,6 @@ public class ClassesManager implements HttpHandler {
     }
 
     private void deleteClasses(Map<String, String> inputs) {
-        System.out.println("delete!");
         inputs.keySet().forEach(key -> {
             if (!key.equals("delete")) {
                 classDAO.deleteClass(inputs.get(key));
