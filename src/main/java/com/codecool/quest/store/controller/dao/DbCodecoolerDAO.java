@@ -76,7 +76,7 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
                 "LEFT JOIN teams AS t ON s.team_id = t.id) WHERE class_name = ?;";
         Set<Codecooler> codecoolers = new HashSet<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, classId);
+            statement.setString(1, className);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 codecoolers.add(extractCodecoolerFromResultSet(resultSet));
