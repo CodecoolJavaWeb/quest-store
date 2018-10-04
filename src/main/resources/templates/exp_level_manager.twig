@@ -5,48 +5,49 @@
 {% block levels_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <button>+</button>
+    <button onclick="enableAdd()">+</button>
 {% endblock %}
 
+{% block main_class %}class="explvlcont"{% endblock %}
+
 {% block main %}
-    <div class="explvlcont">
-        <div class="list" style="margin-top: 0;">
-            <div class="explvl">
+    <div class="list" style="margin-top: 0;">
+        <form id="addNew" class="explvl" method="POST" style="display: none;">
+            <div class="flexbox">
+                <label>Name:</label>
+                <input name="levelName" type="text" class="stdinput" style="flex-grow: 1" placeholder="Enter name for level...">
+            </div>
+            <div class="flexbox">
+                <label>Range: from</label>
+                <input name="startValue" type="number" class="stdinput">
+                <label>to</label>
+                <input name="endValue" type="number" class="stdinput">
+                <label>CoolCoins</label>
+                <button type="submit" class="bluebutton" name="add">SAVE</button>
+            </div>
+        </form>
+        {% for level in levels %}
+            <form class="explvl" method="POST">
+                <input type="hidden" name="levelId" value="{{ level.getId() }}">
                 <div class="flexbox">
                     <label>Name:</label>
-                    <input type="text" class="stdinput" style="flex-grow: 1" value="Junior" disabled>
+                    <input name="levelName" type="text" class="stdinput" style="flex-grow: 1" value="{{ level.getName() }}" disabled>
                 </div>
                 <div class="flexbox">
                     <label>Range: from</label>
-                    <input type="number" class="stdinput" value="0" disabled>
+                    <input name="startValue" type="number" class="stdinput" value="{{ level.getStartValue() }}" disabled>
                     <label>to</label>
-                    <input type="number" class="stdinput" value="10" disabled>
+                    <input name="endValue" type="number" class="stdinput" value="{{ level.getEndValue() }}" disabled>
                     <label>CoolCoins</label>
-                    <button class="redbutton" name="edit" onclick="enableEdit(this)">EDIT</button>
-                    <button class="bluebutton" name="save" onclick="save(this)" style="display: none;">SAVE</button>
-                    <button class="redbutton">DELETE</button>
+                    <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+                    <button type="submit" class="bluebutton" name="save" style="display: none;">SAVE</button>
+                    <button type="submit" class="redbutton" name="delete">DELETE</button>
                 </div>
-            </div>
-            <div class="explvl">
-                <div class="flexbox">
-                    <label>Name:</label>
-                    <input type="text" class="stdinput" style="flex-grow: 1" value="Regular" disabled>
-                </div>
-                <div class="flexbox">
-                    <label>Range: from</label>
-                    <input type="number" class="stdinput" value="10" disabled>
-                    <label>to</label>
-                    <input type="number" class="stdinput" value="30" disabled>
-                    <label>CoolCoins</label>
-                    <button class="redbutton" name="edit" onclick="enableEdit(this)">EDIT</button>
-                    <button class="bluebutton" name="save" onclick="save(this)" style="display: none;">SAVE</button>
-                    <button class="redbutton">DELETE</button>
-                </div>
-            </div>
-        </div>
+            </form>
+        {% endfor %}
     </div>
 {% endblock %}
 
 {% block script %}
-    <script src="js/exp_level.js"></script>
+    <script src="../static/js/exp_level.js"></script>
 {% endblock %}

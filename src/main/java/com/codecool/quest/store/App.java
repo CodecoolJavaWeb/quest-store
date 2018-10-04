@@ -14,6 +14,8 @@ public class App {
         httpServer.createContext("/mentors_manager", new MentorsManager());
         httpServer.createContext("/mentor_editor", new MentorEditor());
         httpServer.createContext("/add_new_mentor", new AddMentor());
+        httpServer.createContext("/exp_level_manager", new ExpLevelManager());
+        httpServer.createContext("/classes_manager", new ClassesManager());
         httpServer.createContext("/codecoolers_manager", new CodecoolersManager());
         httpServer.createContext("/codecooler_editor", new CodecoolerEditor());
         httpServer.createContext("/add_new_codecooler", new AddCodecooler());
