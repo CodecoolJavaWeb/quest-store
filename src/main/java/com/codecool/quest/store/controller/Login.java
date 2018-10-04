@@ -87,7 +87,7 @@ public class Login implements HttpHandler {
                 responseHeaders.set("Location", "/mentors_manager");
                 break;
             case MENTOR:
-                responseHeaders.set("Location", "/mentor");
+                responseHeaders.set("Location", "/codecoolers_manager");
                 break;
             case CODECOOLER:
                 responseHeaders.set("Location", "/codecooler");

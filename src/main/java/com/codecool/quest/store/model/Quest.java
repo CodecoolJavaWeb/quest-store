@@ -67,5 +67,14 @@ public class Quest  {
         return false;
     }
 
+    @Override
+    public String toString() {
+        if (this.isExtra) {
+            return "Extra quest - " + this.name;
+        } else {
+            return "Regular quest - " + this.name;
+        }
+    }
+
 
 }

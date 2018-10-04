@@ -1,0 +1,34 @@
+{% extends "mentor_nav.twig" %}
+
+{% block title %}Quests manager{% endblock %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block quests_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/add_new_quest">
+        <button>+</button>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <div class="height600">
+        <div class="list">
+        {% if (quests != null) %}
+            <ol>
+                {% for quest in quests %}
+                    <a href="/quest_editor/{{ quest.getId() }}">
+                        <li> {{ quest.toString() }} <i class="material-icons floatright">keyboard_arrow_right</i></li>
+                    </a>
+
+                {% endfor %}
+            </ol>
+        {% else %}
+            Nothing to show.
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

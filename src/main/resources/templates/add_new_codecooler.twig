@@ -1,0 +1,41 @@
+{% extends "mentor_nav.twig" %}
+
+{% block title %}Add a new Codecooler{% endblock %}
+
+{% block codecoolers_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/codecoolers_manager">
+        <button>✕</button>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        <div class="flexbox">
+            <label>First Name:</label>
+            <input name="firstName" type="text" class="stdinput width80" placeholder="Enter name..." required>
+        </div>
+        <div class="flexbox">
+            <label>Last Name:</label>
+            <input name="lastName" type="text" class="stdinput width80" placeholder="Enter last name..." required>
+        </div>
+        <div class="flexbox">
+            <label>Email:</label>
+            <input name="email" type="text" class="stdinput width80" placeholder="Enter email..." required>
+        </div>
+        <div class="flexbox">
+            <label>Password:</label>
+            <input name="password" type="text" class="stdinput width80" placeholder="Enter password..." required>
+        </div>
+        <div class="flexbox">
+            <label>Class:</label>
+            <select name="className" class="stdinput width80">
+                {% for class in classes %}
+                    <option value="{{ class }}">{{class}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="bluebutton floatright">SAVE</button>
+    </form>
+{% endblock %}
