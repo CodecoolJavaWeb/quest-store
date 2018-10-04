@@ -21,7 +21,7 @@ public class DbQuestDAO implements QuestDAO {
         Quest quest = new Quest();
         quest.setId(resultSet.getInt("id"));
         quest.setName(resultSet.getString("quest_name"));
-        quest.setDescription(resultSet.getString("class_name"));
+        quest.setDescription(resultSet.getString("description"));
         quest.setValue(resultSet.getInt("reward"));
         quest.setExtra(resultSet.getBoolean("is_extra"));
 
