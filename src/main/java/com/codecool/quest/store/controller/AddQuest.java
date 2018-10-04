@@ -34,7 +34,11 @@ public class AddQuest implements HttpHandler {
         Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
 
         Quest quest = new Quest();
-
+        quest.setName(inputs.get("questName"));
+        quest.setDescription(inputs.get("description"));
+        quest.setValue(Integer.valueOf(inputs.get("value")));
+        quest.setExtra(Boolean.valueOf(inputs.get("questType")));
+        questDAO.addQuest(quest);
 
         httpExchange.getResponseHeaders().set("Location", "/quests_manager");
         httpExchange.sendResponseHeaders(302, 0);
@@ -45,7 +49,7 @@ public class AddQuest implements HttpHandler {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests/add_new_quest.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("classes", quests);
+        model.with("quests", quests);
 
         return template.render(model);
     }
