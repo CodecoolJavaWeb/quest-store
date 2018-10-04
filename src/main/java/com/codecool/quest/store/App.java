@@ -14,6 +14,11 @@ public class App {
         httpServer.createContext("/mentors_manager", new MentorsManager());
         httpServer.createContext("/mentor_editor", new MentorEditor());
         httpServer.createContext("/add_new_mentor", new AddMentor());
+        httpServer.createContext("/codecoolers_manager", new CodecoolersManager());
+        httpServer.createContext("/codecooler_editor", new CodecoolerEditor());
+        httpServer.createContext("/add_new_codecooler", new AddCodecooler());
+        httpServer.createContext("/quests_manager", new QuestsManager());
+        httpServer.createContext("/add_new_quest", new AddQuest());
         httpServer.createContext("/static", new Static());
         httpServer.setExecutor(null);
         httpServer.start();

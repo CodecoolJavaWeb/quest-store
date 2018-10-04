@@ -1,0 +1,40 @@
+{% extends "mentor_nav.twig" %}
+
+{% block title %}Codecoolers manager{% endblock %}
+
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
+{% block codecoolers_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/add_new_codecooler">
+        <button>+</button>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        <input name="search_field" class="stdinput" type="search" placeholder="Search..." style="width:39%"
+            {% if searchTerm != null %}
+                value="{{ searchTerm }}"
+            {% endif %} >
+        <button name="search" type="input" class="bluebutton">SEARCH</button>
+        <button name="show_all_students" type="input" class="bluebutton">SHOW ALL STUDENTS</button>
+        <button name="show_mentor_students" type="input" class="bluebutton">SHOW YOURS STUDENTS</button>
+
+    </form>
+        <div class="height600">
+            <div class="list">
+                    <ol>
+                        {% for codecooler in codecoolers %}
+                        <a href="/codecooler_editor/{{ codecooler.getId() }}">
+                            <li> {{ codecooler.toString() }} <i class="material-icons floatright">keyboard_arrow_right</i></li>
+                        </a>
+
+                        {% endfor %}
+                    </ol>
+            </div>
+        </div>
+{% endblock %}

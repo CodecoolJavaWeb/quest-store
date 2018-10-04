@@ -5,12 +5,13 @@ import com.codecool.quest.store.model.Codecooler;
 
 import java.sql.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class DbCodecoolerDAO implements CodecoolerDAO {
 
     private Connection connection;
-    DAOUtils daoUtils = new DAOUtils();
+    private DAOUtils daoUtils = new DAOUtils();
 
     public DbCodecoolerDAO(Connection connection) {
         this.connection = connection;
@@ -20,9 +21,6 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
         codecooler.setClassName(resultSet.getString("class_name"));
-        codecooler.setExp(resultSet.getInt("exp"));
-        codecooler.setBalance(resultSet.getInt("balance"));
-        codecooler.setTeamName(resultSet.getString("team_name"));
         BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
         codecooler.setBasicUserData(basicUserData);
         return codecooler;
@@ -89,68 +87,94 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     }
 
     @Override
-    public boolean addCodecooler(Codecooler codecooler) {
-        String sql = "INSERT INTO codecoolers (first_name, last_name, email, password) VALUES (?, ?, ?, ?);";
+    public void addCodecooler(Codecooler codecooler) {
+        String sql = "INSERT INTO basic_user_data (first_name, last_name, email, password) " +
+                "VALUES (?, ?, ?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, codecooler.getBasicUserData().getFirstName());
             statement.setString(2, codecooler.getBasicUserData().getLastName());
             statement.setString(3, codecooler.getBasicUserData().getEmail());
             statement.setString(4, codecooler.getBasicUserData().getPassword());
-            int i = statement.executeUpdate();
-            if (i == 1)
-                return true;
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        sql = "INSERT INTO codecoolers (basic_data_id, class_id) VALUES" +
+                "(" +
+                "(SELECT id FROM basic_user_data WHERE email = ?)," +
+                "(SELECT id FROM classes WHERE class_name = ?)" +
+                ")";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, codecooler.getBasicUserData().getEmail());
+            statement.setString(2, codecooler.getClassName());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
-    public boolean updateCodecooler(Codecooler codecooler) {
-//        String sql = "UPDATE codecoolers SET first_name = ?, last_name = ?, email = ?, password = ?, " +
-//                "class_id = ?, exp = ?, balance = ?, team_id = ? WHERE id = ?;";
-//        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-//            statement.setString(1, codecooler.getBasicUserData().getFirstName());
-//            statement.setString(2, codecooler.getBasicUserData().getLastName());
-//            statement.setString(3, codecooler.getBasicUserData().getEmail());
-//            statement.setString(4, codecooler.getBasicUserData().getPassword());
-//            String classId = codecooler.getClassName();
-//            if (classId == 0) {
-//                statement.setNull(5, Types.INTEGER);
-//            } else {
-//                statement.setInt(5, classId);
-//            }
-//            statement.setInt(6, codecooler.getExp());
-//            statement.setInt(7, codecooler.getBalance());
-//            String teamId = codecooler.getTeamName();
-//            if (teamId == 0) {
-//                statement.setNull(8, Types.INTEGER);
-//            } else {
-//                statement.setInt(8, teamId);
-//            }
-//            statement.setInt(9, codecooler.getId());
-//            int i = statement.executeUpdate();
-//            if (i == 1)
-//                return true;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-        return false;
+    public void updateCodecooler(Codecooler codecooler) {
+        String sql = "UPDATE codecoolers SET class_id = (SELECT id FROM classes WHERE class_name = ?) WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, codecooler.getClassName());
+            statement.setInt(2, codecooler.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        sql = "UPDATE basic_user_data SET first_name = ?, last_name = ?, email = ?, password = ?" +
+                "WHERE id = (SELECT basic_data_id FROM codecoolers WHERE id = ?)";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, codecooler.getBasicUserData().getFirstName());
+            statement.setString(2, codecooler.getBasicUserData().getLastName());
+            statement.setString(3, codecooler.getBasicUserData().getEmail());
+            statement.setString(4, codecooler.getBasicUserData().getPassword());
+            statement.setInt(5, codecooler.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public boolean deleteCodecooler(Codecooler codecooler) {
+    public void deleteCodecooler(Codecooler codecooler) {
         String sql = "DELETE FROM codecoolers WHERE id = ?;";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, codecooler.getId());
-            int i = statement.executeUpdate();
-            if (i == 1)
-                return true;
+            statement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+
     }
 
 
+    @Override
+    public Set<Codecooler> getCodecoolersBySearchTerm(String searchTerm) {
+        searchTerm = "%" + searchTerm + "%";
+        String sql = "SELECT m.id, b.first_name, b.last_name, b.email, b.password, c.class_name FROM " +
+                "((codecoolers AS m INNER JOIN basic_user_data AS b ON m.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON m.class_id = c.id) " +
+                "WHERE first_name LIKE ? " +
+                "OR last_name LIKE ? " +
+                "OR email LIKE ?;";
+        Set<Codecooler> codecoolers = new HashSet<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, searchTerm);
+            statement.setString(2, searchTerm);
+            statement.setString(3, searchTerm);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                codecoolers.add(extractCodecoolerFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return codecoolers;
+
+    }
 }

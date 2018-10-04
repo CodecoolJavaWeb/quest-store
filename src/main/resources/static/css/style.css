@@ -284,6 +284,10 @@ button {
     height: 300px;
 }
 
+height100 {
+    height: 100px;
+}
+
 .height600 {
     height: 600px;
 }

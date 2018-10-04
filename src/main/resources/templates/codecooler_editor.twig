@@ -1,0 +1,71 @@
+{% extends "mentor_nav.twig" %}
+
+{% block title %}Codecooler editor{% endblock %}
+
+{% block mentors_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/codecoolers_manager">
+        <button>✕</button>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <form method="post" onsubmit="save()">
+        <div class="flexbox">
+            <label style="flex-grow: 1">First name:</label>
+            <input name="firstName" type="text" class="stdinput width80" value="{{ firstName }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type ="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Last name:</label>
+            <input name="lastName" type="text" class="stdinput width80" value="{{ lastName }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Email:</label>
+            <input name="email" type="email" class="stdinput width80" value="{{ email }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Class:</label>
+            <select name="className" class="stdinput width80" disabled>
+                {% for class in classes %}
+                    <option value="{{ class }}"
+                    {% if class == className %}
+                        selected
+                    {% endif %} >
+                    {{ class }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+
+    </form>
+    <br><br>
+    <label>Done quests by {{firstName}} {{lastName}}:</label>
+    <div class="list">
+        <ol class="height100">
+            {% for quest in done_quests %}
+            <li> {{ quest.toString() }} </li>
+            {% endfor %}
+        </ol>
+    </div>
+    <br><br>
+    <label>Avaliable artifacts:</label>
+    <div class="list">
+        <ol class="height100">
+            {% for artifact in done_artifacts %}
+            <li> {{ artifact.toString() }} </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="../static/js/mentor_editor.js"></script>
+{% endblock %}
