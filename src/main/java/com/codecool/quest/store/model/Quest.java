@@ -69,10 +69,10 @@ public class Quest  {
 
     @Override
     public String toString() {
-        if (isExtra) {
-            return "Extra quest - " + name;
+        if (this.isExtra) {
+            return "Extra quest - " + this.name;
         } else {
-            return "Regular quest - " + name;
+            return "Regular quest - " + this.name;
         }
     }
 
