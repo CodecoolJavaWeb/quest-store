@@ -16,6 +16,19 @@
 
 {% block main %}
     <div class="height600">
-        <p> Jakiś tekst</p>
+        <div class="list">
+        {% if (quests != null) %}
+            <ol>
+                {% for quest in quests %}
+                    <a href="/quest_editor/{{ quest.getId() }}">
+                        <li> {{ quest.toString() }} <i class="material-icons floatright">keyboard_arrow_right</i></li>
+                    </a>
+
+                {% endfor %}
+            </ol>
+        {% else %}
+            Nothing to show.
+        {% endif %}
+        </div>
     </div>
 {% endblock %}
