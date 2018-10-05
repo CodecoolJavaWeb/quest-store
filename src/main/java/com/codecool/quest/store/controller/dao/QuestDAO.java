@@ -10,7 +10,7 @@ import java.util.Set;
 public interface QuestDAO {
     List<String> getQuestsNames();
     Set<Quest> getAllQuests();
-    List<String> getDoneQuestsByCodecooler(Codecooler codecooler);
+    Set<Quest> getDoneQuestsByCodecooler(Codecooler codecooler);
     void addDoneQuestByCodecooler(Quest quest, Codecooler codecooler);
     void addQuest(Quest quest);
     void updateQuest(Quest quest);
