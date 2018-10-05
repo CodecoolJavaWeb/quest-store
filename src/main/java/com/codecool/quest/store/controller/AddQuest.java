@@ -45,11 +45,8 @@ public class AddQuest implements HttpHandler {
     }
 
     private String getResponse() {
-        List<String> quests = questDAO.getQuestsNames();
-
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/add_new_quest.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("quests", quests);
 
         return template.render(model);
     }
