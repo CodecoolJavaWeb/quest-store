@@ -40,7 +40,11 @@ public class Codecooler  {
     }
 
     public void setTeamName(String teamName) {
-        this.teamName = teamName;
+        if (teamName == null) {
+            this.teamName = "";
+        } else {
+            this.teamName = teamName;
+        }
     }
 
     public int getId() {
