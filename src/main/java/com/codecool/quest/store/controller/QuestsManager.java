@@ -41,7 +41,7 @@ public class QuestsManager implements HttpHandler {
     private String getResponse() {
         Set<Quest> quests = questDAO.getAllQuests();
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests/quests_manager.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests_manager.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("quests", quests);
 
