@@ -1,0 +1,9 @@
+{% extends "inner_base.twig" %}
+
+{% block nav %}
+    <li><a href="/codecooler_home" {% block home_button %}{% endblock %}>HOME</a></li>
+    <li><a href="/codecooler_quests" {% block quests_button %}{% endblock %}>QUESTS</a></li>
+    <li><a href="/codecooler_artifacts" {% block artifacts_button %}{% endblock %}>ARTIFACTS</a></li>
+    <li><a href="/teams" {% block teams_button %}{% endblock %}>TEAMS</a></li>
+    <li class="floatright"><a href="/logout">LOGOUT</a></li>
+{% endblock %}
