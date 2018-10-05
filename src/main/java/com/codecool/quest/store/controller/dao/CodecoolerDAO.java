@@ -13,4 +13,5 @@ public interface CodecoolerDAO {
     void addCodecooler(Codecooler codecooler);
     void updateCodecooler(Codecooler codecooler);
     void deleteCodecooler(Codecooler codecooler);
+    Codecooler getCodecoolerByBasicDataId(int basicDataId);
 }

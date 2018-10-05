@@ -5,7 +5,6 @@ import com.codecool.quest.store.model.Codecooler;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DbCodecoolerDAO implements CodecoolerDAO {
@@ -21,6 +20,7 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
         codecooler.setClassName(resultSet.getString("class_name"));
+        codecooler.setTeamName(resultSet.getString("team_name"));
         BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
         codecooler.setBasicUserData(basicUserData);
         return codecooler;
@@ -151,6 +151,24 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
 
     }
 
+    @Override
+    public Codecooler getCodecoolerByBasicDataId(int basicDataId) {
+        String sql = "SELECT s.id, b.first_name, b.last_name, b.email, b.password, c.class_name, s.exp, " +
+                "s.balance, t.team_name FROM " +
+                "(((codecoolers AS s INNER JOIN basic_user_data AS b ON s.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON s.class_id = c.id) " +
+                "LEFT JOIN teams AS t ON s.team_id = t.id) WHERE b.id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, basicDataId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractCodecoolerFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public Set<Codecooler> getCodecoolersBySearchTerm(String searchTerm) {
