@@ -9,4 +9,5 @@ public interface LevelDAO {
     void updateLevel(Level level);
     void addLevel(Level level);
     void deleteLevel(int levelId);
+    String getLevelNameByValue(int value);
 }

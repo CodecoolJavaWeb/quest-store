@@ -75,4 +75,20 @@ public class DbLevelDAO implements LevelDAO {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String getLevelNameByValue(int value) {
+        String sql = "SELECT level_name FROM exp_levels " +
+                "WHERE start_value = (SELECT MAX(start_value) FROM exp_levels WHERE start_value <= ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, value);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("level_name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 }
