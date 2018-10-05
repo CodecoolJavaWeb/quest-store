@@ -14,4 +14,16 @@ public enum AccountType {
     public int getValue() {
         return value;
     }
+
+    public static AccountType fromInt(int i) {
+        switch (i) {
+            case 1:
+                return AccountType.ADMIN;
+            case 2:
+                return AccountType.MENTOR;
+            case 3:
+                return AccountType.CODECOOLER;
+        }
+        return null;
+    }
 }
