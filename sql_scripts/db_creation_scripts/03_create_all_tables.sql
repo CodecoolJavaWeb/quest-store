@@ -78,8 +78,7 @@ CREATE TABLE done_quests(
 CREATE TABLE bought_artifacts(
 	id SERIAL PRIMARY KEY NOT NULL,
 	artifact_id INTEGER REFERENCES artifacts(id),
-	codecooler_id INTEGER REFERENCES codecoolers(id),
-	is_used BOOLEAN DEFAULT FALSE
+	codecooler_id INTEGER REFERENCES codecoolers(id)
 );
 
 CREATE TABLE sessions(
