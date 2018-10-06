@@ -30,6 +30,24 @@ public class DbArtifactDAO implements ArtifactDAO {
     }
 
     @Override
+    public Set<Artifact> getAllArtifacts() {
+        String sql = "SELECT * FROM artifacts;";
+        Set<Artifact> artifacts = new HashSet<>();
+        try (Statement statement = connection.createStatement()) {
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()) {
+                artifacts.add(extractArtifactFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return artifacts;
+    }
+
+
+
+    @Override
     public Set<Artifact> getBoughtArtifactsByCodecooler(Codecooler codecooler) {
         String sql = "SELECT a.* FROM bought_artifacts AS ba INNER JOIN artifacts AS a ON ba.artifact_id = a.id " +
                 "WHERE ba.codecooler_id = ?;";

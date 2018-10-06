@@ -6,6 +6,8 @@ import com.codecool.quest.store.model.Codecooler;
 import java.util.Set;
 
 public interface ArtifactDAO {
+    Set<Artifact> getAllArtifacts();
+
     Set<Artifact> getBoughtArtifactsByCodecooler(Codecooler codecooler);
     void addArtifactToBought(Artifact artifact, Codecooler codecooler);
 }
