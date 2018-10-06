@@ -63,4 +63,13 @@ public class Artifact {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        if (this.isMagic) {
+            return "Magic artifact - " + this.name;
+        } else {
+            return "Regular artifact - " + this.name;
+        }
+    }
 }
