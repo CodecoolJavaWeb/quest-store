@@ -90,7 +90,7 @@ public class Login implements HttpHandler {
                 responseHeaders.set("Location", "/codecoolers_manager");
                 break;
             case CODECOOLER:
-                responseHeaders.set("Location", "/codecooler");
+                responseHeaders.set("Location", "/codecooler_home");
                 break;
         }
 
