@@ -46,4 +46,16 @@ public class DbArtifactDAO implements ArtifactDAO {
 
         return artifacts;
     }
+
+    @Override
+    public void addArtifactToBought(Artifact artifact, Codecooler codecooler) {
+        String sql = "INSERT INTO bought_artifacts (artifact_id, codecooler_id) VALUES (?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, artifact.getId());
+            statement.setInt(2, codecooler.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
