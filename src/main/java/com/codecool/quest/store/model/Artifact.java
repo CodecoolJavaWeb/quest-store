@@ -6,6 +6,7 @@ public class Artifact {
     private String name;
     private String description;
     private int price;
+    private boolean isMagic;
 
     public int getId() {
         return id;
@@ -39,8 +40,13 @@ public class Artifact {
         this.price = price;
     }
 
+    public boolean isMagic() {
+        return isMagic;
+    }
 
-
+    public void setMagic(boolean magic) {
+        isMagic = magic;
+    }
 
     @Override
     public int hashCode() {
