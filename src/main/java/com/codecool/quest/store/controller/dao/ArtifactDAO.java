@@ -7,7 +7,7 @@ import java.util.Set;
 
 public interface ArtifactDAO {
     Set<Artifact> getAllArtifacts();
-
+    Artifact getArtifactById(int id);
     Set<Artifact> getBoughtArtifactsByCodecooler(Codecooler codecooler);
     void addArtifactToBought(Artifact artifact, Codecooler codecooler);
 }

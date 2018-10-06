@@ -3,10 +3,7 @@ package com.codecool.quest.store.controller.dao;
 import com.codecool.quest.store.model.Artifact;
 import com.codecool.quest.store.model.Codecooler;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,7 +42,21 @@ public class DbArtifactDAO implements ArtifactDAO {
         return artifacts;
     }
 
+    @Override
+    public Artifact getArtifactById(int id) {
+        String sql = "SELECT * FROM artifacts WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractArtifactFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+        return null;
+    }
 
     @Override
     public Set<Artifact> getBoughtArtifactsByCodecooler(Codecooler codecooler) {
