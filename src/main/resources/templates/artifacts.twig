@@ -1,0 +1,25 @@
+{% extends "codecooler_nav.twig" %}
+
+{% block title %}Artifacts{% endblock %}
+
+{% block artifacts_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/add_new_artifact" {{ displayStyle }}>
+        <button>+</button>
+    </a>
+{% endblock %}
+
+{% block main_class %}class="cardscontainer"{% endblock %}
+
+{% block main %}
+    {% for artifact in artifacts %}
+        <a href="{{ artifactLink }}/{{ artifact.getId() }}">
+            <div class="card">
+                <img href="{{ artifact.getImagePath() }}" class="cardimage">
+                <h3>{{ artifact.getName() }} - {{ artifact.getPrice() }} CC</h3>
+                <p>{{ artifact.getDescription() }}</p>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}
