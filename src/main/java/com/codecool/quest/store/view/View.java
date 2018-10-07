@@ -13,4 +13,9 @@ public class View {
         os.write(responseBytes);
         os.close();
     }
+
+    public void redirectToLoginPage(HttpExchange httpExchange) throws IOException {
+        httpExchange.getResponseHeaders().set("Location", "/login");
+        httpExchange.sendResponseHeaders(302, 0);
+    }
 }
