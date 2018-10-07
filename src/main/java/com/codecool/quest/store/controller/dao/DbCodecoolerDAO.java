@@ -136,6 +136,17 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        String teamName = codecooler.getTeamName();
+        if (!teamName.equals("")) {
+            sql = "UPDATE codecoolers SET team_id = (SELECT id FROM teams WHERE team_name = ?) WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, teamName);
+                statement.setInt(2, codecooler.getId());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
