@@ -4,7 +4,7 @@ public class Team {
 
     private int id;
     private String name;
-    private int classId;
+    private String className;
 
 
     public int getId() {
@@ -23,12 +23,12 @@ public class Team {
         this.name = name;
     }
 
-    public int getClassId() {
-        return classId;
+    public String getClassName() {
+        return className;
     }
 
-    public void setClassId(int classId) {
-        this.classId = classId;
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     @Override
