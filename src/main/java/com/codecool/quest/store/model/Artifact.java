@@ -7,6 +7,7 @@ public class Artifact {
     private String description;
     private int price;
     private boolean isMagic;
+    private String imagePath;
 
     public int getId() {
         return id;
@@ -46,6 +47,14 @@ public class Artifact {
 
     public void setMagic(boolean magic) {
         isMagic = magic;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     @Override
