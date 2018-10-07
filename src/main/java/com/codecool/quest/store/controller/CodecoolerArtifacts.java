@@ -3,6 +3,7 @@ package com.codecool.quest.store.controller;
 import com.codecool.quest.store.controller.dao.ArtifactDAO;
 import com.codecool.quest.store.controller.dao.ConnectionFactory;
 import com.codecool.quest.store.controller.dao.DbArtifactDAO;
+import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.model.Artifact;
 import com.codecool.quest.store.view.View;
@@ -25,6 +26,11 @@ public class CodecoolerArtifacts implements HttpHandler {
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
+            view.redirectToLoginPage(httpExchange);
+        }
+
         byte[] responseBytes = getResponse().getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
