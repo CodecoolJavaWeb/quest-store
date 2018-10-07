@@ -1,0 +1,36 @@
+{% extends "codecooler_nav.twig" %}
+
+{% block title %}Teams{% endblock %}
+
+{% block teams_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <button onclick="enableAdd()">+</button>
+{% endblock %}
+
+{% block main %}
+    <h2>You are currently member of team: {{ currentTeam }}</h2>
+    <div class="height600">
+        <form id="addNew" method="POST" style="display: none;">
+            <input type="text" name="newTeamName" class="stdinput widht80" required>
+            <button type="submit" class="bluebutton" name="add">SAVE</button>
+        </form>
+        <div class="list">
+            {% if teams.isEmpty() %}
+                There currently arent any teams in your class. You can add one.
+            {% else %}
+                <form method="POST">
+                <ul>
+                    {% for team in teams %}
+                    <li> {{ team.getName() }} <button type="submit" class="bluebutton floatright" name="join" value="{{ team.getName() }}">JOIN</button></li>
+                    {% endfor %}
+                </ul>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="../static/js/exp_level.js"></script>
+{% endblock %}
