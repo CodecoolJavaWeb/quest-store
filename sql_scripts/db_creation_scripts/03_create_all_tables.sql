@@ -16,12 +16,12 @@ CREATE TABLE exp_levels(
 
 CREATE TABLE classes(
 	id SERIAL PRIMARY KEY NOT NULL,
-	class_name VARCHAR(50) NOT NULL
+	class_name VARCHAR(50) NOT NULL UNIQUE
 );
 
 CREATE TABLE teams(
 	id SERIAL PRIMARY KEY NOT NULL,
-	team_name VARCHAR(50) NOT NULL,
+	team_name VARCHAR(50) NOT NULL UNIQUE,
 	class_id INTEGER REFERENCES classes(id)
 );
 
@@ -30,7 +30,8 @@ CREATE TABLE quests(
 	quest_name VARCHAR(100) NOT NULL,
 	description TEXT NOT NULL,
 	reward INTEGER DEFAULT 1,
-	is_extra BOOLEAN DEFAULT FALSE
+	is_extra BOOLEAN DEFAULT FALSE,
+	img_path VARCHAR(50)
 );
 
 CREATE TABLE artifacts(
@@ -38,7 +39,8 @@ CREATE TABLE artifacts(
 	artifact_name VARCHAR(100) NOT NULL,
 	description TEXT NOT NULL,
 	price INTEGER DEFAULT 1,
-	is_magic BOOLEAN DEFAULT FALSE
+	is_magic BOOLEAN DEFAULT FALSE,
+	img_path VARCHAR(50)
 );
 
 CREATE TABLE basic_user_data(
