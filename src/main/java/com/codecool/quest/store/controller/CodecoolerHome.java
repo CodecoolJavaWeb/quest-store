@@ -31,8 +31,7 @@ public class CodecoolerHome implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
-            httpExchange.getResponseHeaders().set("Location", "/login");
-            httpExchange.sendResponseHeaders(302, 0);
+            view.redirectToLoginPage(httpExchange);
         }
 
         byte[] responseBytes = getResponse().getBytes();
