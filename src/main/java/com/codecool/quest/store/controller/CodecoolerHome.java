@@ -42,7 +42,7 @@ public class CodecoolerHome implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_home.twig");
         int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
         codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
-        String levelName = levelDAO.getLevelNameByValue(codecooler.getBalance());
+        String levelName = levelDAO.getLevelNameByValue(codecooler.getExp());
         artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);
         quests = questDAO.getDoneQuestsByCodecooler(codecooler);
 
