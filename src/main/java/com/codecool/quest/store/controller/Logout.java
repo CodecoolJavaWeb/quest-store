@@ -20,7 +20,7 @@ public class Logout implements HttpHandler {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         String sessionId = new SessionCookieHandler().getSessionIdFromCookie(cookieStr);
         sessionDAO.removeSessionById(sessionId);
-        view.redirectToLoginPage(httpExchange);
+        view.redirectToPath(httpExchange, "/");
 
     }
 }

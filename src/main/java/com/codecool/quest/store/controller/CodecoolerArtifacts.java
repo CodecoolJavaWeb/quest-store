@@ -28,7 +28,7 @@ public class CodecoolerArtifacts implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
-            view.redirectToLoginPage(httpExchange);
+            view.redirectToPath(httpExchange, "/");
         }
 
         byte[] responseBytes = getResponse().getBytes();
