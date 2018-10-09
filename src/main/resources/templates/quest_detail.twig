@@ -1,0 +1,22 @@
+{% extends "codecooler_nav.twig" %}
+
+{% block title %}Quest detail{% endblock %}
+
+{% block quests_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/codecooler_quests">
+        <button>x</button>
+    </a>
+{% endblock %}
+
+{% block main_class %}class="cardscontainer flexcolumn"{% endblock %}
+
+{% block main %}
+    <div class="card">
+        <img href="{{ quest.getImagePath() }}" class="cardimage">
+        <h3>{{ quest.getName() }} - {{ quest.getValue() }} CC</h3>
+        <p>{{ quest.getDescription() }}</p>
+    </div>
+    <div>You have done this quest {{ questCount }} times</div>
+{% endblock %}
