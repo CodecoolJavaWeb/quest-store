@@ -26,6 +26,7 @@ public class App {
         httpServer.createContext("/codecooler_artifacts", new CodecoolerArtifacts());
         httpServer.createContext("/teams", new Teams());
         httpServer.createContext("/static", new Static());
+        httpServer.createContext("/quest_detail", new QuestDetail());
         httpServer.setExecutor(null);
         httpServer.start();
     }
