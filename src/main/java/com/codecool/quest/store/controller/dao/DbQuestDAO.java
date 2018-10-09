@@ -122,5 +122,20 @@ public class DbQuestDAO implements QuestDAO {
         }
     }
 
+    @Override
+    public Quest getQuestById(int questId) {
+        String sql = "SELECT * FROM quests WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, questId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractQuestFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
 }

@@ -14,4 +14,5 @@ public interface QuestDAO {
     void addDoneQuestByCodecooler(Quest quest, Codecooler codecooler);
     void addQuest(Quest quest);
     void updateQuest(Quest quest);
+    Quest getQuestById(int questId);
 }
