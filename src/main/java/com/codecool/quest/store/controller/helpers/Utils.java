@@ -27,4 +27,9 @@ public class Utils {
         }
         return map;
     }
+
+    public int getIdFromURI (HttpExchange httpExchange) {
+        String[] URIparts = httpExchange.getRequestURI().getPath().split("/");
+        return Integer.valueOf(URIparts[URIparts.length - 1]);
+    }
 }
