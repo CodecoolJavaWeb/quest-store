@@ -18,7 +18,7 @@ import java.util.Set;
 public class CodecoolerArtifacts implements HttpHandler {
 
     private final String displayStyle = "style=\"display: none;\"";
-    private final String artifactLink = "/buy_artifact/";
+    private final String artifactLink = "/buy_artifact";
 
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
