@@ -3,7 +3,7 @@ package com.codecool.quest.store.controller;
 import com.codecool.quest.store.controller.dao.ConnectionFactory;
 import com.codecool.quest.store.controller.dao.DbLevelDAO;
 import com.codecool.quest.store.controller.dao.LevelDAO;
-import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Level;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
@@ -33,7 +33,7 @@ public class ExpLevelManager implements HttpHandler {
     }
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
-        Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
+        Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         if (inputs.containsKey("save")) {
             levelDAO.updateLevel(createLevelFromInputs(inputs));
