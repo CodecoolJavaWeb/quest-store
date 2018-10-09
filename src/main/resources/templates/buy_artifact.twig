@@ -1,0 +1,16 @@
+{% extends "codecooler_nav.twig" %}
+
+{% block title %}Buy artifact{% endblock %}
+
+{% block artifacts_button %}class="active"{% endblock %}
+
+{% block main %}
+    <p>Artifact name: {{ artifact.getName() }}</p>
+    <p>Description: {{ artifact.getDescription() }}</p>
+    <p>Price: {{ artifact.getPrice() }}</p>
+    <p>Your wallet: {{ codecooler.getBalance() }}</p>
+    <form method="POST">
+        <button class="bluebutton floatright" {{ disabledProperty }}>BUY</button>
+    </form>
+    <p {{ displayStyle }}>You can not afford this artifact</p>
+{% endblock %}
