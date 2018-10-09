@@ -1,7 +1,9 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.model.CodecoolersDisplayInfo;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
@@ -19,9 +21,14 @@ public class CodecoolersManager implements HttpHandler {
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
     private CodecoolersDisplayInfo displayInfo = null;
     private View view = new View();
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
+            view.redirectToLoginPage(httpExchange);
+        }
         String method = httpExchange.getRequestMethod();
         displayInfo = new CodecoolersDisplayInfo();
 
@@ -36,8 +43,9 @@ public class CodecoolersManager implements HttpHandler {
     private void handlePost(HttpExchange httpExchange) throws IOException {
         Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
 
+
         if (inputs.containsKey("show_mentor_students")) {
-            displayInfo.setCodecoolers(codecoolerDAO.getAllCodecoolers()); // póki co wyświetla wszystkich studentów
+            displayInfo.setCodecoolers(codecoolerDAO.getAllCodecoolers());
 
         } else if (inputs.containsKey("show_all_students")) {
             displayInfo.setCodecoolers(codecoolerDAO.getAllCodecoolers());
