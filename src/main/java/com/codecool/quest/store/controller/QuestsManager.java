@@ -1,7 +1,7 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
-import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Quest;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
@@ -32,7 +32,7 @@ public class QuestsManager implements HttpHandler {
     }
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
-        Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
+        Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
     }
 

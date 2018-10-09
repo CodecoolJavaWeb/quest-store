@@ -1,9 +1,11 @@
 package com.codecool.quest.store.controller.dao;
 
+import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.model.Session;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DbSessionDAO implements SessionDAO {
@@ -36,5 +38,28 @@ public class DbSessionDAO implements SessionDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public Session getSession(String sessionId) {
+        String sql = "SELECT * FROM sessions WHERE session_id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, sessionId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractSessionFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private Session extractSessionFromResultSet(ResultSet resultSet) throws SQLException {
+        Session session = new Session();
+        session.setSessionId(resultSet.getString("session_id"));
+        session.setBasicDataId(resultSet.getInt("basic_data_id"));
+        session.setAccountType(AccountType.fromInt(resultSet.getInt("account_type")));
+        return session;
     }
 }

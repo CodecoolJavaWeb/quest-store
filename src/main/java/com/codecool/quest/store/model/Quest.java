@@ -7,6 +7,7 @@ public class Quest  {
     private String description;
     private int value;
     private boolean isExtra;
+    private String imagePath = "";
 
 
     public int getId() {
@@ -49,7 +50,13 @@ public class Quest  {
         isExtra = extra;
     }
 
+    public String getImagePath() {
+        return imagePath;
+    }
 
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     @Override
     public int hashCode() {

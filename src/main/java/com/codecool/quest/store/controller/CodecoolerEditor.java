@@ -1,7 +1,7 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
-import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Codecooler;
 
 import com.codecool.quest.store.model.Quest;
@@ -47,7 +47,7 @@ public class CodecoolerEditor implements HttpHandler {
     }
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
-        Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
+        Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         codecooler.getBasicUserData().setFirstName(inputs.get("firstName"));
         codecooler.getBasicUserData().setLastName(inputs.get("lastName"));

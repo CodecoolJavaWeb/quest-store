@@ -21,7 +21,13 @@ public class App {
         httpServer.createContext("/add_new_codecooler", new AddCodecooler());
         httpServer.createContext("/quests_manager", new QuestsManager());
         httpServer.createContext("/add_new_quest", new AddQuest());
+        httpServer.createContext("/codecooler_home", new CodecoolerHome());
+        httpServer.createContext("/codecooler_quests", new CodecoolerQuests());
+        httpServer.createContext("/codecooler_artifacts", new CodecoolerArtifacts());
+        httpServer.createContext("/teams", new Teams());
         httpServer.createContext("/static", new Static());
+        httpServer.createContext("/quest_detail", new QuestDetail());
+        httpServer.createContext("/buy_artifact", new BuyArtifact());
         httpServer.setExecutor(null);
         httpServer.start();
     }

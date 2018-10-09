@@ -6,6 +6,8 @@ public class Artifact {
     private String name;
     private String description;
     private int price;
+    private boolean isMagic;
+    private String imagePath;
 
     public int getId() {
         return id;
@@ -39,8 +41,21 @@ public class Artifact {
         this.price = price;
     }
 
+    public boolean isMagic() {
+        return isMagic;
+    }
 
+    public void setMagic(boolean magic) {
+        isMagic = magic;
+    }
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     @Override
     public int hashCode() {
@@ -56,5 +71,14 @@ public class Artifact {
             return this.id == other.getId();
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        if (this.isMagic) {
+            return "Magic artifact - " + this.name;
+        } else {
+            return "Regular artifact - " + this.name;
+        }
     }
 }

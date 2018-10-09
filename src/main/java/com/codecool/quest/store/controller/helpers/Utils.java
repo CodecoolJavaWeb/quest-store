@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-public class FormDataParser {
+public class Utils {
 
     public Map<String, String> parseFormData(HttpExchange httpExchange) throws IOException {
         InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), StandardCharsets.UTF_8);
@@ -26,5 +26,10 @@ public class FormDataParser {
             }
         }
         return map;
+    }
+
+    public int getIdFromURI (HttpExchange httpExchange) {
+        String[] URIparts = httpExchange.getRequestURI().getPath().split("/");
+        return Integer.valueOf(URIparts[URIparts.length - 1]);
     }
 }

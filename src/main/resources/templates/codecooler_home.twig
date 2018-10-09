@@ -1,0 +1,44 @@
+{% extends "codecooler_nav.twig" %}
+
+{% block title %}Your profile{% endblock %}
+
+{% block home_button %}class="active"{% endblock %}
+
+{% block main %}
+    <div class="box50">
+        <p>First Name: {{ codecooler.getBasicUserData().getFirstName() }}</p><br>
+        <p>Email: {{ codecooler.getBasicUserData().getEmail() }}</p><br>
+        <p>Experience level: {{ levelName }}</p><br>
+    </div>
+    <div class="box50">
+        <p>Last name: {{ codecooler.getBasicUserData().getLastName() }}</p><br>
+        <p>Class: {{ codecooler.getClassName() }}</p><br>
+        <p>CoolCoins: {{ codecooler.getBalance() }}</p><br>
+    </div>
+    <button id="artifacts_button" class="bluebutton" onclick="showArtifacts()">OWNED ARTIFACTS</button>
+    <button id="quests_button" class="redbutton" onclick="showQuests()">DONE QUESTS</button>
+    <div class="list">
+        <ol id="artifacts" class="height300">
+            {% if artifacts.isEmpty() %}
+                No artifacts owned yet.
+            {% else %}
+                {% for artifact in artifacts %}
+                <li> {{ artifact.toString() }} </li>
+                {% endfor %}
+            {% endif %}
+        </ol>
+        <ol id="quests" class="height300" style="display: none;">
+            {% if quests.isEmpty() %}
+                No quests done yet.
+            {% else %}
+                {% for quest in quests %}
+                <li> {{ quest.toString() }} </li>
+                {% endfor %}
+            {% endif %}
+        </ol>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script src="../static/js/codecooler_home.js"></script>
+{% endblock %}

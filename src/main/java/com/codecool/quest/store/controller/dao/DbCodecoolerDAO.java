@@ -5,7 +5,6 @@ import com.codecool.quest.store.model.Codecooler;
 
 import java.sql.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DbCodecoolerDAO implements CodecoolerDAO {
@@ -20,7 +19,10 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     private Codecooler extractCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
+        codecooler.setExp(resultSet.getInt("exp"));
+        codecooler.setBalance(resultSet.getInt("balance"));
         codecooler.setClassName(resultSet.getString("class_name"));
+        codecooler.setTeamName(resultSet.getString("team_name"));
         BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
         codecooler.setBasicUserData(basicUserData);
         return codecooler;
@@ -116,10 +118,13 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
 
     @Override
     public void updateCodecooler(Codecooler codecooler) {
-        String sql = "UPDATE codecoolers SET class_id = (SELECT id FROM classes WHERE class_name = ?) WHERE id = ?";
+        String sql = "UPDATE codecoolers SET class_id = (SELECT id FROM classes WHERE class_name = ?), exp = ?, balance = ? " +
+                "WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, codecooler.getClassName());
-            statement.setInt(2, codecooler.getId());
+            statement.setInt(2, codecooler.getExp());
+            statement.setInt(3, codecooler.getBalance());
+            statement.setInt(4, codecooler.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,6 +141,17 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        String teamName = codecooler.getTeamName();
+        if (!teamName.equals("")) {
+            sql = "UPDATE codecoolers SET team_id = (SELECT id FROM teams WHERE team_name = ?) WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                statement.setString(1, teamName);
+                statement.setInt(2, codecooler.getId());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -151,6 +167,24 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
 
     }
 
+    @Override
+    public Codecooler getCodecoolerByBasicDataId(int basicDataId) {
+        String sql = "SELECT s.id, b.first_name, b.last_name, b.email, b.password, c.class_name, s.exp, " +
+                "s.balance, t.team_name FROM " +
+                "(((codecoolers AS s INNER JOIN basic_user_data AS b ON s.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON s.class_id = c.id) " +
+                "LEFT JOIN teams AS t ON s.team_id = t.id) WHERE b.id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, basicDataId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractCodecoolerFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Override
     public Set<Codecooler> getCodecoolersBySearchTerm(String searchTerm) {

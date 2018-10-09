@@ -1,7 +1,7 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
-import com.codecool.quest.store.controller.helpers.FormDataParser;
+import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Quest;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
@@ -10,7 +10,6 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public class AddQuest implements HttpHandler {
@@ -31,7 +30,7 @@ public class AddQuest implements HttpHandler {
     }
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
-        Map<String, String> inputs = new FormDataParser().parseFormData(httpExchange);
+        Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         Quest quest = new Quest();
         quest.setName(inputs.get("questName"));

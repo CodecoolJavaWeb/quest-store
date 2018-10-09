@@ -1,0 +1,25 @@
+{% extends "codecooler_nav.twig" %}
+
+{% block title %}Quests{% endblock %}
+
+{% block quests_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/add_new_quest" {{ displayStyle }}>
+        <button>+</button>
+    </a>
+{% endblock %}
+
+{% block main_class %}class="cardscontainer"{% endblock %}
+
+{% block main %}
+    {% for quest in quests %}
+        <a href="{{ questLink }}/{{ quest.getId() }}">
+            <div class="card">
+                <img href="{{ quest.getImagePath() }}" class="cardimage">
+                <h3>{{ quest.getName() }} - {{ quest.getValue() }} CC</h3>
+                <p>{{ quest.getDescription() }}</p>
+            </div>
+        </a>
+    {% endfor %}
+{% endblock %}

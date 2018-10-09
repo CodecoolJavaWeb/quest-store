@@ -62,14 +62,16 @@ public class DbQuestDAO implements QuestDAO {
         return quests;
     }
 
-    public List<String> getDoneQuestsByCodecooler(Codecooler codecooler){
-        String sql = "SELECT quests.quest_name FROM done_quests INNER JOIN quests ON done_quests.quest_id = quests.id WHERE done_quests.codecooler_id = ?;";
-        List<String> quests = new ArrayList<>();
+    @Override
+    public Set<Quest> getDoneQuestsByCodecooler(Codecooler codecooler){
+        String sql = "SELECT q.* FROM done_quests AS dq INNER JOIN quests AS q ON dq.quest_id = q.id " +
+                "WHERE dq.codecooler_id = ?;";
+        Set<Quest> quests = new HashSet<>();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, codecooler.getId());
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                quests.add(resultSet.getString("quest_name"));
+                quests.add(extractQuestFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -78,7 +80,7 @@ public class DbQuestDAO implements QuestDAO {
         return quests;
     }
 
-
+    @Override
     public void addDoneQuestByCodecooler(Quest quest, Codecooler codecooler) {
         String sql = "INSERT INTO done_quests (quest_id, codecooler_id) VALUES (?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -121,5 +123,34 @@ public class DbQuestDAO implements QuestDAO {
         }
     }
 
+    @Override
+    public Quest getQuestById(int questId) {
+        String sql = "SELECT * FROM quests WHERE id = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, questId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractQuestFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
+    @Override
+    public int getCountOfDoneQuestByCodecooler(Quest quest, Codecooler codecooler) {
+        String sql = "SELECT COUNT(id) FROM done_quests WHERE quest_id = ? AND codecooler_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, quest.getId());
+            statement.setInt(2, codecooler.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

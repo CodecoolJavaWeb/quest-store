@@ -13,4 +13,9 @@ public class View {
         os.write(responseBytes);
         os.close();
     }
+
+    public void redirectToPath(HttpExchange httpExchange, String path) throws IOException {
+        httpExchange.getResponseHeaders().set("Location", path);
+        httpExchange.sendResponseHeaders(302, 0);
+    }
 }
