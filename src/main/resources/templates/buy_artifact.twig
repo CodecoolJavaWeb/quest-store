@@ -5,12 +5,20 @@
 {% block artifacts_button %}class="active"{% endblock %}
 
 {% block main %}
-    <p>Artifact name: {{ artifact.getName() }}</p>
-    <p>Description: {{ artifact.getDescription() }}</p>
-    <p>Price: {{ artifact.getPrice() }}</p>
-    <p>Your wallet: {{ codecooler.getBalance() }}</p>
-    <form method="POST">
-        <button class="bluebutton floatright" {{ disabledProperty }}>BUY</button>
+    <p>Artifact name: {{ artifact.getName() }}</p><br>
+    <p>Description: {{ artifact.getDescription() }}</p><br>
+    <p>Price: {{ artifact.getPrice() }} CoolCoins</p><br>
+    <p>Your wallet: {{ codecooler.getBalance() }} CoolCoins</p><br><br>
+    <form method="POST" class="block">
+        <button class="bluebutton" 
+        {% if tooExpensive %}
+            disabled
+        {% endif %}
+        >BUY</button>
     </form>
-    <p {{ displayStyle }}>You can not afford this artifact</p>
+    <p class="red"
+    {% if not tooExpensive %}
+        style="display: none;"
+    {% endif %}
+    >You can not afford this artifact</p>
 {% endblock %}

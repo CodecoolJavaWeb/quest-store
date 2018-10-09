@@ -260,6 +260,10 @@ button {
     background-color: rgb(54, 111, 146);
 }
 
+.bluebutton:disabled {
+    background-color: #CFD8DC;
+}
+
 .redbutton {
     background-color: #DB4041;
 }
