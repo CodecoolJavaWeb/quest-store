@@ -30,16 +30,15 @@ public class MentorEditor implements HttpHandler {
         if (method.equals("POST")){
             handlePost(httpExchange);
         } else {
-            handleGet(httpExchange.getRequestURI().getPath());
+            handleGet(httpExchange);
         }
 
         byte[] responseBytes = getResponse().getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handleGet (String URI) {
-        String[] URIparts = URI.split("/");
-        int mentorId = Integer.valueOf(URIparts[URIparts.length - 1]);
+    private void handleGet (HttpExchange httpExchange) {
+        int mentorId = new Utils().getIdFromURI(httpExchange);
         mentor = mentorDAO.getMentorById(mentorId);
     }
 
