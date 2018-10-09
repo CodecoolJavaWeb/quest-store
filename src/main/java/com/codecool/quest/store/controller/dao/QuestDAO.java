@@ -15,4 +15,5 @@ public interface QuestDAO {
     void addQuest(Quest quest);
     void updateQuest(Quest quest);
     Quest getQuestById(int questId);
+    int getCountOfDoneQuestByCodecooler(Quest quest, Codecooler codecooler);
 }
