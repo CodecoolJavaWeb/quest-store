@@ -19,6 +19,8 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     private Codecooler extractCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
+        codecooler.setExp(resultSet.getInt("exp"));
+        codecooler.setBalance(resultSet.getInt("balance"));
         codecooler.setClassName(resultSet.getString("class_name"));
         codecooler.setTeamName(resultSet.getString("team_name"));
         BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
