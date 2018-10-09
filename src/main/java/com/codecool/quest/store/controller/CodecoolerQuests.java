@@ -18,7 +18,7 @@ import java.util.Set;
 public class CodecoolerQuests implements HttpHandler {
 
     private final String displayStyle = "style=\"display: none;\"";
-    private final String questLink = "/quest_detail/";
+    private final String questLink = "/quest_detail";
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
