@@ -5,6 +5,7 @@ import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.model.CodecoolersDisplayInfo;
+import com.codecool.quest.store.model.Mentor;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -17,6 +18,8 @@ import java.util.Map;
 
 public class CodecoolersManager implements HttpHandler {
 
+    private Mentor mentor = null;
+    private MentorDAO mentorDAO = new DbMentorDAO(new ConnectionFactory().getConnection());
     private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
     private CodecoolersDisplayInfo displayInfo = null;
@@ -26,9 +29,10 @@ public class CodecoolersManager implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
             view.redirectToLoginPage(httpExchange);
         }
+
         String method = httpExchange.getRequestMethod();
         displayInfo = new CodecoolersDisplayInfo();
 
@@ -42,9 +46,12 @@ public class CodecoolersManager implements HttpHandler {
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
+        int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
+        mentor = mentorDAO.getMentorByBasicDataId(basicDataId);
+        String className = mentor.getClassName();
 
         if (inputs.containsKey("show_mentor_students")) {
-            displayInfo.setCodecoolers(codecoolerDAO.getAllCodecoolers());
+            displayInfo.setCodecoolers(codecoolerDAO.getCodecoolersByClassName(className));
 
         } else if (inputs.containsKey("show_all_students")) {
             displayInfo.setCodecoolers(codecoolerDAO.getAllCodecoolers());

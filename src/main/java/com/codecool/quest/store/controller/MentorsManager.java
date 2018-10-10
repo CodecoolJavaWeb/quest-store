@@ -26,7 +26,7 @@ public class MentorsManager implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.ADMIN)) {
             view.redirectToLoginPage(httpExchange);
         }
 
