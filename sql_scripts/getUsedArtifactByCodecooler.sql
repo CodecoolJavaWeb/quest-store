@@ -1,1 +1,0 @@
-﻿SELECT * FROM used_artifacts WHERE codecooler_id = 1;

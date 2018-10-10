@@ -1,1 +1,0 @@
-﻿DELETE FROM artifacts WHERE id = 1;

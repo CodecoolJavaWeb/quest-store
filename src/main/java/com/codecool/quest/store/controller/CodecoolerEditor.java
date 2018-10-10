@@ -1,6 +1,8 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.helpers.AccountType;
+import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Codecooler;
 
@@ -24,10 +26,16 @@ public class CodecoolerEditor implements HttpHandler {
     private View view = new View();
     private Codecooler codecooler = null;
     private Quest quest = null;
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
+            view.redirectToLoginPage(httpExchange);
+        }
+
         String method = httpExchange.getRequestMethod();
 
         if (method.equals("POST")){
@@ -61,7 +69,7 @@ public class CodecoolerEditor implements HttpHandler {
         List<String> classes = classDAO.getClassesNames();
 
         List<String> quests = questDAO.getQuestsNames();
-        List<String> doneQuests = questDAO.getDoneQuestsByCodecooler(codecooler);
+     //   List<String> doneQuests = questDAO.getDoneQuestsByCodecooler(codecooler);
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_editor.twig");
         JtwigModel model = JtwigModel.newModel();
