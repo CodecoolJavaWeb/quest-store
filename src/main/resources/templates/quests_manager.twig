@@ -9,26 +9,22 @@
 {% block quests_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <a href="/add_new_quest">
+    <a href="/add_new_quest" {{ displayStyle }}>
         <button>+</button>
     </a>
 {% endblock %}
 
-{% block main %}
-    <div class="height600">
-        <div class="list">
-        {% if (quests != null) %}
-            <ol>
-                {% for quest in quests %}
-                    <a href="/quest_editor/{{ quest.getId() }}">
-                        <li> {{ quest.toString() }} <i class="material-icons floatright">keyboard_arrow_right</i></li>
-                    </a>
 
-                {% endfor %}
-            </ol>
-        {% else %}
-            Nothing to show.
-        {% endif %}
-        </div>
-    </div>
+{% block main_class %}class="cardscontainer"{% endblock %}
+
+{% block main %}
+    {% for quest in quests %}
+        <a href="{{ questLink }}/{{ quest.getId() }}">
+            <div class="card">
+                <img href="{{ quest.getImagePath() }}" class="cardimage">
+                <h3>{{ quest.getName() }} - {{ quest.getValue() }} CC</h3>
+                <p>{{ quest.getDescription() }}</p>
+            </div>
+        </a>
+    {% endfor %}
 {% endblock %}
