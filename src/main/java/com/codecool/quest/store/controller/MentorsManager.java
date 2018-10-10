@@ -27,7 +27,7 @@ public class MentorsManager implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.ADMIN)) {
-            view.redirectToLoginPage(httpExchange);
+            view.redirectToPath(httpExchange, "/");
         }
 
         String method = httpExchange.getRequestMethod();

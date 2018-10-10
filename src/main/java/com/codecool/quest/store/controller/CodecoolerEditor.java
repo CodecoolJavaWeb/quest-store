@@ -33,7 +33,7 @@ public class CodecoolerEditor implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
-            view.redirectToLoginPage(httpExchange);
+            view.redirectToPath(httpExchange, "/");
         }
 
         String method = httpExchange.getRequestMethod();
