@@ -2,7 +2,6 @@ package com.codecool.quest.store.controller.dao;
 
 import com.codecool.quest.store.model.BasicUserData;
 import com.codecool.quest.store.model.Codecooler;
-
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +18,8 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     private Codecooler extractCodecoolerFromResultSet(ResultSet resultSet) throws SQLException {
         Codecooler codecooler = new Codecooler();
         codecooler.setId(resultSet.getInt("id"));
+        codecooler.setExp(resultSet.getInt("exp"));
+        codecooler.setBalance(resultSet.getInt("balance"));
         codecooler.setClassName(resultSet.getString("class_name"));
         codecooler.setTeamName(resultSet.getString("team_name"));
         BasicUserData basicUserData = daoUtils.extractBasicUserDataFromResultSet(resultSet);
@@ -184,9 +185,9 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     @Override
     public Set<Codecooler> getCodecoolersBySearchTerm(String searchTerm) {
         searchTerm = "%" + searchTerm + "%";
-        String sql = "SELECT m.id, b.first_name, b.last_name, b.email, b.password, c.class_name FROM " +
-                "((codecoolers AS m INNER JOIN basic_user_data AS b ON m.basic_data_id = b.id) " +
-                "INNER JOIN classes AS c ON m.class_id = c.id) " +
+        String sql = "SELECT cc.id, b.first_name, b.last_name, b.email, b.password, c.class_name, cc.exp, cc.balance, t.team_name FROM " +
+                "(((codecoolers AS cc INNER JOIN basic_user_data AS b ON cc.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON cc.class_id = c.id) LEFT JOIN teams AS t ON cc.team_id = t.id) " +
                 "WHERE first_name LIKE ? " +
                 "OR last_name LIKE ? " +
                 "OR email LIKE ?;";
