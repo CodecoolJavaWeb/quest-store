@@ -117,10 +117,13 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
 
     @Override
     public void updateCodecooler(Codecooler codecooler) {
-        String sql = "UPDATE codecoolers SET class_id = (SELECT id FROM classes WHERE class_name = ?) WHERE id = ?";
+        String sql = "UPDATE codecoolers SET class_id = (SELECT id FROM classes WHERE class_name = ?), exp = ?, balance = ? " +
+                "WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, codecooler.getClassName());
-            statement.setInt(2, codecooler.getId());
+            statement.setInt(2, codecooler.getExp());
+            statement.setInt(3, codecooler.getBalance());
+            statement.setInt(4, codecooler.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

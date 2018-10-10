@@ -22,7 +22,7 @@
                 <form method="POST">
                 <ul>
                     {% for team in teams %}
-                    <li> {{ team.getName() }} <button type="submit" class="bluebutton floatright" name="join" value="{{ team.getName() }}">JOIN</button></li>
+                    <li><button type="submit" class="bluebutton" name="join" value="{{ team.getName() }}">JOIN</button> {{ team.getName() }}</li>
                     {% endfor %}
                 </ul>
                 </form>

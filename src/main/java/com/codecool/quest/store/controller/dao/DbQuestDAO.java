@@ -62,6 +62,7 @@ public class DbQuestDAO implements QuestDAO {
         return quests;
     }
 
+    @Override
     public Set<Quest> getDoneQuestsByCodecooler(Codecooler codecooler){
         String sql = "SELECT q.* FROM done_quests AS dq INNER JOIN quests AS q ON dq.quest_id = q.id " +
                 "WHERE dq.codecooler_id = ?;";
@@ -79,7 +80,7 @@ public class DbQuestDAO implements QuestDAO {
         return quests;
     }
 
-
+    @Override
     public void addDoneQuestByCodecooler(Quest quest, Codecooler codecooler) {
         String sql = "INSERT INTO done_quests (quest_id, codecooler_id) VALUES (?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -137,5 +138,19 @@ public class DbQuestDAO implements QuestDAO {
         return null;
     }
 
-
+    @Override
+    public int getCountOfDoneQuestByCodecooler(Quest quest, Codecooler codecooler) {
+        String sql = "SELECT COUNT(id) FROM done_quests WHERE quest_id = ? AND codecooler_id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, quest.getId());
+            statement.setInt(2, codecooler.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

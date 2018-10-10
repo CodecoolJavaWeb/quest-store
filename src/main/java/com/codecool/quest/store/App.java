@@ -27,6 +27,7 @@ public class App {
         httpServer.createContext("/teams", new Teams());
         httpServer.createContext("/static", new Static());
         httpServer.createContext("/quest_detail", new QuestDetail());
+        httpServer.createContext("/buy_artifact", new BuyArtifact());
         httpServer.setExecutor(null);
         httpServer.start();
     }

@@ -18,7 +18,7 @@ import java.util.Set;
 public class CodecoolerArtifacts implements HttpHandler {
 
     private final String displayStyle = "style=\"display: none;\"";
-    private final String artifactLink = "/buy_artifact/";
+    private final String artifactLink = "/buy_artifact";
 
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
@@ -28,7 +28,7 @@ public class CodecoolerArtifacts implements HttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
-            view.redirectToLoginPage(httpExchange);
+            view.redirectToPath(httpExchange, "/");
         }
 
         byte[] responseBytes = getResponse().getBytes();
