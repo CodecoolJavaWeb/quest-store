@@ -1,0 +1,37 @@
+{% extends "mentor_nav.twig" %}
+
+{% block title %}Add a new Artifact{% endblock %}
+
+{% block artifacts_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/artifacts_manager">
+        <button>✕</button>
+    </a>
+
+{% endblock %}
+
+{% block main %}
+    <form method="post">
+        <div class="flexbox">
+            <label>Artifact name:</label>
+            <input name="artifactName" type="text" class="stdinput width80" placeholder="Enter a artifact name..." required>
+        </div>
+        <div class="flexbox">
+            <label>Description:</label>
+            <input name="description" type="text"  maxlength="600" class="stdinput width80" placeholder="Enter a description..." required>
+        </div>
+        <div class="flexbox">
+            <label>Price:</label>
+            <input name="price" type="number" class="stdinput width80" placeholder="Enter a artifact price..." required>
+        </div>
+        <div class="flexbox">
+            <label>Type of artifact:</label>
+            <select name="artifactType" type = "text" class="stdinput width80">
+                <option value="FALSE">Regular</option>
+                <option value="TRUE">Magic</option>
+            </select>
+        </div>
+        <button type="submit" class="bluebutton floatright">SAVE</button>
+    </form>
+{% endblock %}
