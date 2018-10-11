@@ -22,6 +22,7 @@ public class DbArtifactDAO implements ArtifactDAO {
         artifact.setDescription(resultSet.getString("description"));
         artifact.setPrice(resultSet.getInt("price"));
         artifact.setMagic(resultSet.getBoolean("is_magic"));
+        artifact.setImagePath(resultSet.getString("img_path"));
 
         return artifact;
     }
