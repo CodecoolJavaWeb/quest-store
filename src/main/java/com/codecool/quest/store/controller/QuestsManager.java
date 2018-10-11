@@ -17,7 +17,7 @@ public class QuestsManager implements HttpHandler {
 
     private final String displayStyle = "style=\"display: block;\"";
     private final String questLink = "/quest_editor";
-    private final String navLink = "codecooler_nav.twig";
+    private final String navLink = "mentor_nav.twig";
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
