@@ -12,4 +12,8 @@ public interface ArtifactDAO {
     void addArtifactToBought(Artifact artifact, Codecooler codecooler);
 
     void removeUsedArtifactByCodecooler(Artifact artifact, Codecooler codecooler);
+
+    void updateArtifact(Artifact artifact);
+
+    void addArtifact(Artifact artifact);
 }

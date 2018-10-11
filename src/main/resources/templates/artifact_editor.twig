@@ -1,0 +1,49 @@
+{% extends "mentor_nav.twig" %}
+
+{% block title %}Artifact editor{% endblock %}
+
+{% block artifacts_button %}class="active"{% endblock %}
+
+{% block aside %}
+    <a href="/artifacts_manager">
+        <button>✕</button>
+    </a>
+{% endblock %}
+
+{% block main %}
+    <form method="post" onsubmit="save()">
+        <div class="flexbox">
+            <label style="flex-grow: 1">Artifact name:</label>
+            <input name="artifactName" type="text" class="stdinput width80" value="{{ artifactName }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type ="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Description:</label>
+            <input name="description" type="text" maxlength="600" class="stdinput width80" value="{{ description }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type ="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Price:</label>
+            <input name="price" type="number" class="stdinput width80" value="{{ price }}" required disabled>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+        <div class="flexbox">
+            <label style="flex-grow: 1">Type:</label>
+            <select name="isMagic" type = "text" class="stdinput width80" required disabled>
+                            <option value="FALSE">Regular</option>
+                            <option value="TRUE">Magic</option>
+            </select>
+            <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
+            <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
+        </div>
+
+    </form>
+
+{% endblock %}
+
+{% block script %}
+    <script src="../static/js/mentor_editor.js"></script>
+{% endblock %}
