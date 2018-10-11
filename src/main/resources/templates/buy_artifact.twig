@@ -2,13 +2,18 @@
 
 {% block title %}Buy artifact{% endblock %}
 
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block artifacts_button %}class="active"{% endblock %}
 
 {% block aside %}
     <a href="/codecooler_artifacts">
-        <button>x</button>
+        <button><i class="material-icons bigger">arrow_back</i></button>
     </a>
 {% endblock %}
+
 
 {% block main %}
     <p>Artifact name: {{ artifact.getName() }}</p><br>

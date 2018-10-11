@@ -2,11 +2,15 @@
 
 {% block title %}Artifacts{% endblock %}
 
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block artifacts_button %}class="active"{% endblock %}
 
 {% block aside %}
     <a href="/add_new_artifact" {{ displayStyle }}>
-        <button>+</button>
+        <button><i class="material-icons bigger">add</i></button>
     </a>
 {% endblock %}
 

@@ -144,10 +144,8 @@ button:focus {
     color: white;
     text-decoration: none;
     font-size: 40px;
-    display:block;
     width:75px;
     height:75px;
-    padding: 10px 19px;
     cursor: pointer;
     border-radius: 50%;
     display: block;
@@ -233,6 +231,10 @@ button:focus {
 
 .material-icons.md-36 {
     font-size: 36px;
+}
+
+.bigger {
+    font-size: 40px !important;
 }
 
 .checkmarklist {

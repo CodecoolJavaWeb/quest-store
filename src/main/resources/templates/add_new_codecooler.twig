@@ -2,11 +2,15 @@
 
 {% block title %}Add a new Codecooler{% endblock %}
 
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block codecoolers_button %}class="active"{% endblock %}
 
 {% block aside %}
     <a href="/codecoolers_manager">
-        <button>✕</button>
+        <button><i class="material-icons bigger">arrow_back</i></button>
     </a>
 {% endblock %}
 

@@ -1,14 +1,15 @@
 {% extends "mentor_nav.twig" %}
 
-{% block title %}Quest editor{% endblock %}
+{% block title %}Artifact editor{% endblock %}
+
 {% block head %}
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 {% endblock %}
 
-{% block quests_button %}class="active"{% endblock %}
+{% block artifacts_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <a href="/quests_manager">
+    <a href="/artifacts_manager">
         <button><i class="material-icons bigger">arrow_back</i></button>
     </a>
 {% endblock %}
@@ -16,8 +17,8 @@
 {% block main %}
     <form method="post" onsubmit="save()">
         <div class="flexbox">
-            <label style="flex-grow: 1">Quest name:</label>
-            <input name="questName" type="text" class="stdinput width80" value="{{ questName }}" required disabled>
+            <label style="flex-grow: 1">Artifact name:</label>
+            <input name="artifactName" type="text" class="stdinput width80" value="{{ artifactName }}" required disabled>
             <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
             <button type ="submit" class="bluebutton" style="display: none;">SAVE</button>
         </div>
@@ -28,16 +29,16 @@
             <button type ="submit" class="bluebutton" style="display: none;">SAVE</button>
         </div>
         <div class="flexbox">
-            <label style="flex-grow: 1">Reward:</label>
-            <input name="value" type="number" class="stdinput width80" value="{{ value }}" required disabled>
+            <label style="flex-grow: 1">Price:</label>
+            <input name="price" type="number" class="stdinput width80" value="{{ price }}" required disabled>
             <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
             <button type="submit" class="bluebutton" style="display: none;">SAVE</button>
         </div>
         <div class="flexbox">
             <label style="flex-grow: 1">Type:</label>
-            <select name="isExtra" type = "text" class="stdinput width80" required disabled>
+            <select name="isMagic" type = "text" class="stdinput width80" required disabled>
                             <option value="FALSE">Regular</option>
-                            <option value="TRUE">Extra</option>
+                            <option value="TRUE">Magic</option>
             </select>
             <button type="button" class="redbutton" onclick="enableEdit(this)">EDIT</button>
             <button type="submit" class="bluebutton" style="display: none;">SAVE</button>

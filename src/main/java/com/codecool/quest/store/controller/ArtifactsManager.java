@@ -2,7 +2,7 @@ package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.*;
 import com.codecool.quest.store.controller.helpers.Utils;
-import com.codecool.quest.store.model.Quest;
+import com.codecool.quest.store.model.Artifact;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -13,13 +13,13 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
-public class QuestsManager implements HttpHandler {
+public class ArtifactsManager implements HttpHandler {
 
     private final String displayStyle = "style=\"display: block;\"";
-    private final String questLink = "/quest_editor";
+    private final String artifactLink = "/artifact_editor";
     private final String navLink = "mentor_nav.twig";
 
-    private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
+    private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
 
     @Override
@@ -43,14 +43,14 @@ public class QuestsManager implements HttpHandler {
 
 
     private String getResponse() {
-        Set<Quest> quests = questDAO.getAllQuests();
+        Set<Artifact> artifacts = artifactDAO.getAllArtifacts();
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/artifacts.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("navLink", navLink);
         model.with("displayStyle", displayStyle);
-        model.with("questLink", questLink);
-        model.with("quests", quests);
+        model.with("artifactLink", artifactLink);
+        model.with("artifacts", artifacts);
 
 
         return template.render(model);

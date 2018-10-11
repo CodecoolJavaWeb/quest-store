@@ -1,6 +1,7 @@
 package com.codecool.quest.store;
 
 import com.codecool.quest.store.controller.*;
+import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
@@ -21,6 +22,10 @@ public class App {
         httpServer.createContext("/add_new_codecooler", new AddCodecooler());
         httpServer.createContext("/quests_manager", new QuestsManager());
         httpServer.createContext("/add_new_quest", new AddQuest());
+        httpServer.createContext("/quest_editor", new QuestEditor());
+        httpServer.createContext("/artifacts_manager", new ArtifactsManager());
+        httpServer.createContext("/add_new_artifact", new AddArtifact());
+        httpServer.createContext("/artifact_editor", new ArtifactEditor());
         httpServer.createContext("/codecooler_home", new CodecoolerHome());
         httpServer.createContext("/codecooler_quests", new CodecoolerQuests());
         httpServer.createContext("/codecooler_artifacts", new CodecoolerArtifacts());
@@ -31,4 +36,5 @@ public class App {
         httpServer.setExecutor(null);
         httpServer.start();
     }
+
 }
