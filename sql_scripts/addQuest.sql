@@ -1,1 +1,0 @@
-﻿INSERT INTO quests(name, description, value) VALUES ('Exploring a dungeon', 'Finishing a Teamwork week', 100);

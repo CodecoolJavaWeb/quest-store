@@ -9,6 +9,9 @@ public interface MentorDAO {
     Set<Mentor> getMentorsByClass(String className);
     Set<Mentor> getMentorsBySearchTerm(String searchTerm);
     Mentor getMentorById(int id);
+
+    Mentor getMentorByBasicDataId(int basicDataId);
+
     void updateMentor(Mentor mentor);
     void addMentor(Mentor mentor);
 }

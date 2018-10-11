@@ -15,6 +15,9 @@ import java.util.Set;
 
 public class QuestsManager implements HttpHandler {
 
+    private final String displayStyle = "style=\"display: block;\"";
+    private final String questLink = "/quest_editor";
+
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
 
@@ -43,7 +46,10 @@ public class QuestsManager implements HttpHandler {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests_manager.twig");
         JtwigModel model = JtwigModel.newModel();
+        model.with("displayStyle", displayStyle);
+        model.with("questLink", questLink);
         model.with("quests", quests);
+
 
         return template.render(model);
     }

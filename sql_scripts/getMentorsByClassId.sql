@@ -1,1 +1,0 @@
-﻿SELECT * FROM mentors WHERE class_id = 1;
