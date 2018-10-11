@@ -2,11 +2,15 @@
 
 {% block title %}Mentor editor{% endblock %}
 
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block mentors_button %}class="active"{% endblock %}
 
 {% block aside %}
     <a href="/mentors_manager">
-        <button>x</button>
+        <button><i class="material-icons bigger">arrow_back</i></button>
     </a>
 {% endblock %}
 

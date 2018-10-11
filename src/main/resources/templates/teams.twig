@@ -2,10 +2,14 @@
 
 {% block title %}Teams{% endblock %}
 
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block teams_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <button onclick="enableAdd()">+</button>
+    <button onclick="enableAdd()"><i class="material-icons bigger">add</i></button>
 {% endblock %}
 
 {% block main %}
