@@ -1,10 +1,11 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.mentor;
 
 import com.codecool.quest.store.controller.dao.ArtifactDAO;
 import com.codecool.quest.store.controller.dao.ConnectionFactory;
 import com.codecool.quest.store.controller.dao.DbArtifactDAO;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
+import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Artifact;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
@@ -13,13 +14,9 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
-import java.util.Set;
+import java.util.Map;
 
-public class CodecoolerArtifacts implements HttpHandler {
-
-    private final String displayStyle = "style=\"display: none;\"";
-    private final String artifactLink = "/buy_artifact";
-    private final String navLink = "codecooler_nav.twig";
+public class AddArtifact implements HttpHandler {
 
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
@@ -28,23 +25,38 @@ public class CodecoolerArtifacts implements HttpHandler {
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
-        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.CODECOOLER)) {
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
             view.redirectToPath(httpExchange, "/");
+        }
+
+
+        String method = httpExchange.getRequestMethod();
+        if (method.equals("POST")){
+            handlePost(httpExchange);
         }
 
         byte[] responseBytes = getResponse().getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private String getResponse() {
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/artifacts.twig");
-        Set<Artifact> artifacts = artifactDAO.getAllArtifacts();
+    private void handlePost(HttpExchange httpExchange) throws IOException {
+        Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
+        Artifact artifact = new Artifact();
+        artifact.setName(inputs.get("artifactName"));
+        artifact.setDescription(inputs.get("description"));
+        artifact.setPrice(Integer.valueOf(inputs.get("price")));
+        artifact.setMagic(Boolean.valueOf(inputs.get("artifactType")));
+        artifactDAO.addArtifact(artifact);
+
+        httpExchange.getResponseHeaders().set("Location", "/artifacts_manager");
+        httpExchange.sendResponseHeaders(302, 0);
+    }
+
+    private String getResponse() {
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/add_new_artifact.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("displayStyle", displayStyle);
-        model.with("artifactLink", artifactLink);
-        model.with("artifacts", artifacts);
-        model.with("navLink", navLink);
+
         return template.render(model);
     }
 }

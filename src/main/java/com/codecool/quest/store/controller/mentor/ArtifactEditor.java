@@ -1,8 +1,10 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.mentor;
 
 import com.codecool.quest.store.controller.dao.ArtifactDAO;
 import com.codecool.quest.store.controller.dao.ConnectionFactory;
 import com.codecool.quest.store.controller.dao.DbArtifactDAO;
+import com.codecool.quest.store.controller.helpers.AccountType;
+import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Artifact;
 import com.codecool.quest.store.view.View;
@@ -20,12 +22,16 @@ public class ArtifactEditor implements HttpHandler {
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
     private Artifact artifact = null;
-
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
 
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
+            view.redirectToPath(httpExchange, "/");
+        }
+
+        String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
             handlePost(httpExchange);
         } else {

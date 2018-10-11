@@ -1,9 +1,9 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.mentor;
 
 import com.codecool.quest.store.controller.dao.*;
-import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
+import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.CodecoolersDisplayInfo;
 import com.codecool.quest.store.model.Mentor;
 import com.codecool.quest.store.view.View;

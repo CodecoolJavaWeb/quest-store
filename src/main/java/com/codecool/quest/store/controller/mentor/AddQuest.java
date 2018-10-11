@@ -1,6 +1,10 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.mentor;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.ConnectionFactory;
+import com.codecool.quest.store.controller.dao.DbQuestDAO;
+import com.codecool.quest.store.controller.dao.QuestDAO;
+import com.codecool.quest.store.controller.helpers.AccountType;
+import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Quest;
 import com.codecool.quest.store.view.View;
@@ -16,11 +20,16 @@ public class AddQuest implements HttpHandler {
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
 
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
+            view.redirectToPath(httpExchange, "/");
+        }
+
+        String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
             handlePost(httpExchange);
         }

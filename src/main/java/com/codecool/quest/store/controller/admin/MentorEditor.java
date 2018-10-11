@@ -1,6 +1,8 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.admin;
 
 import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.helpers.AccountType;
+import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Codecooler;
 import com.codecool.quest.store.model.Mentor;
@@ -22,11 +24,17 @@ public class MentorEditor implements HttpHandler {
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
     private View view = new View();
     private Mentor mentor = null;
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
 
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.ADMIN)) {
+            view.redirectToPath(httpExchange, "/");
+        }
+
+
+        String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
             handlePost(httpExchange);
         } else {

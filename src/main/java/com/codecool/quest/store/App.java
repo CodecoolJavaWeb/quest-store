@@ -1,7 +1,9 @@
 package com.codecool.quest.store;
 
 import com.codecool.quest.store.controller.*;
-import com.sun.net.httpserver.HttpHandler;
+import com.codecool.quest.store.controller.admin.*;
+import com.codecool.quest.store.controller.codecooler.*;
+import com.codecool.quest.store.controller.mentor.*;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;

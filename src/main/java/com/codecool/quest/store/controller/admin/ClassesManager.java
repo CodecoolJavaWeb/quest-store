@@ -1,8 +1,10 @@
-package com.codecool.quest.store.controller;
+package com.codecool.quest.store.controller.admin;
 
 import com.codecool.quest.store.controller.dao.ClassDAO;
 import com.codecool.quest.store.controller.dao.ConnectionFactory;
 import com.codecool.quest.store.controller.dao.DbClassDAO;
+import com.codecool.quest.store.controller.helpers.AccountType;
+import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.view.View;
 import com.sun.net.httpserver.HttpExchange;
@@ -18,11 +20,16 @@ public class ClassesManager implements HttpHandler {
 
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
     private View view = new View();
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
-        String method = httpExchange.getRequestMethod();
 
+        if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.ADMIN)) {
+            view.redirectToPath(httpExchange, "/");
+        }
+
+        String method = httpExchange.getRequestMethod();
         if (method.equals("POST")) {
             handlePost(httpExchange);
         }
