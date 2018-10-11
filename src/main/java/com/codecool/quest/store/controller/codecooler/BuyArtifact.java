@@ -75,6 +75,7 @@ public class BuyArtifact implements HttpHandler {
         if (artifact.isMagic()) {
             handleMagicArtifact();
         } else {
+            price = artifact.getPrice();
             tooExpensive = codecooler.getBalance() < price;
         }
 
