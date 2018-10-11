@@ -1,4 +1,4 @@
-{% extends "codecooler_nav.twig" %}
+{% extends navLink %}
 
 {% block title %}Quests{% endblock %}
 
@@ -16,7 +16,7 @@
     {% for quest in quests %}
         <a href="{{ questLink }}/{{ quest.getId() }}">
             <div class="card">
-                <img href="{{ quest.getImagePath() }}" class="cardimage">
+                <img src="{{ quest.getImagePath() }}" class="cardimage">
                 <h3>{{ quest.getName() }} - {{ quest.getValue() }} CC</h3>
                 <p>{{ quest.getDescription() }}</p>
             </div>
