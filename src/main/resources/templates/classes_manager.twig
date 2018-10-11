@@ -2,11 +2,15 @@
 
 {% block title %}Classes manager{% endblock %}
 
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
+
 {% block classes_button %}class="active"{% endblock %}
 
 {% block aside %}
-    <button onclick="enableAdd()">+</button><br>
-    <button name="delete" type="submit" form="classesForm">x</button>
+    <button onclick="enableAdd()"><i class="material-icons bigger">add</i></button><br>
+    <button name="delete" type="submit" form="classesForm"><i class="material-icons bigger">delete</i></button>
 {% endblock %}
 
 {% block main %}

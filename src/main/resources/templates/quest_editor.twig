@@ -1,12 +1,15 @@
 {% extends "mentor_nav.twig" %}
 
 {% block title %}Quest editor{% endblock %}
+{% block head %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+{% endblock %}
 
 {% block quests_button %}class="active"{% endblock %}
 
 {% block aside %}
     <a href="/quests_manager">
-        <button>✕</button>
+        <button><i class="material-icons bigger">arrow_back</i></button>
     </a>
 {% endblock %}
 
