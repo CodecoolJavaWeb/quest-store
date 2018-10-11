@@ -14,6 +14,10 @@
     <p>Artifact name: {{ artifact.getName() }}</p><br>
     <p>Description: {{ artifact.getDescription() }}</p><br>
     <p>Price: {{ artifact.getPrice() }} CoolCoins</p><br>
+    {% if artifact.isMagic() %}
+        <p>This is magical artifact, you can buy it as a team.</p>
+        <p>Price per team member: {{ price }} CoolCoins</p><br>
+    {% endif %}
     <p>Your wallet: {{ codecooler.getBalance() }} CoolCoins</p><br><br>
     <form method="POST" class="block">
         <button class="bluebutton" 
@@ -22,9 +26,13 @@
         {% endif %}
         >BUY</button>
     </form>
-    <p class="red"
-    {% if not tooExpensive %}
-        style="display: none;"
+    {% if tooExpensive %}
+        <p class="red">
+        {% if artifact.isMagic() %}
+            Your team
+        {% else %}
+            You
+        {% endif %}
+         can not afford this artifact</p>
     {% endif %}
-    >You can not afford this artifact</p>
 {% endblock %}

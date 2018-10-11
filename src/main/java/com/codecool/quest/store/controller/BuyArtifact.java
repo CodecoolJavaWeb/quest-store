@@ -13,6 +13,7 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
+import java.util.Set;
 
 public class BuyArtifact implements HttpHandler {
 
@@ -20,6 +21,9 @@ public class BuyArtifact implements HttpHandler {
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private Codecooler codecooler = null;
     private Artifact artifact = null;
+    private Set<Codecooler> codecoolersInTeam = null;
+    private int price = 0;
+    private boolean tooExpensive = false;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
@@ -40,25 +44,65 @@ public class BuyArtifact implements HttpHandler {
     }
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
-        artifactDAO.addArtifactToBought(artifact, codecooler);
+
+        if (artifact.isMagic()) {
+            for (Codecooler codecooler: codecoolersInTeam) {
+                addArtifactToBought(codecooler);
+            }
+        } else {
+            addArtifactToBought(this.codecooler);
+        }
+
+        view.redirectToPath(httpExchange,"/codecooler_artifacts");
+    }
+
+    private void addArtifactToBought(Codecooler codecooler) {
+        artifactDAO.addArtifactToBought(this.artifact, codecooler);
         int balance = codecooler.getBalance();
-        int price = artifact.getPrice();
         codecooler.setBalance(balance - price);
         codecoolerDAO.updateCodecooler(codecooler);
-        view.redirectToPath(httpExchange,"/codecooler_artifacts");
     }
 
     private String getResponse(HttpExchange httpExchange) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/buy_artifact.twig");
+        JtwigModel model = JtwigModel.newModel();
+
         int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
         codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         int artifactId = new Utils().getIdFromURI(httpExchange);
         artifact = artifactDAO.getArtifactById(artifactId);
 
-        JtwigModel model = JtwigModel.newModel();
+        if (artifact.isMagic()) {
+            handleMagicArtifact();
+        } else {
+            tooExpensive = codecooler.getBalance() < price;
+        }
+
         model.with("codecooler", codecooler);
         model.with("artifact", artifact);
-        model.with("tooExpensive", codecooler.getBalance() < artifact.getPrice());
+        model.with("price", price);
+        model.with("tooExpensive", tooExpensive);
         return template.render(model);
+    }
+
+    private void handleMagicArtifact() {
+        String teamName = codecooler.getTeamName();
+
+        if (teamName.isEmpty()) {
+            price = artifact.getPrice();
+            tooExpensive = codecooler.getBalance() < price;
+        } else {
+            codecoolersInTeam = codecoolerDAO.getCodecoolerByTeamName(teamName);
+            price = (int)Math.ceil(artifact.getPrice() / (codecoolersInTeam.size() * 1.0));
+            tooExpensive = isTooExpensiveForTeam(price);
+        }
+    }
+
+    private boolean isTooExpensiveForTeam(int price) {
+        for (Codecooler codecooler: codecoolersInTeam) {
+            if (codecooler.getBalance() < price)
+                return true;
+        }
+        return false;
     }
 }
