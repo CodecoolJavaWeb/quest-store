@@ -42,8 +42,8 @@ public class QuestEditor implements HttpHandler {
     private void handlePost(HttpExchange httpExchange) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
-        quest.setDescription(inputs.get("description"));
         quest.setName(inputs.get("questName"));
+        quest.setDescription(inputs.get("description"));
         quest.setValue(Integer.valueOf(inputs.get("value")));
         quest.setExtra(Boolean.valueOf(inputs.get("isExtra")));
 
@@ -56,7 +56,7 @@ public class QuestEditor implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quest_editor.twig");
         JtwigModel model = JtwigModel.newModel();
         model.with("questName", quest.getName());
-        model.with("descriptions", quest.getDescription());
+        model.with("description", quest.getDescription());
         model.with("value", quest.getValue());
         model.with("isExtra", quest.isExtra());
 
