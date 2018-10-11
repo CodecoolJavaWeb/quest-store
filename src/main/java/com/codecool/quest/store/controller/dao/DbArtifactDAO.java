@@ -101,4 +101,37 @@ public class DbArtifactDAO implements ArtifactDAO {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void updateArtifact(Artifact artifact) {
+        String sql = "UPDATE artifacts SET artifact_name = ?, description = ?, price = ?, is_magic = ?, img_path = ? " +
+                "WHERE id = ? ;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, artifact.getName());
+            statement.setString(2, artifact.getDescription());
+            statement.setInt(3, artifact.getPrice());
+            statement.setBoolean(4, artifact.isMagic());
+            statement.setString(5, artifact.getImagePath());
+            statement.setInt(6, artifact.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void addArtifact(Artifact artifact) {
+        String sql = "INSERT INTO artifacts (artifact_name, description, price, is_magic, img_path) " +
+                "VALUES (?, ?, ?, ?, ?);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, artifact.getName());
+            statement.setString(2, artifact.getDescription());
+            statement.setInt(3, artifact.getPrice());
+            statement.setBoolean(4, artifact.isMagic());
+            statement.setString(5, artifact.getImagePath());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
