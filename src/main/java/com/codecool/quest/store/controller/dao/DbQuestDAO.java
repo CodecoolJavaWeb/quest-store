@@ -24,6 +24,7 @@ public class DbQuestDAO implements QuestDAO {
         quest.setDescription(resultSet.getString("description"));
         quest.setValue(resultSet.getInt("reward"));
         quest.setExtra(resultSet.getBoolean("is_extra"));
+        quest.setImagePath(resultSet.getString("img_path"));
 
         return quest;
     }
@@ -94,13 +95,14 @@ public class DbQuestDAO implements QuestDAO {
 
     @Override
     public void addQuest(Quest quest) {
-        String sql = "INSERT INTO quests (quest_name, description, reward, is_extra) " +
+        String sql = "INSERT INTO quests (quest_name, description, reward, is_extra, img_path) " +
                 "VALUES (?, ?, ?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, quest.getName());
             statement.setString(2, quest.getDescription());
             statement.setInt(3, quest.getValue());
             statement.setBoolean(4, quest.isExtra());
+            statement.setString(5, quest.getImagePath());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -110,13 +112,15 @@ public class DbQuestDAO implements QuestDAO {
 
     @Override
     public void updateQuest(Quest quest) {
-        String sql = "UPDATE quests SET quest_name = ?, description = ?, reward = ?, is_extra = ? WHERE id = ? ;";
+        String sql = "UPDATE quests SET quest_name = ?, description = ?, reward = ?, is_extra = ?, img_path = ? " +
+                "WHERE id = ? ;";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, quest.getName());
             statement.setString(2, quest.getDescription());
             statement.setInt(3, quest.getValue());
             statement.setBoolean(4, quest.isExtra());
-            statement.setInt(5, quest.getId());
+            statement.setString(5, quest.getImagePath());
+            statement.setInt(6, quest.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
