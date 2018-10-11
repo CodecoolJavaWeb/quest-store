@@ -376,6 +376,14 @@ a {
     background-color: #F3F3F3;
 }
 
+.extra {
+    background-color: silver;
+}
+
+.magic {
+    background-color: goldenrod;
+}
+
 .cardimage {
     width: 300px;
     height: 300px;
