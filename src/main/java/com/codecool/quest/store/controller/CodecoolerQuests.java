@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.Set;
 
 public class CodecoolerQuests implements HttpHandler {
-
+    
     private final String displayStyle = "style=\"display: none;\"";
     private final String questLink = "/quest_detail";
     private final String navLink = "codecooler_nav.twig";
@@ -41,6 +41,7 @@ public class CodecoolerQuests implements HttpHandler {
         Set<Quest> quests = questDAO.getAllQuests();
 
         JtwigModel model = JtwigModel.newModel();
+
         model.with("displayStyle", displayStyle);
         model.with("questLink", questLink);
         model.with("quests", quests);

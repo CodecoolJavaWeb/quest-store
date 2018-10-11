@@ -1,1 +1,0 @@
-SELECT level_name FROM exp_levels WHERE start_value = (SELECT MAX(start_value) FROM exp_levels WHERE start_value <= 11);

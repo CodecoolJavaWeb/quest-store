@@ -1,1 +1,0 @@
-﻿INSERT INTO teams (name, class_id) VALUES ('druga', NULL) ;

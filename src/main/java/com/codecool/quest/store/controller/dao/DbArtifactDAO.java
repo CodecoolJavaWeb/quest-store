@@ -88,4 +88,17 @@ public class DbArtifactDAO implements ArtifactDAO {
             e.printStackTrace();
         }
     }
+
+
+    @Override
+    public void removeUsedArtifactByCodecooler(Artifact artifact, Codecooler codecooler) {
+        String sql = "DELETE FROM bought_artifacts WHERE ctid=(SELECT ctid FROM bought_artifacts WHERE (artifact_id = ? AND codecooler_id = ?) LIMIT 1);";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, artifact.getId());
+            statement.setInt(2, codecooler.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

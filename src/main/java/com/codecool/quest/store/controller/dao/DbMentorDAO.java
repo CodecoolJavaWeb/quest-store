@@ -107,6 +107,23 @@ public class DbMentorDAO implements MentorDAO {
         return null;
     }
 
+     @Override
+    public Mentor getMentorByBasicDataId(int basicDataId) {
+        String sql = "SELECT m.id, b.first_name, b.last_name, b.email, b.password, c.class_name FROM " +
+                "((mentors AS m INNER JOIN basic_user_data AS b ON m.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON m.class_id = c.id) WHERE b.id = ?;";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, basicDataId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return extractMentorFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void updateMentor(Mentor mentor) {
         String sql = "UPDATE mentors SET class_id = (SELECT id FROM classes WHERE class_name = ?) WHERE id = ?";

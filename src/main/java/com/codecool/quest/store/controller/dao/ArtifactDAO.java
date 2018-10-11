@@ -10,4 +10,6 @@ public interface ArtifactDAO {
     Artifact getArtifactById(int id);
     Set<Artifact> getBoughtArtifactsByCodecooler(Codecooler codecooler);
     void addArtifactToBought(Artifact artifact, Codecooler codecooler);
+
+    void removeUsedArtifactByCodecooler(Artifact artifact, Codecooler codecooler);
 }
