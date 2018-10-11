@@ -17,6 +17,7 @@ public class QuestsManager implements HttpHandler {
 
     private final String displayStyle = "style=\"display: block;\"";
     private final String questLink = "/quest_editor";
+    private final String navLink = "codecooler_nav.twig";
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
@@ -44,8 +45,9 @@ public class QuestsManager implements HttpHandler {
     private String getResponse() {
         Set<Quest> quests = questDAO.getAllQuests();
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests_manager.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests.twig");
         JtwigModel model = JtwigModel.newModel();
+        model.with("navLink", navLink);
         model.with("displayStyle", displayStyle);
         model.with("questLink", questLink);
         model.with("quests", quests);
