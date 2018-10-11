@@ -1,4 +1,4 @@
-{% extends "codecooler_nav.twig" %}
+{% extends navLink %}
 
 {% block title %}Artifacts{% endblock %}
 
@@ -16,7 +16,7 @@
     {% for artifact in artifacts %}
         <a href="{{ artifactLink }}/{{ artifact.getId() }}">
             <div class="card">
-                <img href="{{ artifact.getImagePath() }}" class="cardimage">
+                <img src="{{ artifact.getImagePath() }}" class="cardimage">
                 <h3>{{ artifact.getName() }} - {{ artifact.getPrice() }} CC</h3>
                 <p>{{ artifact.getDescription() }}</p>
             </div>

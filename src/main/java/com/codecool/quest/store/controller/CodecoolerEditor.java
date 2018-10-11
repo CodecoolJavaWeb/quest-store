@@ -87,10 +87,8 @@ public class CodecoolerEditor implements HttpHandler {
     private String getResponse() {
         String className = codecooler.getClassName();
         List<String> classes = classDAO.getClassesNames();
-
         Set<Quest> quests = questDAO.getAllQuests();
         Set<Artifact> artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);
-
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_editor.twig");
         JtwigModel model = JtwigModel.newModel();

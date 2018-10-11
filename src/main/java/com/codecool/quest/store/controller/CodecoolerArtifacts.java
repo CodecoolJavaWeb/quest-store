@@ -19,6 +19,7 @@ public class CodecoolerArtifacts implements HttpHandler {
 
     private final String displayStyle = "style=\"display: none;\"";
     private final String artifactLink = "/buy_artifact";
+    private final String navLink = "codecooler_nav.twig";
 
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
@@ -43,6 +44,7 @@ public class CodecoolerArtifacts implements HttpHandler {
         model.with("displayStyle", displayStyle);
         model.with("artifactLink", artifactLink);
         model.with("artifacts", artifacts);
+        model.with("navLink", navLink);
         return template.render(model);
     }
 }
