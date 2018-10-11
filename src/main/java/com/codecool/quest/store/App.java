@@ -23,6 +23,9 @@ public class App {
         httpServer.createContext("/quests_manager", new QuestsManager());
         httpServer.createContext("/add_new_quest", new AddQuest());
         httpServer.createContext("/quest_editor", new QuestEditor());
+        httpServer.createContext("/artifacts_manager", new ArtifactsManager());
+        httpServer.createContext("/add_new_artifact", new AddArtifact());
+        httpServer.createContext("/artifact_editor", new ArtifactEditor());
         httpServer.createContext("/codecooler_home", new CodecoolerHome());
         httpServer.createContext("/codecooler_quests", new CodecoolerQuests());
         httpServer.createContext("/codecooler_artifacts", new CodecoolerArtifacts());
