@@ -186,6 +186,27 @@ public class DbCodecoolerDAO implements CodecoolerDAO {
     }
 
     @Override
+    public Set<Codecooler> getCodecoolerByTeamName(String teamName) {
+        String sql = "SELECT s.id, b.first_name, b.last_name, b.email, b.password, c.class_name, s.exp, " +
+                "s.balance, t.team_name FROM " +
+                "(((codecoolers AS s INNER JOIN basic_user_data AS b ON s.basic_data_id = b.id) " +
+                "INNER JOIN classes AS c ON s.class_id = c.id) " +
+                "LEFT JOIN teams AS t ON s.team_id = t.id) WHERE team_name = ?;";
+        Set<Codecooler> codecoolers = new HashSet<>();
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, teamName);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                codecoolers.add(extractCodecoolerFromResultSet(resultSet));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return codecoolers;
+    }
+
+    @Override
     public Set<Codecooler> getCodecoolersBySearchTerm(String searchTerm) {
         searchTerm = "%" + searchTerm + "%";
         String sql = "SELECT cc.id, b.first_name, b.last_name, b.email, b.password, c.class_name, cc.exp, cc.balance, t.team_name FROM " +

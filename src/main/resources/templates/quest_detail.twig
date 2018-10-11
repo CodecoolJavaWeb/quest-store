@@ -18,9 +18,13 @@
 
 {% block main %}
     <div class="card">
-        <img href="{{ quest.getImagePath() }}" class="cardimage">
+        <img src="{{ quest.getImagePath() }}" class="cardimage">
         <h3>{{ quest.getName() }} - {{ quest.getValue() }} CC</h3>
         <p>{{ quest.getDescription() }}</p>
     </div>
-    <div>You have done this quest {{ questCount }} times</div>
+    <div>
+    {% if quest.isExtra() %}
+        This quest is extra.
+    {% endif %}
+    You have done this quest {{ questCount }} times</div>
 {% endblock %}

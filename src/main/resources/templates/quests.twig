@@ -19,7 +19,11 @@
 {% block main %}
     {% for quest in quests %}
         <a href="{{ questLink }}/{{ quest.getId() }}">
-            <div class="card">
+            <div class="card 
+            {% if quest.isExtra() %}
+                extra
+            {% endif %}
+            ">
                 <img src="{{ quest.getImagePath() }}" class="cardimage">
                 <h3>{{ quest.getName() }} - {{ quest.getValue() }} CC</h3>
                 <p>{{ quest.getDescription() }}</p>

@@ -19,7 +19,11 @@
 {% block main %}
     {% for artifact in artifacts %}
         <a href="{{ artifactLink }}/{{ artifact.getId() }}">
-            <div class="card">
+            <div class="card
+            {% if artifact.isMagic() %}
+                magic
+            {% endif %}
+            ">
                 <img src="{{ artifact.getImagePath() }}" class="cardimage">
                 <h3>{{ artifact.getName() }} - {{ artifact.getPrice() }} CC</h3>
                 <p>{{ artifact.getDescription() }}</p>
