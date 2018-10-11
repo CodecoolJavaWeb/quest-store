@@ -4,6 +4,12 @@
 
 {% block artifacts_button %}class="active"{% endblock %}
 
+{% block aside %}
+    <a href="/codecooler_artifacts">
+        <button>x</button>
+    </a>
+{% endblock %}
+
 {% block main %}
     <p>Artifact name: {{ artifact.getName() }}</p><br>
     <p>Description: {{ artifact.getDescription() }}</p><br>
