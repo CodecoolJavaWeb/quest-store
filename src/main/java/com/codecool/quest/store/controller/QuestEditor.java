@@ -11,46 +11,54 @@ import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
-public class QuestsManager implements HttpHandler {
 
-    private final String displayStyle = "style=\"display: block;\"";
-    private final String questLink = "/quest_editor";
-    private final String navLink = "mentor_nav.twig";
+public class QuestEditor implements HttpHandler {
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
+    private Quest quest = null;
+
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
 
-
-        if (method.equals("POST")) {
+        if (method.equals("POST")){
             handlePost(httpExchange);
+        } else {
+            handleGet(httpExchange);
         }
 
         byte[] responseBytes = getResponse().getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
+    private void handleGet (HttpExchange httpExchange) {
+        int questId = new Utils().getIdFromURI(httpExchange);
+        quest = questDAO.getQuestById(questId);
+    }
+
     private void handlePost(HttpExchange httpExchange) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
+        quest.setName(inputs.get("questName"));
+        quest.setDescription(inputs.get("description"));
+        quest.setValue(Integer.valueOf(inputs.get("value")));
+        quest.setExtra(Boolean.valueOf(inputs.get("isExtra")));
+
+        questDAO.updateQuest(quest);
+
     }
 
-
-
     private String getResponse() {
-        Set<Quest> quests = questDAO.getAllQuests();
 
-        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests.twig");
+        JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quest_editor.twig");
         JtwigModel model = JtwigModel.newModel();
-        model.with("navLink", navLink);
-        model.with("displayStyle", displayStyle);
-        model.with("questLink", questLink);
-        model.with("quests", quests);
+        model.with("questName", quest.getName());
+        model.with("description", quest.getDescription());
+        model.with("value", quest.getValue());
+        model.with("isExtra", quest.isExtra());
 
 
         return template.render(model);
