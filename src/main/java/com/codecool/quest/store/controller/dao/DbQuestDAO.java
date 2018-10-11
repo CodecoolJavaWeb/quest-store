@@ -96,7 +96,7 @@ public class DbQuestDAO implements QuestDAO {
     @Override
     public void addQuest(Quest quest) {
         String sql = "INSERT INTO quests (quest_name, description, reward, is_extra, img_path) " +
-                "VALUES (?, ?, ?, ?);";
+                "VALUES (?, ?, ?, ?, ?);";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, quest.getName());
             statement.setString(2, quest.getDescription());
