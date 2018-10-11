@@ -19,6 +19,7 @@ public class CodecoolerQuests implements HttpHandler {
 
     private final String displayStyle = "style=\"display: none;\"";
     private final String questLink = "/quest_detail";
+    private final String navLink = "codecooler_nav.twig";
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
@@ -43,6 +44,7 @@ public class CodecoolerQuests implements HttpHandler {
         model.with("displayStyle", displayStyle);
         model.with("questLink", questLink);
         model.with("quests", quests);
+        model.with("navLink", navLink);
         return template.render(model);
     }
 }
