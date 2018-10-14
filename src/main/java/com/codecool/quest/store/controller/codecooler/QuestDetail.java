@@ -19,8 +19,6 @@ public class QuestDetail implements HttpHandler {
     private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
-    private Quest quest = null;
-    private Codecooler codecooler = null;
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
@@ -37,9 +35,9 @@ public class QuestDetail implements HttpHandler {
     private String getResponse(HttpExchange httpExchange) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quest_detail.twig");
         int questId = new Utils().getIdFromURI(httpExchange);
-        quest = questDAO.getQuestById(questId);
+        Quest quest = questDAO.getQuestById(questId);
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
+        Codecooler codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         int questCount = questDAO.getCountOfDoneQuestByCodecooler(quest, codecooler);
 
         JtwigModel model = JtwigModel.newModel();
