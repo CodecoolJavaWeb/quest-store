@@ -22,7 +22,6 @@ public class Teams implements HttpHandler {
     private TeamDAO teamDAO = new DbTeamDAO(new ConnectionFactory().getConnection());
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
-    private Codecooler codecooler;
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -31,17 +30,23 @@ public class Teams implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
-        String method = httpExchange.getRequestMethod();
+        Codecooler codecooler = getCodecooler(httpExchange);
 
+        String method = httpExchange.getRequestMethod();
         if (method.equals("POST")) {
-            handlePost(httpExchange);
+            handlePost(httpExchange, codecooler);
         }
 
-        byte[] responseBytes = getResponse(httpExchange).getBytes();
+        byte[] responseBytes = getResponse(codecooler).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private Codecooler getCodecooler(HttpExchange httpExchange) {
+        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
+        return codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
+    }
+
+    private void handlePost(HttpExchange httpExchange, Codecooler codecooler) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         if (inputs.containsKey("add")) {
@@ -55,10 +60,8 @@ public class Teams implements HttpHandler {
         }
     }
 
-    private String getResponse(HttpExchange httpExchange) {
+    private String getResponse(Codecooler codecooler) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/teams.twig");
-        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         Set<Team> teams = teamDAO.getTeamsByClassName(codecooler.getClassName());
 
         JtwigModel model = JtwigModel.newModel();
