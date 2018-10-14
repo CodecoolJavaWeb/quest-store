@@ -12,7 +12,6 @@ import java.util.List;
 public class SessionCookieHandler {
 
     private SessionDAO sessionDAO = new DbSessionDAO(new ConnectionFactory().getConnection());
-    private Session session = null;
 
     public String getSessionIdFromCookie(String cookieStr) {
         String[] cookieStrings = cookieStr.split("; ");
@@ -29,14 +28,13 @@ public class SessionCookieHandler {
     }
 
     public boolean isSessionValid(HttpExchange httpExchange, AccountType accountType) {
-        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
-        String sessionId = getSessionIdFromCookie(cookieStr);
-        session = sessionDAO.getSession(sessionId);
-
+        Session session = getSession(httpExchange);
         return session != null && session.getAccountType() == accountType;
     }
 
-    public Session getSession() {
-        return session;
+    public Session getSession(HttpExchange httpExchange) {
+        String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
+        String sessionId = getSessionIdFromCookie(cookieStr);
+        return sessionDAO.getSession(sessionId);
     }
 }

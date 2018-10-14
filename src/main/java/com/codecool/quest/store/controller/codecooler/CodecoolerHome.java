@@ -34,13 +34,13 @@ public class CodecoolerHome implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(httpExchange).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private String getResponse() {
+    private String getResponse(HttpExchange httpExchange) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_home.twig");
-        int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
+        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
         codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         String levelName = levelDAO.getLevelNameByValue(codecooler.getExp());
         artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);

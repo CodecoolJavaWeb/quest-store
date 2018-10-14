@@ -67,7 +67,7 @@ public class BuyArtifact implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/buy_artifact.twig");
         JtwigModel model = JtwigModel.newModel();
 
-        int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
+        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
         codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         int artifactId = new Utils().getIdFromURI(httpExchange);
         artifact = artifactDAO.getArtifactById(artifactId);

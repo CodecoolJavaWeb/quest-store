@@ -46,7 +46,7 @@ public class CodecoolersManager implements HttpHandler {
 
     private void handlePost(HttpExchange httpExchange) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
-        int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
+        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
         mentor = mentorDAO.getMentorByBasicDataId(basicDataId);
         String className = mentor.getClassName();
 

@@ -38,7 +38,7 @@ public class QuestDetail implements HttpHandler {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quest_detail.twig");
         int questId = new Utils().getIdFromURI(httpExchange);
         quest = questDAO.getQuestById(questId);
-        int basicDataId = sessionCookieHandler.getSession().getBasicDataId();
+        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
         codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         int questCount = questDAO.getCountOfDoneQuestByCodecooler(quest, codecooler);
 
