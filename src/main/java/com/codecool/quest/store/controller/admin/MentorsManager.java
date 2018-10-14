@@ -19,7 +19,6 @@ public class MentorsManager implements HttpHandler {
 
     private MentorDAO mentorDAO = new DbMentorDAO(new ConnectionFactory().getConnection());
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
-    private MentorsDisplayInfo displayInfo = null;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
@@ -30,18 +29,18 @@ public class MentorsManager implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
-        String method = httpExchange.getRequestMethod();
-        displayInfo = new MentorsDisplayInfo();
+        MentorsDisplayInfo displayInfo = new MentorsDisplayInfo();
 
+        String method = httpExchange.getRequestMethod();
         if (method.equals("POST")) {
-            handlePost(httpExchange);
+            handlePost(httpExchange, displayInfo);
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(displayInfo).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private void handlePost(HttpExchange httpExchange, MentorsDisplayInfo displayInfo) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         if (inputs.containsKey("show_all")) {
@@ -57,7 +56,7 @@ public class MentorsManager implements HttpHandler {
         }
     }
 
-    private String getResponse() {
+    private String getResponse(MentorsDisplayInfo displayInfo) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentors_manager.twig");
         JtwigModel model = JtwigModel.newModel();
         List<String> classes = classDAO.getClassesNames();
