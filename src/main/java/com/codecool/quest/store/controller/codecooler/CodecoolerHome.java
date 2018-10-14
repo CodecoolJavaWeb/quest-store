@@ -21,9 +21,6 @@ public class CodecoolerHome implements HttpHandler {
     private LevelDAO levelDAO = new DbLevelDAO(new ConnectionFactory().getConnection());
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
-    private Codecooler codecooler = null;
-    private Set<Artifact> artifacts = null;
-    private Set<Quest> quests = null;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
@@ -41,10 +38,10 @@ public class CodecoolerHome implements HttpHandler {
     private String getResponse(HttpExchange httpExchange) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_home.twig");
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
+        Codecooler codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
         String levelName = levelDAO.getLevelNameByValue(codecooler.getExp());
-        artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);
-        quests = questDAO.getDoneQuestsByCodecooler(codecooler);
+        Set<Artifact> artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);
+        Set<Quest> quests = questDAO.getDoneQuestsByCodecooler(codecooler);
 
         JtwigModel model = JtwigModel.newModel();
         model.with("codecooler", codecooler);
