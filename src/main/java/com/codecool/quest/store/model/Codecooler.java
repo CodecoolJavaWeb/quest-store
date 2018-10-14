@@ -47,6 +47,10 @@ public class Codecooler  {
         }
     }
 
+    public boolean isInTeam() {
+        return !this.teamName.isEmpty();
+    }
+
     public int getId() {
         return id;
     }
