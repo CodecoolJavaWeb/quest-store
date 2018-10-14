@@ -23,7 +23,6 @@ public class MentorEditor implements HttpHandler {
     private MentorDAO mentorDAO = new DbMentorDAO(new ConnectionFactory().getConnection());
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
     private View view = new View();
-    private Mentor mentor = null;
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
@@ -33,24 +32,23 @@ public class MentorEditor implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
+        Mentor mentor = getMentor(httpExchange);
 
         String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
-            handlePost(httpExchange);
-        } else {
-            handleGet(httpExchange);
+            handlePost(httpExchange, mentor);
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(mentor).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handleGet (HttpExchange httpExchange) {
+    private Mentor getMentor(HttpExchange httpExchange) {
         int mentorId = new Utils().getIdFromURI(httpExchange);
-        mentor = mentorDAO.getMentorById(mentorId);
+        return mentorDAO.getMentorById(mentorId);
     }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private void handlePost(HttpExchange httpExchange, Mentor mentor) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         mentor.getBasicUserData().setFirstName(inputs.get("firstName"));
@@ -60,7 +58,7 @@ public class MentorEditor implements HttpHandler {
         mentorDAO.updateMentor(mentor);
     }
 
-    private String getResponse() {
+    private String getResponse(Mentor mentor) {
         String className = mentor.getClassName();
         Set<Codecooler> codecoolersInClass = codecoolerDAO.getCodecoolersByClassName(className);
         List<String> classes = classDAO.getClassesNames();
