@@ -26,7 +26,6 @@ public class CodecoolerEditor implements HttpHandler {
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
-    private Codecooler codecooler = null;
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
 
@@ -38,24 +37,20 @@ public class CodecoolerEditor implements HttpHandler {
         }
 
         String method = httpExchange.getRequestMethod();
+        String[] URIparts = httpExchange.getRequestURI().getPath().split("/");
+        int codecoolerId = Integer.valueOf(URIparts[URIparts.length - 1]);
+        Codecooler codecooler = codecoolerDAO.getCodecoolerById(codecoolerId);
 
         if (method.equals("POST")){
-            handlePost(httpExchange);
-        } else {
-            handleGet(httpExchange.getRequestURI().getPath());
+            handlePost(httpExchange, codecooler);
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(codecooler).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handleGet (String URI) {
-        String[] URIparts = URI.split("/");
-        int codecoolerId = Integer.valueOf(URIparts[URIparts.length - 1]);
-        codecooler = codecoolerDAO.getCodecoolerById(codecoolerId);
-    }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private void handlePost(HttpExchange httpExchange, Codecooler codecooler) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         if (inputs.containsKey("add")) {
@@ -82,7 +77,7 @@ public class CodecoolerEditor implements HttpHandler {
 
     }
 
-    private String getResponse() {
+    private String getResponse(Codecooler codecooler) {
         String className = codecooler.getClassName();
         List<String> classes = classDAO.getClassesNames();
         Set<Quest> quests = questDAO.getAllQuests();

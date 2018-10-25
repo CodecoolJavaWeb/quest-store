@@ -21,11 +21,14 @@ public class ArtifactEditor implements HttpHandler {
 
     private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
     private View view = new View();
-    private Artifact artifact = null;
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
+
+        int artifactId = new Utils().getIdFromURI(httpExchange);
+        Artifact artifact = artifactDAO.getArtifactById(artifactId);
+
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
             view.redirectToPath(httpExchange, "/");
@@ -33,21 +36,15 @@ public class ArtifactEditor implements HttpHandler {
 
         String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
-            handlePost(httpExchange);
-        } else {
-            handleGet(httpExchange);
+            handlePost(httpExchange, artifact);
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(artifact).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handleGet (HttpExchange httpExchange) {
-        int artifactId = new Utils().getIdFromURI(httpExchange);
-        artifact = artifactDAO.getArtifactById(artifactId);
-    }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private void handlePost(HttpExchange httpExchange, Artifact artifact) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         artifact.setName(inputs.get("artifactName"));
@@ -59,7 +56,7 @@ public class ArtifactEditor implements HttpHandler {
 
     }
 
-    private String getResponse() {
+    private String getResponse(Artifact artifact) {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/artifact_editor.twig");
         JtwigModel model = JtwigModel.newModel();

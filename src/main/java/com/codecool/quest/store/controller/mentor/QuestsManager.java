@@ -34,21 +34,9 @@ public class QuestsManager implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
-        String method = httpExchange.getRequestMethod();
-        if (method.equals("POST")) {
-            handlePost(httpExchange);
-        }
-
         byte[] responseBytes = getResponse().getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
-
-    private void handlePost(HttpExchange httpExchange) throws IOException {
-        Map<String, String> inputs = new Utils().parseFormData(httpExchange);
-
-    }
-
-
 
     private String getResponse() {
         Set<Quest> quests = questDAO.getAllQuests();

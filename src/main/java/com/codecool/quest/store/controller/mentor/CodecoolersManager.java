@@ -18,11 +18,9 @@ import java.util.Map;
 
 public class CodecoolersManager implements HttpHandler {
 
-    private Mentor mentor = null;
     private MentorDAO mentorDAO = new DbMentorDAO(new ConnectionFactory().getConnection());
     private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
     private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
-    private CodecoolersDisplayInfo displayInfo = null;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
@@ -33,21 +31,25 @@ public class CodecoolersManager implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
+
+
+        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
+        Mentor mentor = mentorDAO.getMentorByBasicDataId(basicDataId);
+        CodecoolersDisplayInfo displayInfo = new CodecoolersDisplayInfo();
+
         String method = httpExchange.getRequestMethod();
-        displayInfo = new CodecoolersDisplayInfo();
 
         if (method.equals("POST")) {
-            handlePost(httpExchange);
+            handlePost(httpExchange, displayInfo, mentor);
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(displayInfo).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private void handlePost(HttpExchange httpExchange, CodecoolersDisplayInfo displayInfo, Mentor mentor) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
-        int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        mentor = mentorDAO.getMentorByBasicDataId(basicDataId);
+
         String className = mentor.getClassName();
 
         if (inputs.containsKey("show_mentor_students")) {
@@ -62,7 +64,7 @@ public class CodecoolersManager implements HttpHandler {
         }
     }
 
-    private String getResponse() {
+    private String getResponse(CodecoolersDisplayInfo displayInfo) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecoolers_manager.twig");
         JtwigModel model = JtwigModel.newModel();
         List<String> classes = classDAO.getClassesNames();

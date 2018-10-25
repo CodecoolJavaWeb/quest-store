@@ -21,7 +21,6 @@ public class QuestEditor implements HttpHandler {
 
     private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
     private View view = new View();
-    private Quest quest = null;
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
 
     @Override
@@ -31,23 +30,20 @@ public class QuestEditor implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
+        int questId = new Utils().getIdFromURI(httpExchange);
+        Quest quest = questDAO.getQuestById(questId);
+
         String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
-            handlePost(httpExchange);
-        } else {
-            handleGet(httpExchange);
+            handlePost(httpExchange, quest);
         }
 
-        byte[] responseBytes = getResponse().getBytes();
+        byte[] responseBytes = getResponse(quest).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private void handleGet (HttpExchange httpExchange) {
-        int questId = new Utils().getIdFromURI(httpExchange);
-        quest = questDAO.getQuestById(questId);
-    }
 
-    private void handlePost(HttpExchange httpExchange) throws IOException {
+    private void handlePost(HttpExchange httpExchange, Quest quest) throws IOException {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         quest.setName(inputs.get("questName"));
@@ -59,7 +55,7 @@ public class QuestEditor implements HttpHandler {
 
     }
 
-    private String getResponse() {
+    private String getResponse(Quest quest) {
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quest_editor.twig");
         JtwigModel model = JtwigModel.newModel();
