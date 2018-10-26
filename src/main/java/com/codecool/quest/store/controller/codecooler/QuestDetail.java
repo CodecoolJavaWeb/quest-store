@@ -16,10 +16,15 @@ import java.io.IOException;
 
 public class QuestDetail implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
+    private CodecoolerDAO codecoolerDAO;
+    private QuestDAO questDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public QuestDetail(DAOFactory daoFactory) {
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.questDAO = daoFactory.getQuestDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

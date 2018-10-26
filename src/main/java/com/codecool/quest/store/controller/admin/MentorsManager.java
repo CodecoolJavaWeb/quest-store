@@ -17,10 +17,15 @@ import java.util.Map;
 
 public class MentorsManager implements HttpHandler {
 
-    private MentorDAO mentorDAO = new DbMentorDAO(new ConnectionFactory().getConnection());
-    private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
+    private MentorDAO mentorDAO;
+    private ClassDAO classDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public MentorsManager(DAOFactory daoFactory) {
+        this.mentorDAO = daoFactory.getMentorDAO();
+        this.classDAO = daoFactory.getClassDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

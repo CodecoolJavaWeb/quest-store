@@ -1,6 +1,7 @@
 package com.codecool.quest.store.controller;
 
 import com.codecool.quest.store.controller.dao.ConnectionFactory;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.dao.DbSessionDAO;
 import com.codecool.quest.store.controller.dao.SessionDAO;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -12,8 +13,12 @@ import java.io.IOException;
 
 public class Logout implements HttpHandler {
 
-    private SessionDAO sessionDAO = new DbSessionDAO(new ConnectionFactory().getConnection());
+    private SessionDAO sessionDAO;
     private View view = new View();
+
+    public Logout(DAOFactory daoFactory) {
+        this.sessionDAO = daoFactory.getSessionDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

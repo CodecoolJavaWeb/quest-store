@@ -18,8 +18,13 @@ import java.util.UUID;
 
 public class Login implements HttpHandler {
 
-    private LoginDAO loginDAO = new DbLoginDAO(new ConnectionFactory().getConnection());
-    private SessionDAO sessionDAO = new DbSessionDAO(new ConnectionFactory().getConnection());
+    private LoginDAO loginDAO;
+    private SessionDAO sessionDAO;
+
+    public Login(DAOFactory daoFactory) {
+        this.loginDAO = daoFactory.getLoginDAO();
+        this.sessionDAO = daoFactory.getSessionDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

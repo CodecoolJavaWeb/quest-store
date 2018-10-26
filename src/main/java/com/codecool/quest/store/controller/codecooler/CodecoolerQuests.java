@@ -1,7 +1,5 @@
 package com.codecool.quest.store.controller.codecooler;
-
-import com.codecool.quest.store.controller.dao.ConnectionFactory;
-import com.codecool.quest.store.controller.dao.DbQuestDAO;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.dao.QuestDAO;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -21,9 +19,14 @@ public class CodecoolerQuests implements HttpHandler {
     private final String questLink = "/quest_detail";
     private final String navLink = "codecooler_nav.twig";
 
-    private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
+    private QuestDAO questDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public CodecoolerQuests(DAOFactory daoFactory) {
+        this.questDAO = daoFactory.getQuestDAO();
+
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

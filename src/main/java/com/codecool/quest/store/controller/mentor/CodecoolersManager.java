@@ -18,11 +18,17 @@ import java.util.Map;
 
 public class CodecoolersManager implements HttpHandler {
 
-    private MentorDAO mentorDAO = new DbMentorDAO(new ConnectionFactory().getConnection());
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
+    private MentorDAO mentorDAO;
+    private CodecoolerDAO codecoolerDAO;
+    private ClassDAO classDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public CodecoolersManager(DAOFactory daoFactory) {
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.mentorDAO = daoFactory.getMentorDAO();
+        this.classDAO = daoFactory.getClassDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

@@ -1,8 +1,7 @@
 package com.codecool.quest.store.controller.admin;
 
 import com.codecool.quest.store.controller.dao.ClassDAO;
-import com.codecool.quest.store.controller.dao.ConnectionFactory;
-import com.codecool.quest.store.controller.dao.DbClassDAO;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,9 +17,13 @@ import java.util.Map;
 
 public class ClassesManager implements HttpHandler {
 
-    private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
+    private ClassDAO classDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public ClassesManager(DAOFactory daoFactory) {
+        this.classDAO = daoFactory.getClassDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

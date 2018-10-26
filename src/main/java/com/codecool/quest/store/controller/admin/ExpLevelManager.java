@@ -1,7 +1,6 @@
 package com.codecool.quest.store.controller.admin;
 
-import com.codecool.quest.store.controller.dao.ConnectionFactory;
-import com.codecool.quest.store.controller.dao.DbLevelDAO;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.dao.LevelDAO;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -19,9 +18,13 @@ import java.util.Set;
 
 public class ExpLevelManager implements HttpHandler {
 
-    private LevelDAO levelDAO = new DbLevelDAO(new ConnectionFactory().getConnection());
+    private LevelDAO levelDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public ExpLevelManager(DAOFactory daoFactory) {
+        this.levelDAO = daoFactory.getLevelDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
