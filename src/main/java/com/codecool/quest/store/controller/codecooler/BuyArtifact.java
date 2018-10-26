@@ -1,5 +1,6 @@
 package com.codecool.quest.store.controller.codecooler;
 
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.view.View;
@@ -12,8 +13,14 @@ import java.io.IOException;
 
 public class BuyArtifact implements HttpHandler {
 
+    private DAOFactory daoFactory;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public BuyArtifact(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
+
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -22,7 +29,7 @@ public class BuyArtifact implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
-        TransactionHandler transactionHandler = new TransactionHandler(httpExchange, sessionCookieHandler);
+        TransactionHandler transactionHandler = new TransactionHandler(httpExchange, sessionCookieHandler, daoFactory);
 
         String method = httpExchange.getRequestMethod();
         if (method.equals("POST")) {

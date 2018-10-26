@@ -17,12 +17,19 @@ import java.util.Set;
 
 public class CodecoolerHome implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private LevelDAO levelDAO = new DbLevelDAO(new ConnectionFactory().getConnection());
-    private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
-    private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
+    private CodecoolerDAO codecoolerDAO;
+    private LevelDAO levelDAO;
+    private ArtifactDAO artifactDAO;
+    private QuestDAO questDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public CodecoolerHome(DAOFactory daoFactory) {
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.questDAO = daoFactory.getQuestDAO();
+        this.artifactDAO = daoFactory.getArtifactDAO();
+        this.levelDAO = daoFactory.getLevelDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

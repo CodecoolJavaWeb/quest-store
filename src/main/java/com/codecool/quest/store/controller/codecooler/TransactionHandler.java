@@ -12,15 +12,18 @@ import java.util.Set;
 
 public class TransactionHandler {
 
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
+    private CodecoolerDAO codecoolerDAO;
+    private ArtifactDAO artifactDAO;
     private Codecooler codecooler;
     private Artifact artifact;
     private Set<Codecooler> codecoolersInTeam;
     private int price;
     private boolean tooExpensive;
 
-    TransactionHandler(HttpExchange httpExchange, SessionCookieHandler sessionCookieHandler) {
+    TransactionHandler(HttpExchange httpExchange, SessionCookieHandler sessionCookieHandler, DAOFactory daoFactory) {
+
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.artifactDAO = daoFactory.getArtifactDAO();
 
         int artifactId = new Utils().getIdFromURI(httpExchange);
         this.artifact = artifactDAO.getArtifactById(artifactId);

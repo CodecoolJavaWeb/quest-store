@@ -1,8 +1,7 @@
 package com.codecool.quest.store.controller.mentor;
 
 import com.codecool.quest.store.controller.dao.ArtifactDAO;
-import com.codecool.quest.store.controller.dao.ConnectionFactory;
-import com.codecool.quest.store.controller.dao.DbArtifactDAO;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -14,13 +13,18 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.Map;
 
 public class AddArtifact implements HttpHandler {
 
-    private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
+    private ArtifactDAO artifactDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public AddArtifact(DAOFactory daoFactory) {
+        this.artifactDAO = daoFactory.getArtifactDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

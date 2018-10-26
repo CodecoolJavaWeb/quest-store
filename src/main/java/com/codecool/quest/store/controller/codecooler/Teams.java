@@ -18,10 +18,15 @@ import java.util.Set;
 
 public class Teams implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private TeamDAO teamDAO = new DbTeamDAO(new ConnectionFactory().getConnection());
+    private CodecoolerDAO codecoolerDAO;
+    private TeamDAO teamDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public Teams(DAOFactory daoFactory) {
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.teamDAO = daoFactory.getTeamDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

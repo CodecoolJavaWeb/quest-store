@@ -18,10 +18,15 @@ import java.util.Map;
 
 public class AddCodecooler implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
+    private CodecoolerDAO codecoolerDAO;
+    private ClassDAO classDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public AddCodecooler(DAOFactory daoFactory) {
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.classDAO = daoFactory.getClassDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {

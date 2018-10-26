@@ -21,12 +21,19 @@ import java.util.Set;
 
 public class CodecoolerEditor implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO = new DbCodecoolerDAO(new ConnectionFactory().getConnection());
-    private ClassDAO classDAO = new DbClassDAO(new ConnectionFactory().getConnection());
-    private QuestDAO questDAO = new DbQuestDAO(new ConnectionFactory().getConnection());
-    private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
+    private CodecoolerDAO codecoolerDAO;
+    private ClassDAO classDAO;
+    private QuestDAO questDAO;
+    private ArtifactDAO artifactDAO ;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public CodecoolerEditor(DAOFactory daoFactory) {
+        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
+        this.classDAO = daoFactory.getClassDAO();
+        this.questDAO = daoFactory.getQuestDAO();
+        this.artifactDAO = daoFactory.getArtifactDAO();
+    }
 
 
     @Override

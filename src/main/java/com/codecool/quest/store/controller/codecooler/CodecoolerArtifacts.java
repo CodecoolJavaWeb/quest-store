@@ -1,8 +1,7 @@
 package com.codecool.quest.store.controller.codecooler;
 
 import com.codecool.quest.store.controller.dao.ArtifactDAO;
-import com.codecool.quest.store.controller.dao.ConnectionFactory;
-import com.codecool.quest.store.controller.dao.DbArtifactDAO;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.model.Artifact;
@@ -21,9 +20,13 @@ public class CodecoolerArtifacts implements HttpHandler {
     private final String artifactLink = "/buy_artifact";
     private final String navLink = "codecooler_nav.twig";
 
-    private ArtifactDAO artifactDAO = new DbArtifactDAO(new ConnectionFactory().getConnection());
+    private ArtifactDAO artifactDAO;
     private View view = new View();
     private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+
+    public CodecoolerArtifacts(DAOFactory daoFactory) {
+        this.artifactDAO = daoFactory.getArtifactDAO();
+    }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
