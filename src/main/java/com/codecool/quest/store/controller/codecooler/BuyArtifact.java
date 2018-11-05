@@ -15,10 +15,11 @@ public class BuyArtifact implements HttpHandler {
 
     private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public BuyArtifact(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
 
@@ -29,26 +30,26 @@ public class BuyArtifact implements HttpHandler {
             view.redirectToPath(httpExchange, "/");
         }
 
-        TransactionHandler transactionHandler = new TransactionHandler(httpExchange, sessionCookieHandler, daoFactory);
+        GroupTransaction groupTransaction = new GroupTransaction(httpExchange, sessionCookieHandler, daoFactory);
 
         String method = httpExchange.getRequestMethod();
         if (method.equals("POST")) {
-            transactionHandler.handleTransaction();
+            groupTransaction.handleTransaction();
             view.redirectToPath(httpExchange,"/codecooler_artifacts");
         }
 
-        byte[] responseBytes = getResponse(transactionHandler).getBytes();
+        byte[] responseBytes = getResponse(groupTransaction).getBytes();
         view.sendResponse(httpExchange, responseBytes);
     }
 
-    private String getResponse(TransactionHandler transactionHandler) {
+    private String getResponse(GroupTransaction groupTransaction) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/buy_artifact.twig");
         JtwigModel model = JtwigModel.newModel();
 
-        model.with("codecooler", transactionHandler.getCodecooler());
-        model.with("artifact", transactionHandler.getArtifact());
-        model.with("price", transactionHandler.getPrice());
-        model.with("tooExpensive", transactionHandler.isTooExpensive());
+        model.with("codecooler", groupTransaction.getCodecooler());
+        model.with("artifact", groupTransaction.getArtifact());
+        model.with("price", groupTransaction.getPrice());
+        model.with("tooExpensive", groupTransaction.isTooExpensive());
         return template.render(model);
     }
 }

@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Session;
@@ -18,12 +18,10 @@ import java.util.UUID;
 
 public class Login implements HttpHandler {
 
-    private LoginDAO loginDAO;
-    private SessionDAO sessionDAO;
+    private DAOFactory daoFactory;
 
     public Login(DAOFactory daoFactory) {
-        this.loginDAO = daoFactory.getLoginDAO();
-        this.sessionDAO = daoFactory.getSessionDAO();
+        this.daoFactory = daoFactory;
     }
 
     @Override
@@ -69,16 +67,16 @@ public class Login implements HttpHandler {
     private boolean isPasswordCorrect(Map<String, String> inputs) {
         String email = inputs.get("email");
         String givenPassword = inputs.get("password");
-        String savedPassword = loginDAO.getPasswordByEmail(email);
+        String savedPassword = daoFactory.getLoginDAO().getPasswordByEmail(email);
         return givenPassword.equals(savedPassword);
     }
 
     private Session createNewSession (Map<String, String> inputs, String sessionId) {
         String email = inputs.get("email");
-        int basicDataId = loginDAO.getIdByEmail(email);
-        AccountType accountType = loginDAO.getAccountTypeById(basicDataId);
+        int basicDataId = daoFactory.getLoginDAO().getIdByEmail(email);
+        AccountType accountType = daoFactory.getLoginDAO().getAccountTypeById(basicDataId);
         Session session = new Session(sessionId, basicDataId, accountType);
-        sessionDAO.addSession(session);
+        daoFactory.getSessionDAO().addSession(session);
         return session;
     }
 

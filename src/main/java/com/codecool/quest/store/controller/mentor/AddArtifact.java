@@ -1,6 +1,5 @@
 package com.codecool.quest.store.controller.mentor;
 
-import com.codecool.quest.store.controller.dao.ArtifactDAO;
 import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -13,17 +12,16 @@ import org.jtwig.JtwigModel;
 import org.jtwig.JtwigTemplate;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.util.Map;
 
 public class AddArtifact implements HttpHandler {
 
-    private ArtifactDAO artifactDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler(daoFactory);
 
     public AddArtifact(DAOFactory daoFactory) {
-        this.artifactDAO = daoFactory.getArtifactDAO();
+        this.daoFactory = daoFactory;
     }
 
     @Override
@@ -51,7 +49,7 @@ public class AddArtifact implements HttpHandler {
         artifact.setDescription(inputs.get("description"));
         artifact.setPrice(Integer.valueOf(inputs.get("price")));
         artifact.setMagic(Boolean.valueOf(inputs.get("artifactType")));
-        artifactDAO.addArtifact(artifact);
+        daoFactory.getArtifactDAO().addArtifact(artifact);
 
         httpExchange.getResponseHeaders().set("Location", "/artifacts_manager");
         httpExchange.sendResponseHeaders(302, 0);

@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.mentor;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -21,20 +21,14 @@ import java.util.Set;
 
 public class CodecoolerEditor implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO;
-    private ClassDAO classDAO;
-    private QuestDAO questDAO;
-    private ArtifactDAO artifactDAO ;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public CodecoolerEditor(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.classDAO = daoFactory.getClassDAO();
-        this.questDAO = daoFactory.getQuestDAO();
-        this.artifactDAO = daoFactory.getArtifactDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
-
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -46,7 +40,7 @@ public class CodecoolerEditor implements HttpHandler {
         String method = httpExchange.getRequestMethod();
         String[] URIparts = httpExchange.getRequestURI().getPath().split("/");
         int codecoolerId = Integer.valueOf(URIparts[URIparts.length - 1]);
-        Codecooler codecooler = codecoolerDAO.getCodecoolerById(codecoolerId);
+        Codecooler codecooler = daoFactory.getCodecoolerDAO().getCodecoolerById(codecoolerId);
 
         if (method.equals("POST")){
             handlePost(httpExchange, codecooler);
@@ -63,32 +57,32 @@ public class CodecoolerEditor implements HttpHandler {
         if (inputs.containsKey("add")) {
 
             int questId = Integer.valueOf(inputs.get("addQuest"));
-            Quest doneQuest = questDAO.getQuestById(questId);
-            questDAO.addDoneQuestByCodecooler(doneQuest, codecooler);
+            Quest doneQuest = daoFactory.getQuestDAO().getQuestById(questId);
+            daoFactory.getQuestDAO().addDoneQuestByCodecooler(doneQuest, codecooler);
             codecooler.setExp(codecooler.getExp() + doneQuest.getValue());
             codecooler.setBalance(codecooler.getBalance() + doneQuest.getValue());
-            codecoolerDAO.updateCodecooler(codecooler);
+            daoFactory.getCodecoolerDAO().updateCodecooler(codecooler);
         }
         else if (inputs.containsKey("use")) {
             int artifactId = Integer.valueOf(inputs.get("usedArtifact"));
-                Artifact usedArtifact = artifactDAO.getArtifactById(artifactId);
-                artifactDAO.removeUsedArtifactByCodecooler(usedArtifact, codecooler);
+                Artifact usedArtifact = daoFactory.getArtifactDAO().getArtifactById(artifactId);
+                daoFactory.getArtifactDAO().removeUsedArtifactByCodecooler(usedArtifact, codecooler);
         }
         else {
             codecooler.getBasicUserData().setFirstName(inputs.get("firstName"));
             codecooler.getBasicUserData().setLastName(inputs.get("lastName"));
             codecooler.getBasicUserData().setEmail(inputs.get("email"));
             codecooler.setClassName(inputs.get("className"));
-            codecoolerDAO.updateCodecooler(codecooler);
+            daoFactory.getCodecoolerDAO().updateCodecooler(codecooler);
         }
 
     }
 
     private String getResponse(Codecooler codecooler) {
         String className = codecooler.getClassName();
-        List<String> classes = classDAO.getClassesNames();
-        Set<Quest> quests = questDAO.getAllQuests();
-        Set<Artifact> artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
+        Set<Quest> quests = daoFactory.getQuestDAO().getAllQuests();
+        Set<Artifact> artifacts = daoFactory.getArtifactDAO().getBoughtArtifactsByCodecooler(codecooler);
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_editor.twig");
         JtwigModel model = JtwigModel.newModel();

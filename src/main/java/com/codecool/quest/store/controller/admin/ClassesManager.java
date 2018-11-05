@@ -1,6 +1,5 @@
 package com.codecool.quest.store.controller.admin;
 
-import com.codecool.quest.store.controller.dao.ClassDAO;
 import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -17,12 +16,13 @@ import java.util.Map;
 
 public class ClassesManager implements HttpHandler {
 
-    private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public ClassesManager(DAOFactory daoFactory) {
-        this.classDAO = daoFactory.getClassDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -47,14 +47,14 @@ public class ClassesManager implements HttpHandler {
         if (inputs.containsKey("delete")) {
             deleteClasses(inputs);
         } else if (inputs.containsKey("add")) {
-            classDAO.addClass(inputs.get("className"));
+            daoFactory.getClassDAO().addClass(inputs.get("className"));
         }
     }
 
     private void deleteClasses(Map<String, String> inputs) {
         inputs.keySet().forEach(key -> {
             if (!key.equals("delete")) {
-                classDAO.deleteClass(inputs.get(key));
+                daoFactory.getClassDAO().deleteClass(inputs.get(key));
             }
         });
     }
@@ -62,7 +62,7 @@ public class ClassesManager implements HttpHandler {
     private String getResponse() {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/classes_manager.twig");
         JtwigModel model = JtwigModel.newModel();
-        List<String> classes = classDAO.getClassesNames();
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
         model.with("classes", classes);
         return template.render(model);
     }

@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.codecooler;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -16,14 +16,13 @@ import java.io.IOException;
 
 public class QuestDetail implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO;
-    private QuestDAO questDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public QuestDetail(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.questDAO = daoFactory.getQuestDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -40,10 +39,10 @@ public class QuestDetail implements HttpHandler {
     private String getResponse(HttpExchange httpExchange) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quest_detail.twig");
         int questId = new Utils().getIdFromURI(httpExchange);
-        Quest quest = questDAO.getQuestById(questId);
+        Quest quest = daoFactory.getQuestDAO().getQuestById(questId);
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        Codecooler codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
-        int questCount = questDAO.getCountOfDoneQuestByCodecooler(quest, codecooler);
+        Codecooler codecooler = daoFactory.getCodecoolerDAO().getCodecoolerByBasicDataId(basicDataId);
+        int questCount = daoFactory.getQuestDAO().getCountOfDoneQuestByCodecooler(quest, codecooler);
 
         JtwigModel model = JtwigModel.newModel();
         model.with("quest", quest);

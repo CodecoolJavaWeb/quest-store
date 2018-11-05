@@ -1,6 +1,5 @@
 package com.codecool.quest.store.controller.codecooler;
 
-import com.codecool.quest.store.controller.dao.ArtifactDAO;
 import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -20,12 +19,13 @@ public class CodecoolerArtifacts implements HttpHandler {
     private final String artifactLink = "/buy_artifact";
     private final String navLink = "codecooler_nav.twig";
 
-    private ArtifactDAO artifactDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public CodecoolerArtifacts(DAOFactory daoFactory) {
-        this.artifactDAO = daoFactory.getArtifactDAO();
+        this.daoFactory= daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CodecoolerArtifacts implements HttpHandler {
 
     private String getResponse() {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/artifacts.twig");
-        Set<Artifact> artifacts = artifactDAO.getAllArtifacts();
+        Set<Artifact> artifacts = daoFactory.getArtifactDAO().getAllArtifacts();
 
         JtwigModel model = JtwigModel.newModel();
         model.with("displayStyle", displayStyle);

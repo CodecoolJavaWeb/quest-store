@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.admin;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -19,16 +19,13 @@ import java.util.Set;
 
 public class MentorEditor implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO;
-    private MentorDAO mentorDAO;
-    private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public MentorEditor(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.mentorDAO = daoFactory.getMentorDAO();
-        this.classDAO = daoFactory.getClassDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -51,7 +48,7 @@ public class MentorEditor implements HttpHandler {
 
     private Mentor getMentor(HttpExchange httpExchange) {
         int mentorId = new Utils().getIdFromURI(httpExchange);
-        return mentorDAO.getMentorById(mentorId);
+        return daoFactory.getMentorDAO().getMentorById(mentorId);
     }
 
     private void handlePost(HttpExchange httpExchange, Mentor mentor) throws IOException {
@@ -61,13 +58,13 @@ public class MentorEditor implements HttpHandler {
         mentor.getBasicUserData().setLastName(inputs.get("lastName"));
         mentor.getBasicUserData().setEmail(inputs.get("email"));
         mentor.setClassName(inputs.get("className"));
-        mentorDAO.updateMentor(mentor);
+        daoFactory.getMentorDAO().updateMentor(mentor);
     }
 
     private String getResponse(Mentor mentor) {
         String className = mentor.getClassName();
-        Set<Codecooler> codecoolersInClass = codecoolerDAO.getCodecoolersByClassName(className);
-        List<String> classes = classDAO.getClassesNames();
+        Set<Codecooler> codecoolersInClass = daoFactory.getCodecoolerDAO().getCodecoolersByClassName(className);
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentor_editor.twig");
         JtwigModel model = JtwigModel.newModel();

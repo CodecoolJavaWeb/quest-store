@@ -1,8 +1,6 @@
 package com.codecool.quest.store.controller.helpers;
 
-import com.codecool.quest.store.controller.dao.ConnectionFactory;
-import com.codecool.quest.store.controller.dao.DbSessionDAO;
-import com.codecool.quest.store.controller.dao.SessionDAO;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.model.Session;
 import com.sun.net.httpserver.HttpExchange;
 
@@ -11,7 +9,12 @@ import java.util.List;
 
 public class SessionCookieHandler {
 
-    private SessionDAO sessionDAO = new DbSessionDAO(new ConnectionFactory().getConnection());
+    private DAOFactory daoFactory;
+
+
+    public SessionCookieHandler(DAOFactory daoFactory) {
+        this.daoFactory = daoFactory;
+    }
 
     public String getSessionIdFromCookie(String cookieStr) {
         String[] cookieStrings = cookieStr.split("; ");
@@ -35,6 +38,6 @@ public class SessionCookieHandler {
     public Session getSession(HttpExchange httpExchange) {
         String cookieStr = httpExchange.getRequestHeaders().getFirst("Cookie");
         String sessionId = getSessionIdFromCookie(cookieStr);
-        return sessionDAO.getSession(sessionId);
+        return daoFactory.getSessionDAO().getSession(sessionId);
     }
 }

@@ -1,7 +1,6 @@
 package com.codecool.quest.store.controller.mentor;
 
 import com.codecool.quest.store.controller.dao.DAOFactory;
-import com.codecool.quest.store.controller.dao.QuestDAO;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.model.Quest;
@@ -20,12 +19,13 @@ public class QuestsManager implements HttpHandler {
     private final String questLink = "/quest_editor";
     private final String navLink = "mentor_nav.twig";
 
-    private QuestDAO questDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public QuestsManager(DAOFactory daoFactory) {
-        this.questDAO = daoFactory.getQuestDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class QuestsManager implements HttpHandler {
     }
 
     private String getResponse() {
-        Set<Quest> quests = questDAO.getAllQuests();
+        Set<Quest> quests = daoFactory.getQuestDAO().getAllQuests();
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests.twig");
         JtwigModel model = JtwigModel.newModel();
