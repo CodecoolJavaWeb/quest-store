@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.mentor;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,16 +18,13 @@ import java.util.Map;
 
 public class CodecoolersManager implements HttpHandler {
 
-    private MentorDAO mentorDAO;
-    private CodecoolerDAO codecoolerDAO;
-    private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public CodecoolersManager(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.mentorDAO = daoFactory.getMentorDAO();
-        this.classDAO = daoFactory.getClassDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -40,7 +37,7 @@ public class CodecoolersManager implements HttpHandler {
 
 
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        Mentor mentor = mentorDAO.getMentorByBasicDataId(basicDataId);
+        Mentor mentor = daoFactory.getMentorDAO().getMentorByBasicDataId(basicDataId);
         CodecoolersDisplayInfo displayInfo = new CodecoolersDisplayInfo();
 
         String method = httpExchange.getRequestMethod();
@@ -59,21 +56,21 @@ public class CodecoolersManager implements HttpHandler {
         String className = mentor.getClassName();
 
         if (inputs.containsKey("show_mentor_students")) {
-            displayInfo.setCodecoolers(codecoolerDAO.getCodecoolersByClassName(className));
+            displayInfo.setCodecoolers(daoFactory.getCodecoolerDAO().getCodecoolersByClassName(className));
 
         } else if (inputs.containsKey("show_all_students")) {
-            displayInfo.setCodecoolers(codecoolerDAO.getAllCodecoolers());
+            displayInfo.setCodecoolers(daoFactory.getCodecoolerDAO().getAllCodecoolers());
 
         } else if (inputs.containsKey("search")) {
             displayInfo.setSearchTerm(inputs.get("search_field"));
-            displayInfo.setCodecoolers(codecoolerDAO.getCodecoolersBySearchTerm(displayInfo.getSearchTerm()));
+            displayInfo.setCodecoolers(daoFactory.getCodecoolerDAO().getCodecoolersBySearchTerm(displayInfo.getSearchTerm()));
         }
     }
 
     private String getResponse(CodecoolersDisplayInfo displayInfo) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecoolers_manager.twig");
         JtwigModel model = JtwigModel.newModel();
-        List<String> classes = classDAO.getClassesNames();
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
         model.with("classes", classes);
         model.with("codecoolers", displayInfo.getCodecoolers());
         model.with("className", displayInfo.getClassName());

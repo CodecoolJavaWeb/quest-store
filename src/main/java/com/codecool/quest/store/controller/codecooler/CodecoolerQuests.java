@@ -19,12 +19,13 @@ public class CodecoolerQuests implements HttpHandler {
     private final String questLink = "/quest_detail";
     private final String navLink = "codecooler_nav.twig";
 
-    private QuestDAO questDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public CodecoolerQuests(DAOFactory daoFactory) {
-        this.questDAO = daoFactory.getQuestDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
 
     }
 
@@ -41,7 +42,7 @@ public class CodecoolerQuests implements HttpHandler {
 
     private String getResponse() {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/quests.twig");
-        Set<Quest> quests = questDAO.getAllQuests();
+        Set<Quest> quests = daoFactory.getQuestDAO().getAllQuests();
 
         JtwigModel model = JtwigModel.newModel();
 

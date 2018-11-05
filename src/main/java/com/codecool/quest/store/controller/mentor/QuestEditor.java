@@ -1,7 +1,6 @@
 package com.codecool.quest.store.controller.mentor;
 
 import com.codecool.quest.store.controller.dao.DAOFactory;
-import com.codecool.quest.store.controller.dao.QuestDAO;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,12 +17,13 @@ import java.util.Map;
 
 public class QuestEditor implements HttpHandler {
 
-    private QuestDAO questDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public QuestEditor(DAOFactory daoFactory) {
-        this.questDAO = daoFactory.getQuestDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class QuestEditor implements HttpHandler {
         }
 
         int questId = new Utils().getIdFromURI(httpExchange);
-        Quest quest = questDAO.getQuestById(questId);
+        Quest quest = daoFactory.getQuestDAO().getQuestById(questId);
 
         String method = httpExchange.getRequestMethod();
         if (method.equals("POST")){
@@ -54,7 +54,7 @@ public class QuestEditor implements HttpHandler {
         quest.setValue(Integer.valueOf(inputs.get("value")));
         quest.setExtra(Boolean.valueOf(inputs.get("isExtra")));
 
-        questDAO.updateQuest(quest);
+        daoFactory.getQuestDAO().updateQuest(quest);
 
     }
 

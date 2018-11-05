@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.admin;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,14 +18,13 @@ import java.util.Map;
 
 public class AddMentor implements HttpHandler {
 
-    private MentorDAO mentorDAO;
-    private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public AddMentor(DAOFactory daoFactory) {
-        this.mentorDAO = daoFactory.getMentorDAO();
-        this.classDAO = daoFactory.getClassDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -56,14 +55,14 @@ public class AddMentor implements HttpHandler {
         basicUserData.setPassword("password");
         mentor.setBasicUserData(basicUserData);
         mentor.setClassName(inputs.get("className"));
-        mentorDAO.addMentor(mentor);
+        daoFactory.getMentorDAO().addMentor(mentor);
 
         httpExchange.getResponseHeaders().set("Location", "/mentors_manager");
         httpExchange.sendResponseHeaders(302, 0);
     }
 
     private String getResponse() {
-        List<String> classes = classDAO.getClassesNames();
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/add_new_mentor.twig");
         JtwigModel model = JtwigModel.newModel();
@@ -72,3 +71,4 @@ public class AddMentor implements HttpHandler {
         return template.render(model);
     }
 }
+

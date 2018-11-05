@@ -1,7 +1,6 @@
 package com.codecool.quest.store.controller.admin;
 
 import com.codecool.quest.store.controller.dao.DAOFactory;
-import com.codecool.quest.store.controller.dao.LevelDAO;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,12 +17,13 @@ import java.util.Set;
 
 public class ExpLevelManager implements HttpHandler {
 
-    private LevelDAO levelDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public ExpLevelManager(DAOFactory daoFactory) {
-        this.levelDAO = daoFactory.getLevelDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -46,11 +46,11 @@ public class ExpLevelManager implements HttpHandler {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         if (inputs.containsKey("save")) {
-            levelDAO.updateLevel(createLevelFromInputs(inputs));
+            daoFactory.getLevelDAO().updateLevel(createLevelFromInputs(inputs));
         } else if (inputs.containsKey("add")) {
-            levelDAO.addLevel(createLevelFromInputs(inputs));
+            daoFactory.getLevelDAO().addLevel(createLevelFromInputs(inputs));
         } else if (inputs.containsKey("delete")) {
-            levelDAO.deleteLevel(Integer.valueOf(inputs.get("levelId")));
+            daoFactory.getLevelDAO().deleteLevel(Integer.valueOf(inputs.get("levelId")));
         }
     }
 
@@ -68,7 +68,7 @@ public class ExpLevelManager implements HttpHandler {
     private String getResponse() {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/exp_level_manager.twig");
         JtwigModel model = JtwigModel.newModel();
-        Set<Level> levels = levelDAO.getAllLevels();
+        Set<Level> levels = daoFactory.getLevelDAO().getAllLevels();
         model.with("levels", levels);
         return template.render(model);
     }

@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.codecooler;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.model.Artifact;
@@ -17,18 +17,13 @@ import java.util.Set;
 
 public class CodecoolerHome implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO;
-    private LevelDAO levelDAO;
-    private ArtifactDAO artifactDAO;
-    private QuestDAO questDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public CodecoolerHome(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.questDAO = daoFactory.getQuestDAO();
-        this.artifactDAO = daoFactory.getArtifactDAO();
-        this.levelDAO = daoFactory.getLevelDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -45,10 +40,10 @@ public class CodecoolerHome implements HttpHandler {
     private String getResponse(HttpExchange httpExchange) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/codecooler_home.twig");
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        Codecooler codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
-        String levelName = levelDAO.getLevelNameByValue(codecooler.getExp());
-        Set<Artifact> artifacts = artifactDAO.getBoughtArtifactsByCodecooler(codecooler);
-        Set<Quest> quests = questDAO.getDoneQuestsByCodecooler(codecooler);
+        Codecooler codecooler = daoFactory.getCodecoolerDAO().getCodecoolerByBasicDataId(basicDataId);
+        String levelName = daoFactory.getLevelDAO().getLevelNameByValue(codecooler.getExp());
+        Set<Artifact> artifacts = daoFactory.getArtifactDAO().getBoughtArtifactsByCodecooler(codecooler);
+        Set<Quest> quests = daoFactory.getQuestDAO().getDoneQuestsByCodecooler(codecooler);
 
         JtwigModel model = JtwigModel.newModel();
         model.with("codecooler", codecooler);

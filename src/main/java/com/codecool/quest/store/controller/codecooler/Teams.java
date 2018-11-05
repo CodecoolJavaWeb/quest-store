@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.codecooler;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,14 +18,13 @@ import java.util.Set;
 
 public class Teams implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO;
-    private TeamDAO teamDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public Teams(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.teamDAO = daoFactory.getTeamDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class Teams implements HttpHandler {
 
     private Codecooler getCodecooler(HttpExchange httpExchange) {
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        return codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
+        return daoFactory.getCodecoolerDAO().getCodecoolerByBasicDataId(basicDataId);
     }
 
     private void handlePost(HttpExchange httpExchange, Codecooler codecooler) throws IOException {
@@ -58,16 +57,16 @@ public class Teams implements HttpHandler {
             Team team = new Team();
             team.setName(inputs.get("newTeamName"));
             team.setClassName(codecooler.getClassName());
-            teamDAO.addTeam(team);
+            daoFactory.getTeamDAO().addTeam(team);
         } else if (inputs.containsKey("join")) {
             codecooler.setTeamName(inputs.get("join"));
-            codecoolerDAO.updateCodecooler(codecooler);
+            daoFactory.getCodecoolerDAO().updateCodecooler(codecooler);
         }
     }
 
     private String getResponse(Codecooler codecooler) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/teams.twig");
-        Set<Team> teams = teamDAO.getTeamsByClassName(codecooler.getClassName());
+        Set<Team> teams = daoFactory.getTeamDAO().getTeamsByClassName(codecooler.getClassName());
 
         JtwigModel model = JtwigModel.newModel();
         model.with("currentTeam", codecooler.getTeamName());

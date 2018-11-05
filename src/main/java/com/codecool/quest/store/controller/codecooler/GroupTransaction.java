@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.codecooler;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
 import com.codecool.quest.store.model.Artifact;
@@ -10,26 +10,24 @@ import com.sun.net.httpserver.HttpExchange;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TransactionHandler {
+public class GroupTransaction {
 
-    private CodecoolerDAO codecoolerDAO;
-    private ArtifactDAO artifactDAO;
+    private DAOFactory daoFactory;
     private Codecooler codecooler;
     private Artifact artifact;
     private Set<Codecooler> codecoolersInTeam;
     private int price;
     private boolean tooExpensive;
 
-    TransactionHandler(HttpExchange httpExchange, SessionCookieHandler sessionCookieHandler, DAOFactory daoFactory) {
+    GroupTransaction(HttpExchange httpExchange, SessionCookieHandler sessionCookieHandler, DAOFactory daoFactory) {
 
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.artifactDAO = daoFactory.getArtifactDAO();
+        this.daoFactory = daoFactory;
 
         int artifactId = new Utils().getIdFromURI(httpExchange);
-        this.artifact = artifactDAO.getArtifactById(artifactId);
+        this.artifact = daoFactory.getArtifactDAO().getArtifactById(artifactId);
 
         int basicDataId = sessionCookieHandler.getSession(httpExchange).getBasicDataId();
-        this.codecooler = codecoolerDAO.getCodecoolerByBasicDataId(basicDataId);
+        this.codecooler = daoFactory.getCodecoolerDAO().getCodecoolerByBasicDataId(basicDataId);
 
         setCodecoolersInTeam();
 
@@ -40,7 +38,7 @@ public class TransactionHandler {
     private void setCodecoolersInTeam() {
         if (this.artifact.isMagic() && this.codecooler.isInTeam()) {
             String teamName = this.codecooler.getTeamName();
-            this.codecoolersInTeam = codecoolerDAO.getCodecoolerByTeamName(teamName);
+            this.codecoolersInTeam = daoFactory.getCodecoolerDAO().getCodecoolerByTeamName(teamName);
         } else {
             this.codecoolersInTeam = new HashSet<>();
             this.codecoolersInTeam.add(this.codecooler);
@@ -70,10 +68,10 @@ public class TransactionHandler {
     }
 
     private void addArtifactToBought(Codecooler codecooler) {
-        artifactDAO.addArtifactToBought(this.artifact, codecooler);
+        daoFactory.getArtifactDAO().addArtifactToBought(this.artifact, codecooler);
         int balance = codecooler.getBalance();
         codecooler.setBalance(balance - this.price);
-        codecoolerDAO.updateCodecooler(codecooler);
+        daoFactory.getCodecoolerDAO().updateCodecooler(codecooler);
     }
 
     Codecooler getCodecooler() {

@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.admin;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -17,14 +17,13 @@ import java.util.Map;
 
 public class MentorsManager implements HttpHandler {
 
-    private MentorDAO mentorDAO;
-    private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public MentorsManager(DAOFactory daoFactory) {
-        this.mentorDAO = daoFactory.getMentorDAO();
-        this.classDAO = daoFactory.getClassDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -49,22 +48,22 @@ public class MentorsManager implements HttpHandler {
         Map<String, String> inputs = new Utils().parseFormData(httpExchange);
 
         if (inputs.containsKey("show_all")) {
-            displayInfo.setMentors(mentorDAO.getAllMentors());
+            displayInfo.setMentors(daoFactory.getMentorDAO().getAllMentors());
 
         } else if (inputs.containsKey("show_class")) {
             displayInfo.setClassName(inputs.get("class"));
-            displayInfo.setMentors(mentorDAO.getMentorsByClass(displayInfo.getClassName()));
+            displayInfo.setMentors(daoFactory.getMentorDAO().getMentorsByClass(displayInfo.getClassName()));
 
         } else if (inputs.containsKey("search")) {
             displayInfo.setSearchTerm(inputs.get("search_field"));
-            displayInfo.setMentors(mentorDAO.getMentorsBySearchTerm(displayInfo.getSearchTerm()));
+            displayInfo.setMentors(daoFactory.getMentorDAO().getMentorsBySearchTerm(displayInfo.getSearchTerm()));
         }
     }
 
     private String getResponse(MentorsDisplayInfo displayInfo) {
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/mentors_manager.twig");
         JtwigModel model = JtwigModel.newModel();
-        List<String> classes = classDAO.getClassesNames();
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
         model.with("classes", classes);
         model.with("mentors", displayInfo.getMentors());
         model.with("className", displayInfo.getClassName());

@@ -1,6 +1,6 @@
 package com.codecool.quest.store.controller.mentor;
 
-import com.codecool.quest.store.controller.dao.*;
+import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
 import com.codecool.quest.store.controller.helpers.Utils;
@@ -18,14 +18,13 @@ import java.util.Map;
 
 public class AddCodecooler implements HttpHandler {
 
-    private CodecoolerDAO codecoolerDAO;
-    private ClassDAO classDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public AddCodecooler(DAOFactory daoFactory) {
-        this.codecoolerDAO = daoFactory.getCodecoolerDAO();
-        this.classDAO = daoFactory.getClassDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
@@ -55,14 +54,14 @@ public class AddCodecooler implements HttpHandler {
         basicUserData.setPassword("password");
         codecooler.setBasicUserData(basicUserData);
         codecooler.setClassName(inputs.get("className"));
-        codecoolerDAO.addCodecooler(codecooler);
+        daoFactory.getCodecoolerDAO().addCodecooler(codecooler);
 
         httpExchange.getResponseHeaders().set("Location", "/codecoolers_manager");
         httpExchange.sendResponseHeaders(302, 0);
     }
 
     private String getResponse() {
-        List<String> classes = classDAO.getClassesNames();
+        List<String> classes = daoFactory.getClassDAO().getClassesNames();
 
         JtwigTemplate template = JtwigTemplate.classpathTemplate("templates/add_new_codecooler.twig");
         JtwigModel model = JtwigModel.newModel();

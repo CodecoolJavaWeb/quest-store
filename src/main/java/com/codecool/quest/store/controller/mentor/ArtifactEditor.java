@@ -1,6 +1,5 @@
 package com.codecool.quest.store.controller.mentor;
 
-import com.codecool.quest.store.controller.dao.ArtifactDAO;
 import com.codecool.quest.store.controller.dao.DAOFactory;
 import com.codecool.quest.store.controller.helpers.AccountType;
 import com.codecool.quest.store.controller.helpers.SessionCookieHandler;
@@ -18,19 +17,20 @@ import java.util.Map;
 
 public class ArtifactEditor implements HttpHandler {
 
-    private ArtifactDAO artifactDAO;
+    private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler();
+    private SessionCookieHandler sessionCookieHandler;
 
     public ArtifactEditor(DAOFactory daoFactory) {
-        this.artifactDAO = daoFactory.getArtifactDAO();
+        this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
 
         int artifactId = new Utils().getIdFromURI(httpExchange);
-        Artifact artifact = artifactDAO.getArtifactById(artifactId);
+        Artifact artifact = daoFactory.getArtifactDAO().getArtifactById(artifactId);
 
 
         if (!sessionCookieHandler.isSessionValid(httpExchange, AccountType.MENTOR)) {
@@ -55,7 +55,7 @@ public class ArtifactEditor implements HttpHandler {
         artifact.setPrice(Integer.valueOf(inputs.get("price")));
         artifact.setMagic(Boolean.valueOf(inputs.get("isMagic")));
 
-        artifactDAO.updateArtifact(artifact);
+        daoFactory.getArtifactDAO().updateArtifact(artifact);
 
     }
 
