@@ -18,10 +18,11 @@ public class AddArtifact implements HttpHandler {
 
     private DAOFactory daoFactory;
     private View view = new View();
-    private SessionCookieHandler sessionCookieHandler = new SessionCookieHandler(daoFactory);
+    private SessionCookieHandler sessionCookieHandler;
 
     public AddArtifact(DAOFactory daoFactory) {
         this.daoFactory = daoFactory;
+        this.sessionCookieHandler = new SessionCookieHandler(daoFactory);
     }
 
     @Override
